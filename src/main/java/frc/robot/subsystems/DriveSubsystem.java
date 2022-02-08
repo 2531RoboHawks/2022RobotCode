@@ -4,29 +4,44 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.kauailabs.navx.frc.AHRS;
+
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
-import edu.wpi.first.wpilibj.motorcontrol.Spark;
+import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotContainer;
 
 public class DriveSubsystem extends SubsystemBase {
-  private Spark frontLeft = new Spark(0);
-  private Spark frontRight = new Spark(1);
-  private Spark backLeft = new Spark(2);
-  private Spark backRight = new Spark(3);
+  private Gyro gyro = new AHRS(SPI.Port.kMXP);
+
+  private WPI_TalonFX frontLeft = new WPI_TalonFX(0);
+  private WPI_TalonFX frontRight = new WPI_TalonFX(1);
+  private WPI_TalonFX backLeft = new WPI_TalonFX(2);
+  private WPI_TalonFX backRight = new WPI_TalonFX(3);
 
   private MecanumDrive mecanumDrive;
-  /** Creates a new ExampleSubsystem. */
+
   public DriveSubsystem() {
     frontLeft.setInverted(true);
     backLeft.setInverted(true);
     mecanumDrive = new MecanumDrive(frontLeft, backLeft, frontRight, backRight);
+    calibrateGyro();
   }
 
-  public void mecanum(double ySpeed, double xSpeed, double zRotation) {
-    mecanumDrive.driveCartesian(ySpeed, xSpeed, zRotation);
-    SmartDashboard.putNumber("Gyro", RobotContainer.gyro.getAngle());
+  public void fieldOriented(double ySpeed, double xSpeed, double zRotation) {
+    mecanumDrive.driveCartesian(ySpeed, xSpeed, zRotation, gyro.getAngle());
+    SmartDashboard.putNumber("Gyro", gyro.getAngle());
+  }
+
+  public void resetGyro() {
+    gyro.reset();
+  }
+
+  public void calibrateGyro() {
+    gyro.calibrate();
   }
 
   public void stop() {

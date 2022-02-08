@@ -23,11 +23,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   public static final DriveSubsystem driveSubsystem = new DriveSubsystem();
-  public static final DriveCommand driveCommand = new DriveCommand();
+  public static final DriveCommand driveCommand = new DriveCommand(driveSubsystem);
   public static Joystick gamepad = new Joystick(0);
-  public static AHRS gyro = new AHRS(SPI.Port.kMXP);
-
-
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {

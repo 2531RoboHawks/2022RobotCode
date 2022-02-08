@@ -4,24 +4,39 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.DriveSubsystem;
 
 public class DriveCommand extends CommandBase {
+  private DriveSubsystem driveSubsystem;
   /** Creates a new DriveCommand. */
-  public DriveCommand() {
+  public DriveCommand(DriveSubsystem driveSubsystem) {
+    this.driveSubsystem = driveSubsystem;
     addRequirements(RobotContainer.driveSubsystem);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    driveSubsystem.resetGyro();
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    RobotContainer.driveSubsystem.mecanum(RobotContainer.gamepad.getY()/2, RobotContainer.gamepad.getX()/2, RobotContainer.gamepad.getRawAxis(4)/2);
+    boolean turbo = RobotContainer.gamepad.getRawButton(6);
+    double multiplier = turbo ? 1 : 0.5;
+    RobotContainer.driveSubsystem.fieldOriented(
+      -RobotContainer.gamepad.getY() * multiplier,
+      RobotContainer.gamepad.getX() * multiplier,
+      RobotContainer.gamepad.getRawAxis(4) / 2
+    );
+
+    if (RobotContainer.gamepad.getRawButton(2)) {
+      RobotContainer.driveSubsystem.resetGyro();
+    }
   }
 
   // Called once the command ends or is interrupted.
