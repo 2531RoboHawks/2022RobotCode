@@ -48,8 +48,26 @@ public class DriveSubsystem extends SubsystemBase {
     mecanumDrive.stopMotor();
   }
 
+  private static final double wheelDiameter = 8.0;
+  private static final double wheelCircumference = Math.PI * wheelDiameter;
+  private static final double gearRatio = 8.5;
+  private static final double unitsPerTurn = 2048.0;
+  private static final double unitsToMeters = wheelCircumference * gearRatio / unitsPerTurn;
+  public double getFrontLeftPosition() {
+    return frontLeft.getSelectedSensorPosition() * unitsToMeters;
+  }
+  public double getFrontRightPosition() {
+    return frontRight.getSelectedSensorPosition() * unitsToMeters;
+  }
+  public double getBackLeftPosition() {
+    return backLeft.getSelectedSensorPosition() * unitsToMeters;
+  }
+  public double getBackRightPosition() {
+    return backRight.getSelectedSensorPosition() * unitsToMeters;
+  }
+
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
+
   }
 }
