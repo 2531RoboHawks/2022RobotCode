@@ -21,25 +21,32 @@ public class DriveCommand extends CommandBase {
     driveSubsystem.resetGyro();
   }
 
+  private double applyDeadzone(double i) {
+    if (Math.abs(i) < 0.1) return 0;
+    return i;
+  }
+
   @Override
   public void execute() {
     boolean turbo = RobotContainer.gamepad.getRawButton(6);
-    double multiplier = turbo ? 1 : 0.3;
+    double xyMultiplier = turbo ? 1 : 0.3;
+    boolean fieldOriented = false;
 
-    driveSubsystem.fieldOriented(
-      -RobotContainer.gamepad.getY() * multiplier,
-      RobotContainer.gamepad.getX() * multiplier,
-      RobotContainer.gamepad.getRawAxis(4) / 4
-    );
-
-    if (RobotContainer.gamepad.getRawButton(2)) {
+    if (RobotContainer.gamepad.getRawButtonPressed(2)) {
       driveSubsystem.resetGyro();
     }
+
+    driveSubsystem.drivePercent(
+      -applyDeadzone(RobotContainer.gamepad.getY()) * xyMultiplier,
+      applyDeadzone(RobotContainer.gamepad.getX()) * xyMultiplier,
+      applyDeadzone(RobotContainer.gamepad.getRawAxis(4)) / 4,
+      fieldOriented
+    );  
   }
 
   @Override
   public void end(boolean interrupted) {
-    RobotContainer.driveSubsystem.stop();
+    driveSubsystem.stop();
   }
 
   @Override

@@ -57,9 +57,17 @@ public class DriveSubsystem extends SubsystemBase {
     resetEncoders();
   }
 
-  public void fieldOriented(double ySpeed, double xSpeed, double zRotation) {
-    mecanumDrive.driveCartesian(ySpeed, xSpeed, zRotation, 0);
-    // SmartDashboard.putNumber("Gyro", gyro.getAngle());
+  public void drivePercent(double ySpeed, double xSpeed, double zRotation, boolean fieldOriented) {
+    mecanumDrive.driveCartesian(
+      ySpeed,
+      xSpeed,
+      zRotation,
+      fieldOriented ? gyro.getAngle() : 0
+    );
+  }
+
+  public double getAngle() {
+    return gyro.getAngle();
   }
 
   public void resetGyro() {
@@ -99,16 +107,16 @@ public class DriveSubsystem extends SubsystemBase {
     return backRight.getSelectedSensorPosition() * unitsToMeters;
   }
   public double getFrontLeftVelocity() {
-    return frontLeft.getSelectedSensorVelocity() * unitsToMeters * 10;
+    return frontLeft.getSelectedSensorVelocity() * unitsToMeters * 10.0;
   }
   public double getFrontRightVelocity() {
-    return frontRight.getSelectedSensorVelocity() * unitsToMeters * 10;
+    return frontRight.getSelectedSensorVelocity() * unitsToMeters * 10.0;
   }
   public double getBackLeftVelocity() {
-    return backLeft.getSelectedSensorVelocity() * unitsToMeters * 10;
+    return backLeft.getSelectedSensorVelocity() * unitsToMeters * 10.0;
   }
   public double getBackRightVelocity() {
-    return backRight.getSelectedSensorVelocity() * unitsToMeters * 10;
+    return backRight.getSelectedSensorVelocity() * unitsToMeters * 10.0;
   }
 
   public void resetOdometry(Pose2d pose) {
@@ -141,13 +149,14 @@ public class DriveSubsystem extends SubsystemBase {
   public void periodic() {
     odometry.update(gyro.getRotation2d(), getWheelSpeeds());
 
-    SmartDashboard.putNumber("fl", getFrontLeftPosition());
-    SmartDashboard.putNumber("fr", getFrontRightPosition());
-    SmartDashboard.putNumber("bl", getBackLeftPosition());
-    SmartDashboard.putNumber("br", getBackRightPosition());
-    SmartDashboard.putNumber("fl v", getFrontLeftVelocity());
-    SmartDashboard.putNumber("fr v", getFrontRightVelocity());
-    SmartDashboard.putNumber("bl v", getBackLeftVelocity());
-    SmartDashboard.putNumber("br v", getBackRightVelocity());
+    // SmartDashboard.putNumber("fl", getFrontLeftPosition());
+    // SmartDashboard.putNumber("fr", getFrontRightPosition());
+    // SmartDashboard.putNumber("bl", getBackLeftPosition());
+    // SmartDashboard.putNumber("br", getBackRightPosition());
+    // SmartDashboard.putNumber("fl v", getFrontLeftVelocity());
+    // SmartDashboard.putNumber("fr v", getFrontRightVelocity());
+    // SmartDashboard.putNumber("bl v", getBackLeftVelocity());
+    // SmartDashboard.putNumber("br v", getBackRightVelocity());
+    // SmartDashboard.putNumber("Gyro", getAngle());
   }
 }
