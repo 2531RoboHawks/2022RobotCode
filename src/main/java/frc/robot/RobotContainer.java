@@ -4,15 +4,26 @@
 
 package frc.robot;
 
-import com.kauailabs.navx.frc.AHRS;
+import java.util.List;
 
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.trajectory.Trajectory;
+import edu.wpi.first.math.trajectory.TrajectoryConfig;
+import edu.wpi.first.math.trajectory.TrajectoryGenerator;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.DriveCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.MecanumControllerCommand;
+import edu.wpi.first.wpilibj2.command.RamseteCommand;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -46,6 +57,46 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return null;
+    TrajectoryConfig config = new TrajectoryConfig(
+      DriveSubsystem.maxSpeed,
+      DriveSubsystem.maxAcceleration
+    ).setKinematics(DriveSubsystem.kinematics);
+
+    Trajectory exampleTrajectory = TrajectoryGenerator.generateTrajectory(
+      new Pose2d(0, 0, new Rotation2d(0)),
+      List.of(
+        new Translation2d(1, 1),
+        new Translation2d(2, -1)
+      ),
+      new Pose2d(3, 0, new Rotation2d(0)),
+      config
+    );
+    MecanumControllerCommand command = new MecanumControllerCommand(
+      exampleTrajectory,
+      driveSubsystem::getPose,
+      new SimpleMotorFeedforward(
+        DriveSubsystem.kS,
+        DriveSubsystem.kV,
+        DriveSubsystem.kA
+      ),
+      // Position
+      DriveSubsystem.kinematics,
+      new PIDController(0.25, 0, 0),
+      new PIDController(0.25, 0, 0),
+      // Rotation
+      new ProfiledPIDController(0.25, 0, 0, new TrapezoidProfile.Constraints(Math.PI, Math.PI)),
+      DriveSubsystem.maxSpeed,
+      // Velocity
+      new PIDController(0.25, 0, 0),
+      new PIDController(0.25, 0, 0),
+      new PIDController(0.25, 0, 0),
+      new PIDController(0.25, 0, 0),
+      driveSubsystem::getWheelSpeeds,
+      driveSubsystem::driveVolts,
+      driveSubsystem
+    );
+
+    driveSubsystem.resetOdometry(exampleTrajectory.getInitialPose());
+    return command.andThen(() -> driveSubsystem.stop());
   }
 }
