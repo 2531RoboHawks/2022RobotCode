@@ -143,9 +143,9 @@ public class DriveSubsystem extends SubsystemBase {
     y *= 2048;
     z *= 2048;
 
-    Vector2d vector = new Vector2d(x, y);
+    Vector2d vector = new Vector2d(y, x);
     if (fieldOriented) {
-      vector.rotate(gyro.getAngle());
+      vector.rotate(-gyro.getAngle());
     }
 
     // TODO: use gyro to correct rotation drift?
