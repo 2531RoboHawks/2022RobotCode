@@ -10,6 +10,7 @@ import frc.robot.subsystems.DriveSubsystem;
 
 public class DriveCommand extends CommandBase {
   private DriveSubsystem driveSubsystem;
+  private boolean fieldOriented = true;
 
   public DriveCommand(DriveSubsystem driveSubsystem) {
     this.driveSubsystem = driveSubsystem;
@@ -19,29 +20,39 @@ public class DriveCommand extends CommandBase {
   @Override
   public void initialize() {
     driveSubsystem.resetGyro();
+    driveSubsystem.resetEncoders();
   }
 
-  private double applyDeadzone(double i) {
-    if (Math.abs(i) < 0.1) return 0;
-    return i;
+  private double scale(double n) {
+    if (Math.abs(n) < 0.1) return 0;
+    return n * n * Math.signum(n);
   }
 
   @Override
   public void execute() {
     boolean turbo = RobotContainer.gamepad.getRawButton(6);
     double xyMultiplier = turbo ? 1 : 0.3;
-    boolean fieldOriented = false;
+    double rotationMultiplier = turbo ? 0.35 : 0.25;
+
+    if (RobotContainer.gamepad.getRawButtonPressed(4)) {
+      fieldOriented = !fieldOriented;
+      System.out.println("Field oriented: " + fieldOriented);
+    }
 
     if (RobotContainer.gamepad.getRawButtonPressed(2)) {
       driveSubsystem.resetGyro();
     }
 
-    driveSubsystem.drivePercent(
-      -applyDeadzone(RobotContainer.gamepad.getY()) * xyMultiplier,
-      applyDeadzone(RobotContainer.gamepad.getX()) * xyMultiplier,
-      applyDeadzone(RobotContainer.gamepad.getRawAxis(4)) / 4,
+    double x = RobotContainer.gamepad.getX();
+    double y = -RobotContainer.gamepad.getY();
+    double z = RobotContainer.gamepad.getRawAxis(4);
+
+    driveSubsystem.driveTeleop(
+      scale(y) * xyMultiplier,
+      scale(x) * xyMultiplier,
+      scale(z) * rotationMultiplier,
       fieldOriented
-    );  
+    );
   }
 
   @Override

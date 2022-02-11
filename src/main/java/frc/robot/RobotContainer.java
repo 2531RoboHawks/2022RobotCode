@@ -23,7 +23,6 @@ import frc.robot.commands.DriveCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.MecanumControllerCommand;
-import edu.wpi.first.wpilibj2.command.RamseteCommand;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -71,8 +70,16 @@ public class RobotContainer {
       new Pose2d(3, 0, new Rotation2d(0)),
       config
     );
+
+    Trajectory trajectory = exampleTrajectory;
+    // try {
+    //   Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve("Unnamed.wpilib.json");
+    //   trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
+    // } catch (IOException exception) {
+    // }
+
     MecanumControllerCommand command = new MecanumControllerCommand(
-      exampleTrajectory,
+      trajectory,
       driveSubsystem::getPose,
       new SimpleMotorFeedforward(
         DriveSubsystem.kS,
@@ -84,13 +91,13 @@ public class RobotContainer {
       new PIDController(0.25, 0, 0),
       new PIDController(0.25, 0, 0),
       // Rotation
-      new ProfiledPIDController(0.25, 0, 0, new TrapezoidProfile.Constraints(Math.PI, Math.PI)),
+      new ProfiledPIDController(0.25, 0, 0, new TrapezoidProfile.Constraints(DriveSubsystem.maxRotation, DriveSubsystem.maxRotationAcceleration)),
       DriveSubsystem.maxSpeed,
       // Velocity
-      new PIDController(0.25, 0, 0),
-      new PIDController(0.25, 0, 0),
-      new PIDController(0.25, 0, 0),
-      new PIDController(0.25, 0, 0),
+      new PIDController(DriveSubsystem.kP, 0, 0),
+      new PIDController(DriveSubsystem.kP, 0, 0),
+      new PIDController(DriveSubsystem.kP, 0, 0),
+      new PIDController(DriveSubsystem.kP, 0, 0),
       driveSubsystem::getWheelSpeeds,
       driveSubsystem::driveVolts,
       driveSubsystem
