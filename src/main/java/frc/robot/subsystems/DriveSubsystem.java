@@ -28,7 +28,8 @@ public class DriveSubsystem extends SubsystemBase {
   private WPI_TalonFX frontRight = new WPI_TalonFX(1);
   private WPI_TalonFX backLeft = new WPI_TalonFX(2);
   private WPI_TalonFX backRight = new WPI_TalonFX(3);
-
+  
+  // Keep these constants in this file, I dont want to deal with renaming them in constants
   // Auto-related constants
   public static final double kS = 0.62762;
   public static final double kV = 1.4371;
@@ -189,6 +190,7 @@ public class DriveSubsystem extends SubsystemBase {
     backRight.setSelectedSensorPosition(0);
   }
 
+  //TODO: Move finals to constants class please, Migh be able to use in other subsystems possibly
   private static final double wheelDiameter = 0.2032; // m
   private static final double wheelCircumference = Math.PI * wheelDiameter;
   private static final double gearRatio = 8.45;
