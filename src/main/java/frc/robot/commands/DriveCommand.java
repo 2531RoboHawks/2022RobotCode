@@ -43,9 +43,9 @@ public class DriveCommand extends CommandBase {
       driveSubsystem.resetGyro();
     }
 
-    double x = RobotContainer.gamepad.getX();
+    double x = -RobotContainer.gamepad.getX();
     double y = -RobotContainer.gamepad.getY();
-    double z = RobotContainer.gamepad.getRawAxis(4);
+    double z = -RobotContainer.gamepad.getRawAxis(4);
 
     driveSubsystem.driveTeleop(
       scale(y) * xyMultiplier,

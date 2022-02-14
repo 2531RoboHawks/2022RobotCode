@@ -7,6 +7,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.ctre.phoenix.sensors.PigeonIMU;
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
@@ -284,6 +285,6 @@ public class DriveSubsystem extends SubsystemBase {
     // SmartDashboard.putNumber("br v", getBackRightVelocity());
     SmartDashboard.putNumber("NavX Gyro", navxGyro.getAngle());
     SmartDashboard.putNumber("Analog Devices Gyro", analogGyro.getAngle());
-    SmartDashboard.putNumber("Pidgeon Gyro", analogGyro.getAngle());
+    // SmartDashboard.putNumber("Pidgeon Gyro", pigeon.getFusedHeading());
   }
 }
