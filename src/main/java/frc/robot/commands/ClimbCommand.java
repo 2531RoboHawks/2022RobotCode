@@ -1,7 +1,13 @@
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.ClimbSubsystem;
+
 public class ClimbCommand extends CommandBase {
-  public ClimbCommand(ClimbSubsystem climbSubsystem) {}
+  private ClimbSubsystem climbSubsystem;
+  public ClimbCommand(ClimbSubsystem climbSubsystem) {
+    this.climbSubsystem = climbSubsystem;
+  }
   
   @Override
   public void initialize() {}
