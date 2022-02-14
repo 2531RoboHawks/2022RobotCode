@@ -11,6 +11,7 @@ import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
 import edu.wpi.first.wpilibj.drive.Vector2d;
+import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -18,11 +19,14 @@ import edu.wpi.first.math.kinematics.MecanumDriveKinematics;
 import edu.wpi.first.math.kinematics.MecanumDriveMotorVoltages;
 import edu.wpi.first.math.kinematics.MecanumDriveOdometry;
 import edu.wpi.first.math.kinematics.MecanumDriveWheelSpeeds;
+import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class DriveSubsystem extends SubsystemBase {
-  private AHRS gyro = new AHRS(SPI.Port.kMXP);
+  private AHRS navxGyro = new AHRS(SPI.Port.kMXP);
+  private Gyro analogGyro = new ADXRS450_Gyro();
+  // private PigeonIMU pigeon = new PigeonIMU(0);
 
   private WPI_TalonFX frontLeft = new WPI_TalonFX(0);
   private WPI_TalonFX frontRight = new WPI_TalonFX(1);
@@ -53,17 +57,19 @@ public class DriveSubsystem extends SubsystemBase {
   private MecanumDrive mecanumDrive;
   private MecanumDriveOdometry odometry;
 
-  private static class WheelTarget {
-    // in raw sensor units
-    private double value;
-    WheelTarget() {
+  private static class EncoderInfo {
+    // both of these are in raw sensor units
+    // zeroing is used for auto pathing -- NOT for teleop driving
+    private double targetValue = 0;
+    private double zero = 0;
+    EncoderInfo() {
       reset();
     }
     double getValue() {
-      return value;
+      return targetValue;
     }
     void update(double delta, double currentActualValue) {
-      value += delta;
+      targetValue += delta;
       // If we, for example, run directly into a wall, don't allow the tolerance
       // values to grow indefintitely.
       // TODO: need to test, would it be better to hard reset to actual????
@@ -71,24 +77,31 @@ public class DriveSubsystem extends SubsystemBase {
       int maxError = 20480;
       double maximumAllowedTargetValue = currentActualValue + maxError;
       double minimumAllowedTargetValue = currentActualValue - maxError;
-      if (value < minimumAllowedTargetValue) {
-        System.out.println("Exceeded minimum " + value + " " + minimumAllowedTargetValue);
-        value = minimumAllowedTargetValue;
+      if (targetValue < minimumAllowedTargetValue) {
+        System.out.println("Exceeded minimum " + targetValue + " " + minimumAllowedTargetValue);
+        targetValue = minimumAllowedTargetValue;
       }
-      if (value > maximumAllowedTargetValue) {
-        System.out.println("Exceeded maximum " + value + " " + maximumAllowedTargetValue);
-        value = maximumAllowedTargetValue;
+      if (targetValue > maximumAllowedTargetValue) {
+        System.out.println("Exceeded maximum " + targetValue + " " + maximumAllowedTargetValue);
+        targetValue = maximumAllowedTargetValue;
       }
     }
     void reset() {
-      value = 0;
+      targetValue = 0;
+    }
+    void setZero(double newValue) {
+      zero = newValue;
+      targetValue = newValue;
+    }
+    double getZero() {
+      return zero;
     }
   }
 
-  private WheelTarget targetFrontRight = new WheelTarget();
-  private WheelTarget targetFrontLeft = new WheelTarget();
-  private WheelTarget targetBackRight = new WheelTarget();
-  private WheelTarget targetBackLeft = new WheelTarget();
+  private EncoderInfo frontRightInfo = new EncoderInfo();
+  private EncoderInfo frontLeftInfo = new EncoderInfo();
+  private EncoderInfo backRightInfo = new EncoderInfo();
+  private EncoderInfo backLeftInfo = new EncoderInfo();
 
   // TODO: tuning mandatory
   private double teleopKp = 0.1;
@@ -123,7 +136,7 @@ public class DriveSubsystem extends SubsystemBase {
     resetEncoders();
 
     mecanumDrive = new MecanumDrive(frontLeft, backLeft, frontRight, backRight);
-    odometry = new MecanumDriveOdometry(kinematics, gyro.getRotation2d());
+    odometry = new MecanumDriveOdometry(kinematics, navxGyro.getRotation2d());
   }
 
   public void drivePercent(double ySpeed, double xSpeed, double zRotation, boolean fieldOriented) {
@@ -132,7 +145,7 @@ public class DriveSubsystem extends SubsystemBase {
       ySpeed,
       xSpeed,
       zRotation,
-      fieldOriented ? gyro.getAngle() : 0
+      fieldOriented ? navxGyro.getAngle() : 0
     );
   }
 
@@ -143,21 +156,22 @@ public class DriveSubsystem extends SubsystemBase {
     y *= 2048;
     z *= 2048;
 
+    // Vector2d arguments are supposed to be backwards
     Vector2d vector = new Vector2d(y, x);
     if (fieldOriented) {
-      vector.rotate(-gyro.getAngle());
+      vector.rotate(-navxGyro.getAngle());
     }
 
     // TODO: use gyro to correct rotation drift?
-    targetFrontLeft.update(vector.x + vector.y + z, frontLeft.getSelectedSensorPosition());
-    targetFrontRight.update(vector.x - vector.y - z, frontRight.getSelectedSensorPosition());
-    targetBackLeft.update(vector.x - vector.y + z, backLeft.getSelectedSensorPosition());
-    targetBackRight.update(vector.x + vector.y - z, backRight.getSelectedSensorPosition());
+    frontLeftInfo.update(vector.x + vector.y + z, frontLeft.getSelectedSensorPosition());
+    frontRightInfo.update(vector.x - vector.y - z, frontRight.getSelectedSensorPosition());
+    backLeftInfo.update(vector.x - vector.y + z, backLeft.getSelectedSensorPosition());
+    backRightInfo.update(vector.x + vector.y - z, backRight.getSelectedSensorPosition());
 
-    frontLeft.set(ControlMode.Position, targetFrontLeft.getValue());
-    frontRight.set(ControlMode.Position, targetFrontRight.getValue());
-    backLeft.set(ControlMode.Position, targetBackLeft.getValue());
-    backRight.set(ControlMode.Position, targetBackRight.getValue());
+    frontLeft.set(ControlMode.Position, frontLeftInfo.getValue());
+    frontRight.set(ControlMode.Position, frontRightInfo.getValue());
+    backLeft.set(ControlMode.Position, backLeftInfo.getValue());
+    backRight.set(ControlMode.Position, backRightInfo.getValue());
 
     mecanumDrive.feed();
   }
@@ -167,47 +181,55 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public double getAngle() {
-    return gyro.getAngle();
+    return navxGyro.getAngle();
   }
 
   public void resetGyro() {
-    gyro.reset();
+    navxGyro.reset();
   }
 
   public void calibrateGyro() {
-    gyro.calibrate();
+    navxGyro.calibrate();
   }
 
   public void resetEncoders() {
-    targetFrontLeft.reset();
-    targetFrontRight.reset();
-    targetBackLeft.reset();
-    targetBackRight.reset();
-
-    frontLeft.setSelectedSensorPosition(0);
-    frontRight.setSelectedSensorPosition(0);
-    backLeft.setSelectedSensorPosition(0);
-    backRight.setSelectedSensorPosition(0);
+    frontLeftInfo.setZero(frontLeft.getSelectedSensorPosition());
+    frontRightInfo.setZero(frontRight.getSelectedSensorPosition());
+    backLeftInfo.setZero(backLeft.getSelectedSensorPosition());
+    backRightInfo.setZero(backRight.getSelectedSensorPosition());
   }
 
-  //TODO: Move finals to constants class please, Migh be able to use in other subsystems possibly
-  private static final double wheelDiameter = 0.2032; // m
+  private static final double wheelDiameter = 0.2032; // meters
   private static final double wheelCircumference = Math.PI * wheelDiameter;
-  private static final double gearRatio = 8.45;
+  private static final double gearRatio = 8.45 / 1.0;
   private static final double unitsPerTurn = 2048.0;
   private static final double unitsToMeters = wheelCircumference / (unitsPerTurn * gearRatio);
-  public double getFrontLeftPosition() {
-    return frontLeft.getSelectedSensorPosition() * unitsToMeters;
+
+  private double getFrontLeftPositionRaw() {
+    return frontLeft.getSelectedSensorPosition() - frontLeftInfo.getZero();
   }
-  public double getFrontRightPosition() {
-    return frontRight.getSelectedSensorPosition() * unitsToMeters;
+  public double getFrontLeftPositionMeters() {
+    return getFrontLeftPositionRaw() * unitsToMeters;
   }
-  public double getBackLeftPosition() {
-    return backLeft.getSelectedSensorPosition() * unitsToMeters;
+  private double getFrontRightPositionRaw() {
+    return frontRight.getSelectedSensorPosition() - frontRightInfo.getZero();
   }
-  public double getBackRightPosition() {
-    return backRight.getSelectedSensorPosition() * unitsToMeters;
+  public double getFrontRightPositionMeters() {
+    return getFrontRightPositionRaw() * unitsToMeters;
   }
+  private double getBackLeftPositionRaw() {
+    return backLeft.getSelectedSensorPosition() - backLeftInfo.getZero();
+  }
+  public double getBackLeftPositionMeters() {
+    return getBackLeftPositionRaw() * unitsToMeters;
+  }
+  private double getBackRightPositionRaw() {
+    return backRight.getSelectedSensorPosition() - backRightInfo.getZero();
+  }
+  public double getBackRightPositionMeters() {
+    return getBackRightPositionRaw() * unitsToMeters;
+  }
+
   public double getFrontLeftVelocity() {
     return frontLeft.getSelectedSensorVelocity() * unitsToMeters * 10.0;
   }
@@ -224,7 +246,7 @@ public class DriveSubsystem extends SubsystemBase {
   public void resetOdometry(Pose2d pose) {
     resetGyro();
     resetEncoders();
-    odometry.resetPosition(pose, gyro.getRotation2d());
+    odometry.resetPosition(pose, navxGyro.getRotation2d());
   }
 
   public MecanumDriveWheelSpeeds getWheelSpeeds() {
@@ -250,7 +272,7 @@ public class DriveSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    odometry.update(gyro.getRotation2d(), getWheelSpeeds());
+    odometry.update(navxGyro.getRotation2d(), getWheelSpeeds());
 
     // SmartDashboard.putNumber("fl", getFrontLeftPosition());
     // SmartDashboard.putNumber("fr", getFrontRightPosition());
@@ -260,6 +282,8 @@ public class DriveSubsystem extends SubsystemBase {
     // SmartDashboard.putNumber("fr v", getFrontRightVelocity());
     // SmartDashboard.putNumber("bl v", getBackLeftVelocity());
     // SmartDashboard.putNumber("br v", getBackRightVelocity());
-    SmartDashboard.putNumber("Gyro", getAngle());
+    SmartDashboard.putNumber("NavX Gyro", navxGyro.getAngle());
+    SmartDashboard.putNumber("Analog Devices Gyro", analogGyro.getAngle());
+    SmartDashboard.putNumber("Pidgeon Gyro", analogGyro.getAngle());
   }
 }
