@@ -26,7 +26,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class DriveSubsystem extends SubsystemBase {
   private AHRS navxGyro = new AHRS(SPI.Port.kMXP);
-  private Gyro analogGyro = new ADXRS450_Gyro();
+  private ADXRS450_Gyro analogGyro = new ADXRS450_Gyro();
   // private PigeonIMU pigeon = new PigeonIMU(0);
 
   private WPI_TalonFX frontLeft = new WPI_TalonFX(0);
@@ -105,7 +105,7 @@ public class DriveSubsystem extends SubsystemBase {
   private EncoderInfo backLeftInfo = new EncoderInfo();
 
   // TODO: tuning mandatory
-  private double teleopKp = 0.1;
+  private double teleopKp = 0.2;
   private double teleopKd = 0.0;
   private double teleopKi = 0.0;
 
@@ -114,25 +114,28 @@ public class DriveSubsystem extends SubsystemBase {
     frontLeft.config_kP(0, teleopKp);
     frontLeft.config_kD(0, teleopKd);
     frontLeft.config_kI(0, teleopKi);
-    frontLeft.setInverted(true);
+    frontLeft.setInverted(false);
 
     frontRight.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
     frontRight.config_kP(0, teleopKp);
     frontRight.config_kD(0, teleopKd);
     frontRight.config_kI(0, teleopKi);
+    frontRight.setInverted(true);
 
     backLeft.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
     backLeft.config_kP(0, teleopKp);
     backLeft.config_kD(0, teleopKd);
     backLeft.config_kI(0, teleopKi);
-    backLeft.setInverted(true);
+    backLeft.setInverted(false);
 
     backRight.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
     backRight.config_kP(0, teleopKp);
     backRight.config_kD(0, teleopKd);
     backRight.config_kI(0, teleopKi);
+    backRight.setInverted(true);
 
-    calibrateGyro();
+    analogGyro.calibrate();
+    navxGyro.calibrate();
     resetGyro();
     resetEncoders();
 
@@ -187,10 +190,6 @@ public class DriveSubsystem extends SubsystemBase {
 
   public void resetGyro() {
     navxGyro.reset();
-  }
-
-  public void calibrateGyro() {
-    navxGyro.calibrate();
   }
 
   public void resetEncoders() {
