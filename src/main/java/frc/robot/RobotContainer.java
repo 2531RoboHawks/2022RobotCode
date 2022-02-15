@@ -73,11 +73,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    TrajectoryConfig config = new TrajectoryConfig(
-      DriveSubsystem.maxSpeed,
-      DriveSubsystem.maxAcceleration
-    ).setKinematics(DriveSubsystem.kinematics);
-
+    TrajectoryConfig config = new TrajectoryConfig(2.0, .5);
     Trajectory exampleTrajectory = TrajectoryGenerator.generateTrajectory(
       new Pose2d(0, 0, new Rotation2d(0)),
       List.of(
@@ -94,32 +90,6 @@ public class RobotContainer {
     //   trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
     // } catch (IOException exception) {
     // }
-
-    // MecanumControllerCommand command = new MecanumControllerCommand(
-    //   trajectory,
-    //   driveSubsystem::getPose,
-    //   new SimpleMotorFeedforward(
-    //     DriveSubsystem.kS,
-    //     DriveSubsystem.kV,
-    //     DriveSubsystem.kA
-    //   ),
-    //   // Position
-    //   DriveSubsystem.kinematics,
-    //   new PIDController(0.25, 0, 0),
-    //   new PIDController(0.25, 0, 0),
-    //   // Rotation
-    //   new ProfiledPIDController(0.25, 0, 0, new TrapezoidProfile.Constraints(DriveSubsystem.maxRotation, DriveSubsystem.maxRotationAcceleration)),
-    //   DriveSubsystem.maxSpeed,
-    //   // Velocity
-    //   new PIDController(DriveSubsystem.kP, 0, 0),
-    //   new PIDController(DriveSubsystem.kP, 0, 0),
-    //   new PIDController(DriveSubsystem.kP, 0, 0),
-    //   new PIDController(DriveSubsystem.kP, 0, 0),
-    //   driveSubsystem::getWheelSpeeds,
-    //   driveSubsystem::driveVolts,
-    //   driveSubsystem
-    // );
-    // driveSubsystem.resetOdometry(exampleTrajectory.getInitialPose());
 
     Command command = new AutoTrajectoryCommand(driveSubsystem, trajectory);
     return command.andThen(() -> driveSubsystem.stop());
