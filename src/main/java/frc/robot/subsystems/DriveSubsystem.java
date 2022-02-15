@@ -41,8 +41,8 @@ public class DriveSubsystem extends SubsystemBase {
   public static final double kA = 0.20513;
   public static final double kP = 1.963;
   // in m/s
-  public static final double maxSpeed = 3;
-  public static final double maxAcceleration = 1;
+  public static final double maxSpeed = 2;
+  public static final double maxAcceleration = 0.5;
   // in radians
   public static final double maxRotation = 1;
   public static final double maxRotationAcceleration = 1;
@@ -66,10 +66,14 @@ public class DriveSubsystem extends SubsystemBase {
     EncoderInfo() {
       reset();
     }
-    double getValue() {
+    double getTargetValue() {
       return targetValue;
     }
-    void update(double delta, double currentActualValue) {
+    void setZeroedTargetTo(double newTarget) {
+      targetValue = newTarget - zero;
+      System.out.println("Targeting: " + newTarget + " Zero: " + zero + " Final: " + targetValue);
+    }
+    void changeTargetBy(double delta, double currentActualValue) {
       targetValue += delta;
       // If we, for example, run directly into a wall, don't allow the tolerance
       // values to grow indefintitely.
@@ -105,7 +109,8 @@ public class DriveSubsystem extends SubsystemBase {
   private EncoderInfo backLeftInfo = new EncoderInfo();
 
   // TODO: tuning mandatory
-  private double teleopKp = 0.2;
+  // private double teleopKp = 0.2;
+  private double teleopKp = 0.02;
   private double teleopKd = 0.0;
   private double teleopKi = 0.0;
 
@@ -114,24 +119,28 @@ public class DriveSubsystem extends SubsystemBase {
     frontLeft.config_kP(0, teleopKp);
     frontLeft.config_kD(0, teleopKd);
     frontLeft.config_kI(0, teleopKi);
+    frontLeft.setSelectedSensorPosition(0);
     frontLeft.setInverted(false);
 
     frontRight.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
     frontRight.config_kP(0, teleopKp);
     frontRight.config_kD(0, teleopKd);
     frontRight.config_kI(0, teleopKi);
+    frontRight.setSelectedSensorPosition(0);
     frontRight.setInverted(true);
 
     backLeft.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
     backLeft.config_kP(0, teleopKp);
     backLeft.config_kD(0, teleopKd);
     backLeft.config_kI(0, teleopKi);
+    backLeft.setSelectedSensorPosition(0);
     backLeft.setInverted(false);
 
     backRight.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
     backRight.config_kP(0, teleopKp);
     backRight.config_kD(0, teleopKd);
     backRight.config_kI(0, teleopKi);
+    backRight.setSelectedSensorPosition(0);
     backRight.setInverted(true);
 
     analogGyro.calibrate();
@@ -153,6 +162,14 @@ public class DriveSubsystem extends SubsystemBase {
     );
   }
 
+  private void updateMotorsToTargetValues() {
+    frontLeft.set(ControlMode.Position, frontLeftInfo.getTargetValue());
+    frontRight.set(ControlMode.Position, frontRightInfo.getTargetValue());
+    backLeft.set(ControlMode.Position, backLeftInfo.getTargetValue());
+    backRight.set(ControlMode.Position, backRightInfo.getTargetValue());
+    mecanumDrive.feed();
+  }
+
   public void driveTeleop(double y, double x, double z, boolean fieldOriented) {
     // scale [-1, 1] to raw sensor units
     // TODO make this work better, use eg. m/s?
@@ -167,17 +184,23 @@ public class DriveSubsystem extends SubsystemBase {
     }
 
     // TODO: use gyro to correct rotation drift?
-    frontLeftInfo.update(vector.x + vector.y + z, frontLeft.getSelectedSensorPosition());
-    frontRightInfo.update(vector.x - vector.y - z, frontRight.getSelectedSensorPosition());
-    backLeftInfo.update(vector.x - vector.y + z, backLeft.getSelectedSensorPosition());
-    backRightInfo.update(vector.x + vector.y - z, backRight.getSelectedSensorPosition());
+    frontLeftInfo.changeTargetBy(vector.x + vector.y + z, frontLeft.getSelectedSensorPosition());
+    frontRightInfo.changeTargetBy(vector.x - vector.y - z, frontRight.getSelectedSensorPosition());
+    backLeftInfo.changeTargetBy(vector.x - vector.y + z, backLeft.getSelectedSensorPosition());
+    backRightInfo.changeTargetBy(vector.x + vector.y - z, backRight.getSelectedSensorPosition());
+    updateMotorsToTargetValues();
+  }
 
-    frontLeft.set(ControlMode.Position, frontLeftInfo.getValue());
-    frontRight.set(ControlMode.Position, frontRightInfo.getValue());
-    backLeft.set(ControlMode.Position, backLeftInfo.getValue());
-    backRight.set(ControlMode.Position, backRightInfo.getValue());
-
-    mecanumDrive.feed();
+  public void driveFixedEncodedMeters(double x, double y, double z) {
+    x *= metersToUnits;
+    y *= metersToUnits;
+    // z *= metersToUnits;
+    z = 0;
+    frontLeftInfo.setZeroedTargetTo(y + x + z);
+    frontRightInfo.setZeroedTargetTo(y - x - z);
+    backLeftInfo.setZeroedTargetTo(y - x + z);
+    backRightInfo.setZeroedTargetTo(y + x - z);
+    updateMotorsToTargetValues();
   }
 
   public void stop() {
@@ -204,6 +227,7 @@ public class DriveSubsystem extends SubsystemBase {
   private static final double gearRatio = 8.45 / 1.0;
   private static final double unitsPerTurn = 2048.0;
   private static final double unitsToMeters = wheelCircumference / (unitsPerTurn * gearRatio);
+  private static final double metersToUnits = 1.0 / unitsToMeters;
 
   private double getFrontLeftPositionRaw() {
     return frontLeft.getSelectedSensorPosition() - frontLeftInfo.getZero();

@@ -19,6 +19,7 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import frc.robot.commands.AutoTrajectoryCommand;
 import frc.robot.commands.ClimbCommand;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.IntakeCommand;
@@ -81,9 +82,9 @@ public class RobotContainer {
       new Pose2d(0, 0, new Rotation2d(0)),
       List.of(
         new Translation2d(1, 1),
-        new Translation2d(2, -1)
+        new Translation2d(-1, 3)
       ),
-      new Pose2d(3, 0, new Rotation2d(0)),
+      new Pose2d(0, 4, new Rotation2d(0)),
       config
     );
 
@@ -94,32 +95,33 @@ public class RobotContainer {
     // } catch (IOException exception) {
     // }
 
-    MecanumControllerCommand command = new MecanumControllerCommand(
-      trajectory,
-      driveSubsystem::getPose,
-      new SimpleMotorFeedforward(
-        DriveSubsystem.kS,
-        DriveSubsystem.kV,
-        DriveSubsystem.kA
-      ),
-      // Position
-      DriveSubsystem.kinematics,
-      new PIDController(0.25, 0, 0),
-      new PIDController(0.25, 0, 0),
-      // Rotation
-      new ProfiledPIDController(0.25, 0, 0, new TrapezoidProfile.Constraints(DriveSubsystem.maxRotation, DriveSubsystem.maxRotationAcceleration)),
-      DriveSubsystem.maxSpeed,
-      // Velocity
-      new PIDController(DriveSubsystem.kP, 0, 0),
-      new PIDController(DriveSubsystem.kP, 0, 0),
-      new PIDController(DriveSubsystem.kP, 0, 0),
-      new PIDController(DriveSubsystem.kP, 0, 0),
-      driveSubsystem::getWheelSpeeds,
-      driveSubsystem::driveVolts,
-      driveSubsystem
-    );
+    // MecanumControllerCommand command = new MecanumControllerCommand(
+    //   trajectory,
+    //   driveSubsystem::getPose,
+    //   new SimpleMotorFeedforward(
+    //     DriveSubsystem.kS,
+    //     DriveSubsystem.kV,
+    //     DriveSubsystem.kA
+    //   ),
+    //   // Position
+    //   DriveSubsystem.kinematics,
+    //   new PIDController(0.25, 0, 0),
+    //   new PIDController(0.25, 0, 0),
+    //   // Rotation
+    //   new ProfiledPIDController(0.25, 0, 0, new TrapezoidProfile.Constraints(DriveSubsystem.maxRotation, DriveSubsystem.maxRotationAcceleration)),
+    //   DriveSubsystem.maxSpeed,
+    //   // Velocity
+    //   new PIDController(DriveSubsystem.kP, 0, 0),
+    //   new PIDController(DriveSubsystem.kP, 0, 0),
+    //   new PIDController(DriveSubsystem.kP, 0, 0),
+    //   new PIDController(DriveSubsystem.kP, 0, 0),
+    //   driveSubsystem::getWheelSpeeds,
+    //   driveSubsystem::driveVolts,
+    //   driveSubsystem
+    // );
+    // driveSubsystem.resetOdometry(exampleTrajectory.getInitialPose());
 
-    driveSubsystem.resetOdometry(exampleTrajectory.getInitialPose());
+    Command command = new AutoTrajectoryCommand(driveSubsystem, trajectory);
     return command.andThen(() -> driveSubsystem.stop());
   }
 }
