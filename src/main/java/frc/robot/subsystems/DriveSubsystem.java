@@ -29,20 +29,21 @@ public class DriveSubsystem extends SubsystemBase {
 
   private MecanumDrive mecanumDrive;
 
+  private static final double wheelDiameter = 0.2032; // meters
+  private static final double wheelCircumference = Math.PI * wheelDiameter;
+  private static final double gearRatio = 8.45 / 1.0;
+  private static final double unitsPerTurn = 2048.0;
+  private static final double unitsToMeters = wheelCircumference / (unitsPerTurn * gearRatio);
+  private static final double metersToUnits = 1.0 / unitsToMeters;
+
   private static class EncoderInfo {
-    // both of these are in raw sensor units
-    // zeroing is used for auto pathing -- NOT for teleop driving
     private double targetValue = 0;
-    private double zero = 0;
-    EncoderInfo() {
-      reset();
-    }
     double getTargetValue() {
       return targetValue;
     }
-    void setZeroedTargetTo(double newTarget) {
-      targetValue = newTarget - zero;
-      System.out.println("Targeting: " + newTarget + " Zero: " + zero + " Final: " + targetValue);
+    void setTargetTo(double newTarget) {
+      targetValue = newTarget;
+      System.out.println("Targeting: " + newTarget + " Final: " + targetValue);
     }
     void changeTargetBy(double delta, double currentActualValue) {
       targetValue += delta;
@@ -62,16 +63,6 @@ public class DriveSubsystem extends SubsystemBase {
         targetValue = maximumAllowedTargetValue;
       }
     }
-    void reset() {
-      targetValue = 0;
-    }
-    void setZero(double newValue) {
-      zero = newValue;
-      targetValue = newValue;
-    }
-    double getZero() {
-      return zero;
-    }
   }
 
   private EncoderInfo frontRightInfo = new EncoderInfo();
@@ -80,6 +71,7 @@ public class DriveSubsystem extends SubsystemBase {
   private EncoderInfo backLeftInfo = new EncoderInfo();
 
   // TODO: tuning mandatory
+  // TODO: move to separate replacable class so that auto and teleop can have different
   // private double teleopKp = 0.2;
   private double teleopKp = 0.02;
   private double teleopKd = 0.0;
@@ -166,10 +158,10 @@ public class DriveSubsystem extends SubsystemBase {
     y *= metersToUnits;
     // z *= metersToUnits;
     z = 0;
-    frontLeftInfo.setZeroedTargetTo(y + x + z);
-    frontRightInfo.setZeroedTargetTo(y - x - z);
-    backLeftInfo.setZeroedTargetTo(y - x + z);
-    backRightInfo.setZeroedTargetTo(y + x - z);
+    frontLeftInfo.setTargetTo(y + x + z);
+    frontRightInfo.setTargetTo(y - x - z);
+    backLeftInfo.setTargetTo(y - x + z);
+    backRightInfo.setTargetTo(y + x - z);
     updateMotorsToTargetValues();
   }
 
@@ -186,18 +178,16 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public void resetEncoders() {
-    frontLeftInfo.setZero(frontLeft.getSelectedSensorPosition());
-    frontRightInfo.setZero(frontRight.getSelectedSensorPosition());
-    backLeftInfo.setZero(backLeft.getSelectedSensorPosition());
-    backRightInfo.setZero(backRight.getSelectedSensorPosition());
-  }
+    frontLeft.setSelectedSensorPosition(0);
+    frontRight.setSelectedSensorPosition(0);
+    backLeft.setSelectedSensorPosition(0);
+    backRight.setSelectedSensorPosition(0);
 
-  private static final double wheelDiameter = 0.2032; // meters
-  private static final double wheelCircumference = Math.PI * wheelDiameter;
-  private static final double gearRatio = 8.45 / 1.0;
-  private static final double unitsPerTurn = 2048.0;
-  private static final double unitsToMeters = wheelCircumference / (unitsPerTurn * gearRatio);
-  private static final double metersToUnits = 1.0 / unitsToMeters;
+    frontLeftInfo.setTargetTo(0);
+    frontRightInfo.setTargetTo(0);
+    backLeftInfo.setTargetTo(0);
+    backRightInfo.setTargetTo(0);
+  }
 
   @Override
   public void periodic() {
