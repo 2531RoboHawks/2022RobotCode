@@ -1,19 +1,27 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class IntakeSubsystem extends SubsystemBase {
-    /* 
-    TODO: 
-    Just add the motor for intake for now, no idea how the thing will be raising/lowering
-    */
-    public IntakeSubsystem() {}
+    // TODO
+    private static TalonFX intake = new TalonFX(1);
+
+    public IntakeSubsystem() {
+        intake.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
+        intake.config_kP(0, 0.01);
+        intake.config_kD(0, 0);
+        intake.config_kI(0, 0);
+    }
 
     public void stop() {
-        //Todo: Stop the climb motor
+
     }
 
     @Override
-    public void periodic() {}
+    public void periodic() {
 
+    }
 }
