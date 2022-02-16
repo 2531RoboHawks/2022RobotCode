@@ -1,5 +1,6 @@
 package frc.robot.commands;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.Trajectory.State;
@@ -10,6 +11,9 @@ public class AutoTrajectoryCommand extends CommandBase {
     private DriveSubsystem driveSubsystem;
     private Trajectory trajectory;
     private double startTime;
+    private Pose2d previousPose = null;
+    private Pose2d initialPose = null;
+    private PIDController anglePID = new PIDController(0.0002, 0, 0);
 
     public AutoTrajectoryCommand(DriveSubsystem driveSubsystem, Trajectory trajectory) {
         this.driveSubsystem = driveSubsystem;
@@ -23,8 +27,10 @@ public class AutoTrajectoryCommand extends CommandBase {
 
     @Override
     public void initialize() {
-        driveSubsystem.resetGyro();
-        driveSubsystem.resetEncoders();
+        driveSubsystem.reset();
+        anglePID.reset();
+        initialPose = trajectory.getInitialPose();
+        previousPose = initialPose;
         startTime = System.currentTimeMillis();
     }
 
@@ -33,11 +39,21 @@ public class AutoTrajectoryCommand extends CommandBase {
         double currentTime = now();
         State state = trajectory.sample(currentTime);
         Pose2d pose = state.poseMeters;
-        driveSubsystem.driveFixedEncodedMeters(pose.getX(), pose.getY(), pose.getRotation().getDegrees());
+
+        driveSubsystem.driveAutoFixed(pose.getX() - initialPose.getX(), pose.getY() - initialPose.getY());
+
+        // anglePID.setSetpoint(pose.getRotation().getDegrees() - initialPose.getRotation().getDegrees());
+        // driveSubsystem.driveAutoDelta(
+        //     pose.getX() - previousPose.getX(),
+        //     pose.getY() - previousPose.getY(),
+        //     anglePID.calculate(driveSubsystem.getAngle())
+        // );
+
+        previousPose = pose;
     }
 
     @Override
     public boolean isFinished() {
-        return now() >= trajectory.getTotalTimeSeconds();
+        return now() >= (trajectory.getTotalTimeSeconds() + 1);
     }
 }

@@ -14,13 +14,11 @@ public class DriveCommand extends CommandBase {
 
   public DriveCommand(DriveSubsystem driveSubsystem) {
     this.driveSubsystem = driveSubsystem;
-    addRequirements(RobotContainer.driveSubsystem);
   }
 
   @Override
   public void initialize() {
-    driveSubsystem.resetGyro();
-    driveSubsystem.resetEncoders();
+    driveSubsystem.reset();
   }
 
   private double scale(double n) {

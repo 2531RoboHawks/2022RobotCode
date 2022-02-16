@@ -12,7 +12,6 @@ import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
 import edu.wpi.first.wpilibj.drive.Vector2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.math.kinematics.MecanumDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -38,30 +37,19 @@ public class DriveSubsystem extends SubsystemBase {
 
   private static class EncoderInfo {
     private double targetValue = 0;
-    double getTargetValue() {
-      return targetValue;
+    private double zero = 0;
+    double getTargetValueIncludingZero() {
+      return targetValue + zero;
     }
-    void setTargetTo(double newTarget) {
+    void setTarget(double newTarget) {
       targetValue = newTarget;
-      System.out.println("Targeting: " + newTarget + " Final: " + targetValue);
     }
-    void changeTargetBy(double delta, double currentActualValue) {
+    void changeTargetBy(double delta) {
       targetValue += delta;
-      // If we, for example, run directly into a wall, don't allow the tolerance
-      // values to grow indefintitely.
-      // TODO: need to test, would it be better to hard reset to actual????
-      // TODO: we can probably use gyro to know whether we are up against wall or being pushed by robot and act accordingly????
-      int maxError = 20480;
-      double maximumAllowedTargetValue = currentActualValue + maxError;
-      double minimumAllowedTargetValue = currentActualValue - maxError;
-      if (targetValue < minimumAllowedTargetValue) {
-        System.out.println("Exceeded minimum " + targetValue + " " + minimumAllowedTargetValue);
-        targetValue = minimumAllowedTargetValue;
-      }
-      if (targetValue > maximumAllowedTargetValue) {
-        System.out.println("Exceeded maximum " + targetValue + " " + maximumAllowedTargetValue);
-        targetValue = maximumAllowedTargetValue;
-      }
+    }
+    private void setZero(double newZero) {
+      zero = newZero;
+      targetValue = 0;
     }
   }
 
@@ -108,10 +96,10 @@ public class DriveSubsystem extends SubsystemBase {
 
     analogGyro.calibrate();
     navxGyro.calibrate();
-    resetGyro();
-    resetEncoders();
 
     mecanumDrive = new MecanumDrive(frontLeft, backLeft, frontRight, backRight);
+
+    reset();
   }
 
   public void drivePercent(double ySpeed, double xSpeed, double zRotation, boolean fieldOriented) {
@@ -125,10 +113,10 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   private void updateMotorsToTargetValues() {
-    frontLeft.set(ControlMode.Position, frontLeftInfo.getTargetValue());
-    frontRight.set(ControlMode.Position, frontRightInfo.getTargetValue());
-    backLeft.set(ControlMode.Position, backLeftInfo.getTargetValue());
-    backRight.set(ControlMode.Position, backRightInfo.getTargetValue());
+    frontLeft.set(ControlMode.Position, frontLeftInfo.getTargetValueIncludingZero());
+    frontRight.set(ControlMode.Position, frontRightInfo.getTargetValueIncludingZero());
+    backLeft.set(ControlMode.Position, backLeftInfo.getTargetValueIncludingZero());
+    backRight.set(ControlMode.Position, backRightInfo.getTargetValueIncludingZero());
     mecanumDrive.feed();
   }
 
@@ -142,26 +130,47 @@ public class DriveSubsystem extends SubsystemBase {
     // Vector2d arguments are supposed to be backwards
     Vector2d vector = new Vector2d(y, x);
     if (fieldOriented) {
-      vector.rotate(-navxGyro.getAngle());
+      vector.rotate(-getAngle());
     }
 
     // TODO: use gyro to correct rotation drift?
-    frontLeftInfo.changeTargetBy(vector.x + vector.y + z, frontLeft.getSelectedSensorPosition());
-    frontRightInfo.changeTargetBy(vector.x - vector.y - z, frontRight.getSelectedSensorPosition());
-    backLeftInfo.changeTargetBy(vector.x - vector.y + z, backLeft.getSelectedSensorPosition());
-    backRightInfo.changeTargetBy(vector.x + vector.y - z, backRight.getSelectedSensorPosition());
+    frontLeftInfo.changeTargetBy(vector.x + vector.y + z);
+    frontRightInfo.changeTargetBy(vector.x - vector.y - z);
+    backLeftInfo.changeTargetBy(vector.x - vector.y + z);
+    backRightInfo.changeTargetBy(vector.x + vector.y - z);
     updateMotorsToTargetValues();
   }
 
-  public void driveFixedEncodedMeters(double x, double y, double z) {
-    x *= metersToUnits;
-    y *= metersToUnits;
-    // z *= metersToUnits;
-    z = 0;
-    frontLeftInfo.setTargetTo(y + x + z);
-    frontRightInfo.setTargetTo(y - x - z);
-    backLeftInfo.setTargetTo(y - x + z);
-    backRightInfo.setTargetTo(y + x - z);
+  public void driveAutoDelta(double x, double y, double z) {
+    double calculatedX = x * metersToUnits;
+    double calculatedY = y * metersToUnits;
+    double calculatedZ = z * metersToUnits;
+
+    if (false) {
+      Vector2d vector = new Vector2d(calculatedX, calculatedY);
+      vector.rotate(-getAngle());
+
+      frontLeftInfo.changeTargetBy(vector.x + vector.y + calculatedZ);
+      frontRightInfo.changeTargetBy(vector.x - vector.y - calculatedZ);
+      backLeftInfo.changeTargetBy(vector.x - vector.y + calculatedZ);
+      backRightInfo.changeTargetBy(vector.x + vector.y - calculatedZ);
+    } else {
+      frontLeftInfo.changeTargetBy(calculatedY + calculatedX + calculatedZ);
+      frontRightInfo.changeTargetBy(calculatedY - calculatedX - calculatedZ);
+      backLeftInfo.changeTargetBy(calculatedY - calculatedX + calculatedZ);
+      backRightInfo.changeTargetBy(calculatedY + calculatedX - calculatedZ);
+    }
+    updateMotorsToTargetValues();
+  }
+
+  public void driveAutoFixed(double x, double y) {
+    double calculatedX = x * metersToUnits;
+    double calculatedY = y * metersToUnits;
+    double calculatedZ = 0;
+    frontLeftInfo.setTarget(calculatedY + calculatedX + calculatedZ);
+    frontRightInfo.setTarget(calculatedY - calculatedX - calculatedZ);
+    backLeftInfo.setTarget(calculatedY - calculatedX + calculatedZ);
+    backRightInfo.setTarget(calculatedY + calculatedX - calculatedZ);
     updateMotorsToTargetValues();
   }
 
@@ -178,15 +187,17 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public void resetEncoders() {
-    frontLeft.setSelectedSensorPosition(0);
-    frontRight.setSelectedSensorPosition(0);
-    backLeft.setSelectedSensorPosition(0);
-    backRight.setSelectedSensorPosition(0);
+    // setSelectedSensorPosition has proven unreliable
+    frontLeftInfo.setZero(frontLeft.getSelectedSensorPosition());
+    frontRightInfo.setZero(frontRight.getSelectedSensorPosition());
+    backLeftInfo.setZero(backLeft.getSelectedSensorPosition());
+    backRightInfo.setZero(backRight.getSelectedSensorPosition());
+  }
 
-    frontLeftInfo.setTargetTo(0);
-    frontRightInfo.setTargetTo(0);
-    backLeftInfo.setTargetTo(0);
-    backRightInfo.setTargetTo(0);
+  public void reset() {
+    resetGyro();
+    resetEncoders();
+    stop();
   }
 
   @Override

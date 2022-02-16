@@ -4,18 +4,18 @@
 
 package frc.robot;
 
+import java.io.IOException;
+import java.nio.file.Path;
 import java.util.List;
 
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.ProfiledPIDController;
-import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
-import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.math.trajectory.TrajectoryUtil;
+import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
@@ -30,7 +30,6 @@ import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShootSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.MecanumControllerCommand;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -75,21 +74,24 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     TrajectoryConfig config = new TrajectoryConfig(2.0, .5);
     Trajectory exampleTrajectory = TrajectoryGenerator.generateTrajectory(
-      new Pose2d(0, 0, new Rotation2d(0)),
+      new Pose2d(0, 0, Rotation2d.fromDegrees(0)),
       List.of(
         new Translation2d(1, 1),
         new Translation2d(-1, 3)
       ),
-      new Pose2d(0, 4, new Rotation2d(0)),
+      new Pose2d(0, 4, Rotation2d.fromDegrees(180)),
       config
     );
 
     Trajectory trajectory = exampleTrajectory;
-    // try {
-    //   Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve("Unnamed.wpilib.json");
-    //   trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
-    // } catch (IOException exception) {
-    // }
+    try {
+      String path = "output/circle.wpilib.json";
+      Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(path);
+      trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
+    } catch (IOException exception) {
+      System.out.println("Cannot read trajectory!!! " + exception);
+      return null;
+    }
 
     Command command = new AutoTrajectoryCommand(driveSubsystem, trajectory);
     return command.andThen(() -> driveSubsystem.stop());
