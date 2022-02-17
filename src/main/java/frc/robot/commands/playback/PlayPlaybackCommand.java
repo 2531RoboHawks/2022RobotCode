@@ -22,7 +22,7 @@ public class PlayPlaybackCommand extends CommandBase {
 
     @Override
     public void execute() {
-        PlaybackStep step = playback.getSteps().get(index);
+        PlaybackStep step = playback.getSteps()[index];
         index += 1;
 
         driveSubsystem.driveFixedSensorUnits(new MecanumDriveInfo(
@@ -35,7 +35,7 @@ public class PlayPlaybackCommand extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return index >= playback.getSteps().size();
+        return index >= playback.getSteps().length;
     }
 
     @Override

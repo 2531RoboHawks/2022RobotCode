@@ -2,8 +2,6 @@ package frc.robot.commands.playback;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -14,14 +12,14 @@ public class Playback {
     private static File containerPath = Filesystem.getDeployDirectory();
 
     // NOTE: This class is JSON-serialized and deserialized!
-    private List<PlaybackStep> steps = new ArrayList<>();
+    private PlaybackStep[] steps;
 
-    public List<PlaybackStep> getSteps() {
+    public PlaybackStep[] getSteps() {
         return steps;
     }
 
-    public void addStep(PlaybackStep step) {
-        steps.add(step);
+    public void setSteps(PlaybackStep[] steps) {
+        this.steps = steps;
     }
 
     public void save(String name) {

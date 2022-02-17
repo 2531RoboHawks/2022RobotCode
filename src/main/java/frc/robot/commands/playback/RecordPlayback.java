@@ -1,5 +1,8 @@
 package frc.robot.commands.playback;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.MecanumDriveInfo;
 import frc.robot.RobotContainer;
@@ -7,7 +10,7 @@ import frc.robot.subsystems.DriveSubsystem;
 
 public class RecordPlayback extends CommandBase {
     private DriveSubsystem driveSubsystem;
-    private Playback playback;
+    private List<PlaybackStep> steps = new ArrayList<>();
     private long start;
 
     public RecordPlayback(DriveSubsystem driveSubsystem) {
@@ -19,7 +22,6 @@ public class RecordPlayback extends CommandBase {
     public void initialize() {
         driveSubsystem.setSettings(DriveSubsystem.recordPlaybackSettings);
         driveSubsystem.reset();
-        playback = new Playback();
         start = System.currentTimeMillis();
     }
 
@@ -66,12 +68,15 @@ public class RecordPlayback extends CommandBase {
         step.positionBackLeft = positions.backLeft;
         step.positionBackRight = positions.backRight;
 
-        playback.addStep(step);
+        steps.add(step);
     }
 
     @Override
     public void end(boolean interrupted) {
         driveSubsystem.stop();
+
+        Playback playback = new Playback();
+        playback.setSteps((PlaybackStep[]) steps.toArray());
         playback.save("playback-info-" + System.currentTimeMillis());
     }
 }
