@@ -1,23 +1,32 @@
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.TalonUtils;
 
 public class IntakeSubsystem extends SubsystemBase {
     // TODO
     private static TalonFX intake = new TalonFX(1);
+    private static final double kp = 0.1;
+    private static final double kd = 5;
+    private static final double ki = 0.001;
 
     public IntakeSubsystem() {
-        intake.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
-        intake.config_kP(0, 0.01);
-        intake.config_kD(0, 0);
-        intake.config_kI(0, 0);
+        TalonUtils.configurePID(intake, kp, kd, ki);
+    }
+
+    public void setRPM(double rpm) {
+        intake.set(ControlMode.Velocity, TalonUtils.rpmToSensorVelocity(rpm));
+    }
+
+    public double getRPM() {
+        return TalonUtils.sensorVelocityToRPM(intake.getSelectedSensorVelocity());
     }
 
     public void stop() {
-
+        intake.set(ControlMode.PercentOutput, 0);
     }
 
     @Override
