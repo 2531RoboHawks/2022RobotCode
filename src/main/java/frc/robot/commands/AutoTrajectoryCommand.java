@@ -11,9 +11,7 @@ public class AutoTrajectoryCommand extends CommandBase {
     private DriveSubsystem driveSubsystem;
     private Trajectory trajectory;
     private long startTime;
-    private Pose2d previousPose = null;
     private Pose2d initialPose = null;
-    private PIDController anglePID = new PIDController(0.0002, 0, 0);
 
     public AutoTrajectoryCommand(DriveSubsystem driveSubsystem, Trajectory trajectory) {
         this.driveSubsystem = driveSubsystem;
@@ -29,9 +27,7 @@ public class AutoTrajectoryCommand extends CommandBase {
     public void initialize() {
         driveSubsystem.setSettings(DriveSubsystem.autoSettings);
         driveSubsystem.reset();
-        anglePID.reset();
         initialPose = trajectory.getInitialPose();
-        previousPose = initialPose;
         startTime = System.currentTimeMillis();
     }
 
@@ -42,15 +38,6 @@ public class AutoTrajectoryCommand extends CommandBase {
         Pose2d pose = state.poseMeters;
 
         driveSubsystem.driveAutoFixed(pose.getX() - initialPose.getX(), pose.getY() - initialPose.getY());
-
-        // anglePID.setSetpoint(pose.getRotation().getDegrees() - initialPose.getRotation().getDegrees());
-        // driveSubsystem.driveAutoDelta(
-        //     pose.getX() - previousPose.getX(),
-        //     pose.getY() - previousPose.getY(),
-        //     anglePID.calculate(driveSubsystem.getAngle())
-        // );
-
-        previousPose = pose;
     }
 
     @Override

@@ -125,28 +125,6 @@ public class DriveSubsystem extends SubsystemBase {
     updateMotorsToTargetValues();
   }
 
-  public void driveAutoDelta(double x, double y, double z) {
-    double calculatedX = x * metersToUnits;
-    double calculatedY = y * metersToUnits;
-    double calculatedZ = z * metersToUnits;
-
-    if (false) {
-      Vector2d vector = new Vector2d(calculatedX, calculatedY);
-      vector.rotate(-getAngle());
-
-      frontLeftInfo.changeTargetBy(vector.x + vector.y + calculatedZ);
-      frontRightInfo.changeTargetBy(vector.x - vector.y - calculatedZ);
-      backLeftInfo.changeTargetBy(vector.x - vector.y + calculatedZ);
-      backRightInfo.changeTargetBy(vector.x + vector.y - calculatedZ);
-    } else {
-      frontLeftInfo.changeTargetBy(calculatedY + calculatedX + calculatedZ);
-      frontRightInfo.changeTargetBy(calculatedY - calculatedX - calculatedZ);
-      backLeftInfo.changeTargetBy(calculatedY - calculatedX + calculatedZ);
-      backRightInfo.changeTargetBy(calculatedY + calculatedX - calculatedZ);
-    }
-    updateMotorsToTargetValues();
-  }
-
   public void driveAutoFixed(double x, double y) {
     double calculatedX = x * metersToUnits;
     double calculatedY = y * metersToUnits;
