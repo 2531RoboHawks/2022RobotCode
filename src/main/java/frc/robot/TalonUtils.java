@@ -27,4 +27,8 @@ public class TalonUtils {
         talon.config_kI(0, ki);
         talon.config_kD(0, kd);
     }
+
+    public static void configurePID(TalonFX talon, PIDSettings pid) {
+        configurePID(talon, pid.kp, pid.ki, pid.kd);
+    }
 }

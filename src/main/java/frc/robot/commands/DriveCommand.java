@@ -18,6 +18,7 @@ public class DriveCommand extends CommandBase {
 
   @Override
   public void initialize() {
+    driveSubsystem.setSettings(DriveSubsystem.teleopSettings);
     driveSubsystem.reset();
   }
 

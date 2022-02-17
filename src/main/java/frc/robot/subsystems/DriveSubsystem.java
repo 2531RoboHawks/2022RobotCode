@@ -5,7 +5,6 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.kauailabs.navx.frc.AHRS;
 
@@ -15,6 +14,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.PIDSettings;
 import frc.robot.TalonUtils;
 
 public class DriveSubsystem extends SubsystemBase {
@@ -59,20 +59,14 @@ public class DriveSubsystem extends SubsystemBase {
   private EncoderInfo backRightInfo = new EncoderInfo();
   private EncoderInfo backLeftInfo = new EncoderInfo();
 
-  // TODO: tuning mandatory
-  // TODO: move to separate replacable class so that auto and teleop can have different
-  // private double teleopKp = 0.2;
-  private double teleopKp = 0.02;
-  private double teleopKi = 0.0;
-  private double teleopKd = 0.0;
+  // TODO: tune
+  public static final PIDSettings teleopSettings = new PIDSettings(0.2, 0, 0);
+  public static final PIDSettings autoSettings = new PIDSettings(0.02, 0, 0);
 
   public DriveSubsystem() {
     mecanumDrive = new MecanumDrive(frontLeft, backLeft, frontRight, backRight);
 
-    TalonUtils.configurePID(frontLeft, teleopKp, teleopKi, teleopKd);
-    TalonUtils.configurePID(frontRight, teleopKp, teleopKi, teleopKd);
-    TalonUtils.configurePID(backLeft, teleopKp, teleopKi, teleopKd);
-    TalonUtils.configurePID(backRight, teleopKp, teleopKi, teleopKd);
+    setSettings(teleopSettings);
 
     frontRight.setInverted(true);
     backRight.setInverted(true);
@@ -81,6 +75,13 @@ public class DriveSubsystem extends SubsystemBase {
     navxGyro.calibrate();
 
     reset();
+  }
+
+  public void setSettings(PIDSettings pid) {
+    TalonUtils.configurePID(frontLeft, teleopSettings);
+    TalonUtils.configurePID(frontRight, teleopSettings);
+    TalonUtils.configurePID(backLeft, teleopSettings);
+    TalonUtils.configurePID(backRight, teleopSettings);
   }
 
   public void drivePercent(double ySpeed, double xSpeed, double zRotation, boolean fieldOriented) {

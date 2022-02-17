@@ -27,6 +27,7 @@ public class AutoTrajectoryCommand extends CommandBase {
 
     @Override
     public void initialize() {
+        driveSubsystem.setSettings(DriveSubsystem.autoSettings);
         driveSubsystem.reset();
         anglePID.reset();
         initialPose = trajectory.getInitialPose();
