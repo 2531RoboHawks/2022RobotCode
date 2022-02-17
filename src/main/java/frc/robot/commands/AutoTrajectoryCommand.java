@@ -10,7 +10,7 @@ import frc.robot.subsystems.DriveSubsystem;
 public class AutoTrajectoryCommand extends CommandBase {
     private DriveSubsystem driveSubsystem;
     private Trajectory trajectory;
-    private double startTime;
+    private long startTime;
     private Pose2d previousPose = null;
     private Pose2d initialPose = null;
     private PIDController anglePID = new PIDController(0.0002, 0, 0);
