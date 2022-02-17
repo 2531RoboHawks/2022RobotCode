@@ -13,10 +13,11 @@ public class ClimbSubsystem extends SubsystemBase {
     public ClimbSubsystem() {}
 
     public void stop() {
-        //Todo: Stop the climb motor
+
     }
 
     @Override
-    public void periodic() {}
+    public void periodic() {
 
+    }
 }

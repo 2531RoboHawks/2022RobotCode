@@ -4,15 +4,7 @@
 
 package frc.robot;
 
-import org.opencv.core.Mat;
-import org.opencv.imgproc.Imgproc;
-
-import edu.wpi.first.cameraserver.CameraServer;
-import edu.wpi.first.cscore.CvSink;
-import edu.wpi.first.cscore.CvSource;
-import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
@@ -27,8 +19,6 @@ public class Robot extends TimedRobot {
 
   private RobotContainer m_robotContainer;
 
-
-
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -38,22 +28,6 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
-    // new Thread(() -> {
-    //   UsbCamera camera = CameraServer.startAutomaticCapture();
-    //   camera.setResolution(500, 500);
-
-    //   CvSink cvSink = CameraServer.getVideo();
-    //   CvSource outputStream = CameraServer.putVideo("Blur", 300, 300);
-
-    //   Mat source = new Mat();
-    //   Mat output = new Mat();
-      
-    //   while(!Thread.interrupted()) {
-    //     cvSink.grabFrame(source);
-    //     Imgproc.cvtColor(source, output, Imgproc.COLOR_BGR2GRAY);
-    //     outputStream.putFrame(output);
-    //   }
-    // }).start();
   }
 
   /**
@@ -69,9 +43,7 @@ public class Robot extends TimedRobot {
     // commands, running already-scheduled commands, removing finished or interrupted commands,
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
-    CommandScheduler.getInstance().run();
-
-    
+    CommandScheduler.getInstance().run();    
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
@@ -98,13 +70,10 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-    RobotContainer.shootCommand.schedule();
-    RobotContainer.driveSubsystem.resetGyro();
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
-    // RobotContainer.driveCommand.schedule();
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }

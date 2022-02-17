@@ -10,10 +10,14 @@ public class ClimbCommand extends CommandBase {
   }
   
   @Override
-  public void initialize() {}
+  public void initialize() {
+
+  }
 
   @Override
-  public void execute() {}
+  public void execute() {
+
+  }
 
   @Override
   public void end(boolean interrupted) {
