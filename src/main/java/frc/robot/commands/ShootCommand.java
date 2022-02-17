@@ -13,18 +13,22 @@ public class ShootCommand extends CommandBase {
     this.shootSubsystem = shootSubsystem;
     addRequirements(shootSubsystem);
 
-    SmartDashboard.putNumber("RPM", 100);
+    SmartDashboard.putNumber("Intake Target RPM", 0);
+    SmartDashboard.putNumber("Revwheel Target RPM", 0);
   }
   
   @Override
-  public void initialize() {}
+  public void initialize() {
+
+  }
 
   @Override
   public void execute() {
     // targetShooterPosition += RobotContainer.gamepad.getY() / 50;
     // shootSubsystem.setTurretPosition(targetShooterPosition);
 
-    shootSubsystem.setRevwheelRPM(SmartDashboard.getNumber("RPM", 0));
+    shootSubsystem.setIntakeRPM(SmartDashboard.getNumber("Intake Target RPM", 0));
+    shootSubsystem.setRevwheelRPM(SmartDashboard.getNumber("Revwheel Target RPM", 0));
   }
 
   @Override
