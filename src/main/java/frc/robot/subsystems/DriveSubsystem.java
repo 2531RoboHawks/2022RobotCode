@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.TalonUtils;
 
 public class DriveSubsystem extends SubsystemBase {
   private AHRS navxGyro = new AHRS(SPI.Port.kMXP);
@@ -66,38 +67,18 @@ public class DriveSubsystem extends SubsystemBase {
   private double teleopKi = 0.0;
 
   public DriveSubsystem() {
-    frontLeft.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
-    frontLeft.config_kP(0, teleopKp);
-    frontLeft.config_kD(0, teleopKd);
-    frontLeft.config_kI(0, teleopKi);
-    frontLeft.setSelectedSensorPosition(0);
-    frontLeft.setInverted(false);
+    mecanumDrive = new MecanumDrive(frontLeft, backLeft, frontRight, backRight);
 
-    frontRight.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
-    frontRight.config_kP(0, teleopKp);
-    frontRight.config_kD(0, teleopKd);
-    frontRight.config_kI(0, teleopKi);
-    frontRight.setSelectedSensorPosition(0);
+    TalonUtils.configurePID(frontLeft, teleopKp, teleopKd, teleopKi);
+    TalonUtils.configurePID(frontRight, teleopKp, teleopKd, teleopKi);
+    TalonUtils.configurePID(backLeft, teleopKp, teleopKd, teleopKi);
+    TalonUtils.configurePID(backRight, teleopKp, teleopKd, teleopKi);
+
     frontRight.setInverted(true);
-
-    backLeft.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
-    backLeft.config_kP(0, teleopKp);
-    backLeft.config_kD(0, teleopKd);
-    backLeft.config_kI(0, teleopKi);
-    backLeft.setSelectedSensorPosition(0);
-    backLeft.setInverted(false);
-
-    backRight.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
-    backRight.config_kP(0, teleopKp);
-    backRight.config_kD(0, teleopKd);
-    backRight.config_kI(0, teleopKi);
-    backRight.setSelectedSensorPosition(0);
     backRight.setInverted(true);
 
     analogGyro.calibrate();
     navxGyro.calibrate();
-
-    mecanumDrive = new MecanumDrive(frontLeft, backLeft, frontRight, backRight);
 
     reset();
   }
