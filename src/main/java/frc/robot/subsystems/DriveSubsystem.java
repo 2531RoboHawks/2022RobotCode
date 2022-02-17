@@ -20,7 +20,7 @@ import frc.robot.TalonUtils;
 
 public class DriveSubsystem extends SubsystemBase {
   private AHRS navxGyro = new AHRS(SPI.Port.kMXP);
-  private ADXRS450_Gyro analogGyro = new ADXRS450_Gyro();
+  private ADXRS450_Gyro analogDevicesGyro = new ADXRS450_Gyro(SPI.Port.kOnboardCS2);
   // private PigeonIMU pigeon = new PigeonIMU(0);
 
   private WPI_TalonFX frontLeft = new WPI_TalonFX(0);
@@ -73,7 +73,7 @@ public class DriveSubsystem extends SubsystemBase {
     frontRight.setInverted(true);
     backRight.setInverted(true);
 
-    analogGyro.calibrate();
+    analogDevicesGyro.calibrate();
     navxGyro.calibrate();
 
     reset();
@@ -208,7 +208,7 @@ public class DriveSubsystem extends SubsystemBase {
     // SmartDashboard.putNumber("bl v", getBackLeftVelocity());
     // SmartDashboard.putNumber("br v", getBackRightVelocity());
     SmartDashboard.putNumber("NavX Gyro", navxGyro.getAngle());
-    SmartDashboard.putNumber("Analog Devices Gyro", analogGyro.getAngle());
+    SmartDashboard.putNumber("Analog Devices Gyro", analogDevicesGyro.getAngle());
     // SmartDashboard.putNumber("Pidgeon Gyro", pigeon.getFusedHeading());
   }
 }
