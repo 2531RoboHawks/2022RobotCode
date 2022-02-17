@@ -21,10 +21,10 @@ public class TalonUtils {
         return revolutionsPerMinute;
     }
 
-    public static void configurePID(TalonFX talon, double kp, double kd, double ki) {
+    public static void configurePID(TalonFX talon, double kp, double ki, double kd) {
         talon.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
         talon.config_kP(0, kp);
-        talon.config_kD(0, kd);
         talon.config_kI(0, ki);
+        talon.config_kD(0, kd);
     }
 }

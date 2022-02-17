@@ -16,15 +16,15 @@ public class ShootSubsystem extends SubsystemBase {
     private CANSparkMax turret = new CANSparkMax(10, MotorType.kBrushless);
     private SparkMaxPIDController turretPid = turret.getPIDController();
     private static final double turretKp = 6e-5;
-    private static final double turretKd = 0;
     private static final double turretKi = 0;
+    private static final double turretKd = 0;
     private static final double turretGearRatio = 215.0 / 16.0;
 
     private TalonFX revwheel = new TalonFX(8);
     private TalonFX intake = new TalonFX(9);    
     private static final double talonKp = 0.1;
-    private static final double talonKd = 5;
     private static final double talonKi = 0.001;
+    private static final double talonKd = 5;
 
     public ShootSubsystem() {
         turretPid.setP(turretKp);
@@ -32,8 +32,8 @@ public class ShootSubsystem extends SubsystemBase {
         turretPid.setI(turretKi);
         turret.getEncoder().setPosition(0);
 
-        TalonUtils.configurePID(revwheel, talonKp, talonKd, talonKi);
-        TalonUtils.configurePID(intake, talonKp, talonKd, talonKi);
+        TalonUtils.configurePID(revwheel, talonKp, talonKi, talonKd);
+        TalonUtils.configurePID(intake, talonKp, talonKi, talonKd);
     }
 
     public void setRevwheelPercent(double percent) {

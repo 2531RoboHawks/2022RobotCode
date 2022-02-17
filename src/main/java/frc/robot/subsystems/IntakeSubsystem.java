@@ -10,11 +10,11 @@ public class IntakeSubsystem extends SubsystemBase {
     // TODO
     private static TalonFX intake = new TalonFX(1);
     private static final double kp = 0.1;
-    private static final double kd = 5;
     private static final double ki = 0.001;
+    private static final double kd = 5;
 
     public IntakeSubsystem() {
-        TalonUtils.configurePID(intake, kp, kd, ki);
+        TalonUtils.configurePID(intake, kp, ki, kd);
     }
 
     public void setRPM(double rpm) {

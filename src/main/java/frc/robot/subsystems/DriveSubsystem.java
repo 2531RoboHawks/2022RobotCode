@@ -63,16 +63,16 @@ public class DriveSubsystem extends SubsystemBase {
   // TODO: move to separate replacable class so that auto and teleop can have different
   // private double teleopKp = 0.2;
   private double teleopKp = 0.02;
-  private double teleopKd = 0.0;
   private double teleopKi = 0.0;
+  private double teleopKd = 0.0;
 
   public DriveSubsystem() {
     mecanumDrive = new MecanumDrive(frontLeft, backLeft, frontRight, backRight);
 
-    TalonUtils.configurePID(frontLeft, teleopKp, teleopKd, teleopKi);
-    TalonUtils.configurePID(frontRight, teleopKp, teleopKd, teleopKi);
-    TalonUtils.configurePID(backLeft, teleopKp, teleopKd, teleopKi);
-    TalonUtils.configurePID(backRight, teleopKp, teleopKd, teleopKi);
+    TalonUtils.configurePID(frontLeft, teleopKp, teleopKi, teleopKd);
+    TalonUtils.configurePID(frontRight, teleopKp, teleopKi, teleopKd);
+    TalonUtils.configurePID(backLeft, teleopKp, teleopKi, teleopKd);
+    TalonUtils.configurePID(backRight, teleopKp, teleopKi, teleopKd);
 
     frontRight.setInverted(true);
     backRight.setInverted(true);
