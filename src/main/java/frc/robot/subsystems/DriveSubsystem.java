@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.MecanumDriveInfo;
 import frc.robot.PIDSettings;
 import frc.robot.TalonUtils;
 
@@ -62,6 +63,7 @@ public class DriveSubsystem extends SubsystemBase {
   // TODO: tune
   public static final PIDSettings teleopSettings = new PIDSettings(0.2, 0, 0);
   public static final PIDSettings autoSettings = new PIDSettings(0.02, 0, 0);
+  public static final PIDSettings recordPlaybackSettings = new PIDSettings(0.2, 0, 0);
 
   public DriveSubsystem() {
     mecanumDrive = new MecanumDrive(frontLeft, backLeft, frontRight, backRight);
@@ -156,6 +158,14 @@ public class DriveSubsystem extends SubsystemBase {
     updateMotorsToTargetValues();
   }
 
+  public void driveFixedSensorUnits(MecanumDriveInfo info) {
+    frontLeftInfo.setTarget(info.frontLeft);
+    frontRightInfo.setTarget(info.frontRight);
+    backLeftInfo.setTarget(info.backLeft);
+    backRightInfo.setTarget(info.backRight);
+    updateMotorsToTargetValues();
+  }
+
   public void stop() {
     mecanumDrive.stopMotor();
   }
@@ -180,6 +190,33 @@ public class DriveSubsystem extends SubsystemBase {
     resetGyro();
     resetEncoders();
     stop();
+  }
+
+  public MecanumDriveInfo getWheelPositions() {
+    return new MecanumDriveInfo(
+      frontLeft.getSelectedSensorPosition(),
+      frontRight.getSelectedSensorPosition(),
+      backLeft.getSelectedSensorPosition(),
+      backRight.getSelectedSensorPosition()
+    );
+  }
+
+  public MecanumDriveInfo getWheelVelocities() {
+    return new MecanumDriveInfo(
+      frontLeft.getSelectedSensorVelocity(),
+      frontRight.getSelectedSensorVelocity(),
+      backLeft.getSelectedSensorVelocity(),
+      backRight.getSelectedSensorVelocity()
+    );
+  }
+
+  public MecanumDriveInfo getTargetValues() {
+    return new MecanumDriveInfo(
+      frontLeftInfo.targetValue,
+      frontRightInfo.targetValue,
+      backLeftInfo.targetValue,
+      backRightInfo.targetValue
+    );
   }
 
   @Override
