@@ -36,10 +36,6 @@ public class ShootSubsystem extends SubsystemBase {
         TalonUtils.configurePID(intake, talonKp, talonKi, talonKd);
     }
 
-    public void setRevwheelPercent(double percent) {
-        revwheel.set(ControlMode.PercentOutput, percent);
-    }
-
     public void setRevwheelRPM(double rpm) {
         // Max RPM: ~5600 RPM
         revwheel.set(ControlMode.Velocity, TalonUtils.rpmToSensorVelocity(rpm));
