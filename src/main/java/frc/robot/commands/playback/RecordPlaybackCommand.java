@@ -8,12 +8,12 @@ import frc.robot.MecanumDriveInfo;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.DriveSubsystem;
 
-public class RecordPlayback extends CommandBase {
+public class RecordPlaybackCommand extends CommandBase {
     private DriveSubsystem driveSubsystem;
     private List<PlaybackStep> steps = new ArrayList<>();
     private long start;
 
-    public RecordPlayback(DriveSubsystem driveSubsystem) {
+    public RecordPlaybackCommand(DriveSubsystem driveSubsystem) {
         this.driveSubsystem = driveSubsystem;
         addRequirements(driveSubsystem);
     }
