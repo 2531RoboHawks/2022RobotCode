@@ -10,6 +10,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.PIDSettings;
 import frc.robot.TalonUtils;
 
 public class ShootSubsystem extends SubsystemBase {
@@ -21,10 +22,10 @@ public class ShootSubsystem extends SubsystemBase {
     private static final double turretGearRatio = 215.0 / 16.0;
 
     private TalonFX revwheel = new TalonFX(8);
-    private TalonFX intake = new TalonFX(9);    
-    private static final double talonKp = 0.1;
-    private static final double talonKi = 0.001;
-    private static final double talonKd = 5;
+    private static final PIDSettings revwheelPidSettings = new PIDSettings(0.15, 0.001, 0);
+
+    private TalonFX intake = new TalonFX(9);
+    private static final PIDSettings intakePidSettings = new PIDSettings(0.15, 0.001, 0);
 
     public ShootSubsystem() {
         turretPid.setP(turretKp);
@@ -32,8 +33,8 @@ public class ShootSubsystem extends SubsystemBase {
         turretPid.setI(turretKi);
         turret.getEncoder().setPosition(0);
 
-        TalonUtils.configurePID(revwheel, talonKp, talonKi, talonKd);
-        TalonUtils.configurePID(intake, talonKp, talonKi, talonKd);
+        TalonUtils.configurePID(revwheel, revwheelPidSettings);
+        TalonUtils.configurePID(intake, intakePidSettings);
     }
 
     public void setRevwheelRPM(double rpm) {
