@@ -238,6 +238,8 @@ public class DriveSubsystem extends SubsystemBase {
   public void periodic() {
     odometry.update(getRotation2d(), getWheelSpeeds());
 
+    SmartDashboard.putNumber("Pose X", getPose().getX());
+    SmartDashboard.putNumber("Pose Y", getPose().getX());
     SmartDashboard.putNumber("NavX Gyro", navxGyro.getAngle());
     SmartDashboard.putNumber("Analog Devices Gyro", analogDevicesGyro.getAngle());
     SmartDashboard.putNumber("Pigeon Gyro", pigeon.getAngle());
