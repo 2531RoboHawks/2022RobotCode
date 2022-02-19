@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.TalonUtils;
 
 public class IntakeSubsystem extends SubsystemBase {
-    // TODO
+    // TODO: CAN, BetterTalonFX
     private static TalonFX intake = new TalonFX(1);
     private static final double kp = 0.1;
     private static final double ki = 0.001;

@@ -7,7 +7,7 @@ import frc.robot.subsystems.ShootSubsystem;
 
 public class ShootCommand extends CommandBase {
   private ShootSubsystem shootSubsystem;
-  private double targetShooterPosition = 0;
+  private double turretTargetPosition = 0;
 
   public ShootCommand(ShootSubsystem shootSubsystem) {
     this.shootSubsystem = shootSubsystem;
@@ -16,25 +16,32 @@ public class ShootCommand extends CommandBase {
     SmartDashboard.putNumber("Intake Target RPM", 0);
     SmartDashboard.putNumber("Revwheel Target RPM", 0);
   }
-  
+
   @Override
   public void initialize() {
-
+    turretTargetPosition = shootSubsystem.getTurretPosition();
   }
 
   public double scale(double n) {
-    if (Math.abs(n) < 0.1) return 0;
-    return n;
+    if (Math.abs(n) < 0.07) return 0;
+    return n * n * Math.signum(n);
   }
 
   @Override
   public void execute() {
-    double y = scale(RobotContainer.gamepad.getX() * 1.0);
-    if (RobotContainer.gamepad.getTrigger()) {
-      y *= 2;
+    if (RobotContainer.gamepad.getRawButton(8)) {
+      // TODO: Need to see if the encoder position is saved between restarts, then this is easy
+      // Otherwise we need to have robot reset encoder consistently
+      // turretTargetPosition = 0;
+    } else {
+      double delta = scale(RobotContainer.gamepad.getX() * 0.3);
+      if (RobotContainer.gamepad.getTrigger()) {
+        delta *= 2;
+      }
+      turretTargetPosition += delta;
     }
-    targetShooterPosition += y;
-    shootSubsystem.setTurretPosition(targetShooterPosition);
+    shootSubsystem.setTurretPosition(turretTargetPosition);  
+    SmartDashboard.putNumber("Turret Target Position", turretTargetPosition);
 
     shootSubsystem.setIntakeRPM(SmartDashboard.getNumber("Intake Target RPM", 0));
     shootSubsystem.setRevwheelRPM(SmartDashboard.getNumber("Revwheel Target RPM", 0));

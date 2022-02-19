@@ -31,6 +31,10 @@ public class BetterTalonFX {
         return talon;
     }
 
+    public void setInverted(boolean inverted) {
+        talon.setInverted(inverted);
+    }
+
     public void stop() {
         talon.stopMotor();
     }
