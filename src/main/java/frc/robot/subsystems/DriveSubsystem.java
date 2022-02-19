@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.ctre.phoenix.sensors.WPI_PigeonIMU;
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
@@ -27,7 +28,7 @@ import frc.robot.TalonUtils;
 public class DriveSubsystem extends SubsystemBase {
   private AHRS navxGyro = new AHRS(SPI.Port.kMXP);
   private ADXRS450_Gyro analogDevicesGyro = new ADXRS450_Gyro(SPI.Port.kOnboardCS2);
-  // private PigeonIMU pigeon = new PigeonIMU(0);
+  private WPI_PigeonIMU pigeon = new WPI_PigeonIMU(0);
 
   private WPI_TalonFX frontLeft = new WPI_TalonFX(0);
   private WPI_TalonFX frontRight = new WPI_TalonFX(1);
@@ -90,6 +91,7 @@ public class DriveSubsystem extends SubsystemBase {
 
     analogDevicesGyro.calibrate();
     navxGyro.calibrate();
+    pigeon.calibrate();
 
     odometry = new MecanumDriveOdometry(kinematics, getRotation2d());
     reset();
@@ -174,6 +176,8 @@ public class DriveSubsystem extends SubsystemBase {
 
   public void resetGyro() {
     navxGyro.reset();
+    analogDevicesGyro.reset();
+    pigeon.reset();
   }
 
   public void resetEncoders() {
@@ -236,6 +240,6 @@ public class DriveSubsystem extends SubsystemBase {
 
     SmartDashboard.putNumber("NavX Gyro", navxGyro.getAngle());
     SmartDashboard.putNumber("Analog Devices Gyro", analogDevicesGyro.getAngle());
-    // SmartDashboard.putNumber("Pigeon Gyro", pigeon.getFusedHeading());
+    SmartDashboard.putNumber("Pigeon Gyro", pigeon.getAngle());
   }
 }
