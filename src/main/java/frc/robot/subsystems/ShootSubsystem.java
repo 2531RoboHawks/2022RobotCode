@@ -1,15 +1,13 @@
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.BetterTalonFX;
 import frc.robot.PIDSettings;
-import frc.robot.TalonUtils;
 
 public class ShootSubsystem extends SubsystemBase {
     private CANSparkMax turret = new CANSparkMax(15, MotorType.kBrushless);
@@ -17,10 +15,10 @@ public class ShootSubsystem extends SubsystemBase {
     private static final PIDSettings turretPidSettings = new PIDSettings(0.1, 0, 0);
     private static final double turretGearRatio = 215.0 / 16.0;
 
-    private TalonFX revwheel = new TalonFX(8);
+    private BetterTalonFX revwheel = new BetterTalonFX(8);
     private static final PIDSettings revwheelPidSettings = new PIDSettings(0.15, 0.001, 0);
 
-    private TalonFX intake = new TalonFX(9);
+    private BetterTalonFX intake = new BetterTalonFX(9);
     private static final PIDSettings intakePidSettings = new PIDSettings(0.15, 0.001, 0);
 
     public ShootSubsystem() {
@@ -30,25 +28,25 @@ public class ShootSubsystem extends SubsystemBase {
         turret.getEncoder().setPosition(0);
         turret.setInverted(true);
 
-        TalonUtils.configurePID(revwheel, revwheelPidSettings);
-        TalonUtils.configurePID(intake, intakePidSettings);
+        revwheel.configurePID(revwheelPidSettings);
+        intake.configurePID(intakePidSettings);
     }
 
     public void setRevwheelRPM(double rpm) {
         // Max RPM: ~5600 RPM
-        revwheel.set(ControlMode.Velocity, TalonUtils.rpmToSensorVelocity(rpm));
+        revwheel.setRPM(rpm);
     }
 
     public double getRevwheelRPM() {
-        return TalonUtils.sensorVelocityToRPM(revwheel.getSelectedSensorVelocity());
+        return revwheel.getRPM();
     }
 
     public void setIntakeRPM(double rpm) {
-        intake.set(ControlMode.Velocity, TalonUtils.rpmToSensorVelocity(rpm));
+        intake.setRPM(rpm);
     }
 
     public double getIntakeRPM() {
-        return TalonUtils.sensorVelocityToRPM(intake.getSelectedSensorVelocity());
+        return intake.getRPM();
     }
 
     public void setTurretPosition(double position) {
@@ -64,8 +62,8 @@ public class ShootSubsystem extends SubsystemBase {
     }
 
     public void stopEverything() {
-        revwheel.set(ControlMode.PercentOutput, 0);
-        intake.set(ControlMode.PercentOutput, 0);
+        revwheel.stop();
+        intake.stop();
         turret.set(0);
     }
 

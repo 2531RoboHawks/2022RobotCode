@@ -1,19 +1,36 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.BetterTalonFX;
+import frc.robot.PIDSettings;
 
 public class ClimbSubsystem extends SubsystemBase {
-    /* 
-    TODO: 
-    Figure out how the falcons switch thing works
-    Do not let the falcon destroy itself please, add a current limit or something
-    if we are doing a double system, keep the falcons at around the same encoder value somehow
-    DONT BREAK THE FALCONS PLEASE
-    */
-    public ClimbSubsystem() {}
+    // TODO
+    private BetterTalonFX talon = new BetterTalonFX(0);
+    private static final PIDSettings talonPid = new PIDSettings(0, 0, 0);
+    private static final double secondsFromNeutralToFull = 1;
 
-    public void stop() {
+    public ClimbSubsystem() {
+        talon.configurePID(talonPid);
+        talon.getWPI().configClosedloopRamp(secondsFromNeutralToFull);
+        talon.getWPI().configOpenloopRamp(secondsFromNeutralToFull);
+    }
 
+    public void setArmExtension(double sensorUnits) {
+        talon.setFixedEncoderTarget(sensorUnits);
+    }
+
+    public void stopArm() {
+        talon.stop();
+    }
+
+    public void stopAll() {
+        stopAll();
+    }
+
+    public void reset() {
+        stopAll();
+        talon.zeroFixedEncoderTarget();
     }
 
     @Override
