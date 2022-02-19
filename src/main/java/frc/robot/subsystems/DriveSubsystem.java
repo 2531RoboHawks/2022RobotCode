@@ -11,6 +11,12 @@ import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
 import edu.wpi.first.wpilibj.drive.Vector2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.MecanumDriveKinematics;
+import edu.wpi.first.math.kinematics.MecanumDriveOdometry;
+import edu.wpi.first.math.kinematics.MecanumDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -28,7 +34,16 @@ public class DriveSubsystem extends SubsystemBase {
   private WPI_TalonFX backLeft = new WPI_TalonFX(2);
   private WPI_TalonFX backRight = new WPI_TalonFX(3);
 
+  public static final MecanumDriveKinematics kinematics = new MecanumDriveKinematics(
+    // In meters from center of robot
+    new Translation2d(0.26035, 0.2921),
+    new Translation2d(0.26035, -0.2921),
+    new Translation2d(-0.26035, 0.2921),
+    new Translation2d(-0.26035, -0.2921)
+  );
+
   private MecanumDrive mecanumDrive;
+  private MecanumDriveOdometry odometry;
 
   private static final double wheelDiameter = 0.2032; // meters
   private static final double wheelCircumference = Math.PI * wheelDiameter;
@@ -76,6 +91,7 @@ public class DriveSubsystem extends SubsystemBase {
     analogDevicesGyro.calibrate();
     navxGyro.calibrate();
 
+    odometry = new MecanumDriveOdometry(kinematics, getRotation2d());
     reset();
   }
 
@@ -152,6 +168,10 @@ public class DriveSubsystem extends SubsystemBase {
     return navxGyro.getAngle();
   }
 
+  public Rotation2d getRotation2d() {
+    return navxGyro.getRotation2d();
+  }
+
   public void resetGyro() {
     navxGyro.reset();
   }
@@ -197,18 +217,25 @@ public class DriveSubsystem extends SubsystemBase {
     );
   }
 
+  public Pose2d getPose() {
+    return odometry.getPoseMeters();
+  }
+
+  public MecanumDriveWheelSpeeds getWheelSpeeds() {
+    return new MecanumDriveWheelSpeeds(
+      frontLeft.getSelectedSensorVelocity() * unitsToMeters * 10.0,
+      frontRight.getSelectedSensorVelocity() * unitsToMeters * 10.0,
+      backLeft.getSelectedSensorVelocity() * unitsToMeters * 10.0,
+      backRight.getSelectedSensorVelocity() * unitsToMeters * 10.0
+    );
+  }
+
   @Override
   public void periodic() {
-    // SmartDashboard.putNumber("fl", getFrontLeftPosition());
-    // SmartDashboard.putNumber("fr", getFrontRightPosition());
-    // SmartDashboard.putNumber("bl", getBackLeftPosition());
-    // SmartDashboard.putNumber("br", getBackRightPosition());
-    // SmartDashboard.putNumber("fl v", getFrontLeftVelocity());
-    // SmartDashboard.putNumber("fr v", getFrontRightVelocity());
-    // SmartDashboard.putNumber("bl v", getBackLeftVelocity());
-    // SmartDashboard.putNumber("br v", getBackRightVelocity());
+    odometry.update(getRotation2d(), getWheelSpeeds());
+
     SmartDashboard.putNumber("NavX Gyro", navxGyro.getAngle());
     SmartDashboard.putNumber("Analog Devices Gyro", analogDevicesGyro.getAngle());
-    // SmartDashboard.putNumber("Pidgeon Gyro", pigeon.getFusedHeading());
+    // SmartDashboard.putNumber("Pigeon Gyro", pigeon.getFusedHeading());
   }
 }
