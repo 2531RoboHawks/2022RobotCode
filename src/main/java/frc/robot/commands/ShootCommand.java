@@ -22,10 +22,19 @@ public class ShootCommand extends CommandBase {
 
   }
 
+  public double scale(double n) {
+    if (Math.abs(n) < 0.1) return 0;
+    return n;
+  }
+
   @Override
   public void execute() {
-    // targetShooterPosition += RobotContainer.gamepad.getY() / 50;
-    // shootSubsystem.setTurretPosition(targetShooterPosition);
+    double y = scale(RobotContainer.gamepad.getX() * 1.0);
+    if (RobotContainer.gamepad.getTrigger()) {
+      y *= 2;
+    }
+    targetShooterPosition += y;
+    shootSubsystem.setTurretPosition(targetShooterPosition);
 
     shootSubsystem.setIntakeRPM(SmartDashboard.getNumber("Intake Target RPM", 0));
     shootSubsystem.setRevwheelRPM(SmartDashboard.getNumber("Revwheel Target RPM", 0));

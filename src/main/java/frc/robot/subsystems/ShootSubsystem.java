@@ -1,11 +1,9 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.SparkMaxPIDController;
-import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -14,11 +12,9 @@ import frc.robot.PIDSettings;
 import frc.robot.TalonUtils;
 
 public class ShootSubsystem extends SubsystemBase {
-    private CANSparkMax turret = new CANSparkMax(10, MotorType.kBrushless);
+    private CANSparkMax turret = new CANSparkMax(15, MotorType.kBrushless);
     private SparkMaxPIDController turretPid = turret.getPIDController();
-    private static final double turretKp = 6e-5;
-    private static final double turretKi = 0;
-    private static final double turretKd = 0;
+    private static final PIDSettings turretPidSettings = new PIDSettings(0.1, 0, 0);
     private static final double turretGearRatio = 215.0 / 16.0;
 
     private TalonFX revwheel = new TalonFX(8);
@@ -28,10 +24,11 @@ public class ShootSubsystem extends SubsystemBase {
     private static final PIDSettings intakePidSettings = new PIDSettings(0.15, 0.001, 0);
 
     public ShootSubsystem() {
-        turretPid.setP(turretKp);
-        turretPid.setD(turretKd);
-        turretPid.setI(turretKi);
+        turretPid.setP(turretPidSettings.kp);
+        turretPid.setI(turretPidSettings.ki);
+        turretPid.setD(turretPidSettings.kd);
         turret.getEncoder().setPosition(0);
+        turret.setInverted(true);
 
         TalonUtils.configurePID(revwheel, revwheelPidSettings);
         TalonUtils.configurePID(intake, intakePidSettings);
@@ -55,7 +52,15 @@ public class ShootSubsystem extends SubsystemBase {
     }
 
     public void setTurretPosition(double position) {
-        turretPid.setReference(position, ControlType.kPosition);
+        turretPid.setReference(position, CANSparkMax.ControlType.kPosition);
+    }
+
+    public void setTurretPercent(double percent) {
+        turret.set(percent);
+    }
+
+    public double getTurretPosition() {
+        return turret.getEncoder().getPosition();
     }
 
     public void stopEverything() {
@@ -68,5 +73,6 @@ public class ShootSubsystem extends SubsystemBase {
     public void periodic() {
         SmartDashboard.putNumber("Actual Revwheel RPM", getRevwheelRPM());
         SmartDashboard.putNumber("Actual Intake RPM", getIntakeRPM());
+        SmartDashboard.putNumber("Actual Turret Positon", getTurretPosition());
     }
 }
