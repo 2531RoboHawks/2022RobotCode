@@ -17,12 +17,16 @@ public class PlayPlaybackCommand extends CommandBase {
 
     @Override
     public void initialize() {
+        System.out.println("Playback START");
+        driveSubsystem.setSettings(playback.pid);
         driveSubsystem.reset();
         index = 0;
     }
 
     @Override
     public void execute() {
+        System.out.println("Running playback step " + index);
+
         PlaybackStep step = playback.getSteps()[index];
         index += 1;
 
@@ -41,6 +45,7 @@ public class PlayPlaybackCommand extends CommandBase {
 
     @Override
     public void end(boolean interrupted) {
+        System.out.println("Playback DONE");
         driveSubsystem.stop();
     }
 }

@@ -8,20 +8,28 @@ import java.nio.file.Path;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import edu.wpi.first.wpilibj.Filesystem;
+import frc.robot.PIDSettings;
 
 public class Playback {
     private static ObjectMapper jsonMapper = new ObjectMapper();
     private static File containerPath = Filesystem.getDeployDirectory();
 
     // NOTE: This class is JSON-serialized and deserialized!
-    private PlaybackStep[] steps;
+    public PlaybackStep[] steps;
+    public PIDSettings pid;
 
     public PlaybackStep[] getSteps() {
         return steps;
     }
-
     public void setSteps(PlaybackStep[] steps) {
         this.steps = steps;
+    }
+
+    public PIDSettings getPID() {
+        return pid;
+    }
+    public void setPID(PIDSettings pid) {
+        this.pid = pid;
     }
 
     public void save(String name) {

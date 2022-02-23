@@ -76,6 +76,7 @@ public class RecordPlaybackCommand extends CommandBase {
         driveSubsystem.stop();
 
         Playback playback = new Playback();
+        playback.setPID(DriveSubsystem.recordPlaybackSettings);
         playback.setSteps(steps.toArray(new PlaybackStep[0]));
         playback.save("playback-info-" + System.currentTimeMillis());
     }
