@@ -5,10 +5,13 @@ import java.util.List;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.MecanumDriveInfo;
+import frc.robot.PIDSettings;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.DriveSubsystem;
 
 public class RecordPlaybackCommand extends CommandBase {
+    private static final PIDSettings pid = new PIDSettings(0.2, 0, 0);
+
     private DriveSubsystem driveSubsystem;
     private List<PlaybackStep> steps = new ArrayList<>();
     private long start;
@@ -20,7 +23,7 @@ public class RecordPlaybackCommand extends CommandBase {
 
     @Override
     public void initialize() {
-        driveSubsystem.setSettings(DriveSubsystem.recordPlaybackSettings);
+        driveSubsystem.setSettings(pid);
         driveSubsystem.reset();
         start = System.currentTimeMillis();
     }
@@ -76,7 +79,7 @@ public class RecordPlaybackCommand extends CommandBase {
         driveSubsystem.stop();
 
         Playback playback = new Playback();
-        playback.setPID(DriveSubsystem.recordPlaybackSettings);
+        playback.setPID(pid);
         playback.setSteps(steps.toArray(new PlaybackStep[0]));
         playback.save("playback-info-" + System.currentTimeMillis());
     }

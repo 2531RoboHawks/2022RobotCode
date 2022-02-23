@@ -1,13 +1,15 @@
 package frc.robot.commands;
 
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.Trajectory.State;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.PIDSettings;
 import frc.robot.subsystems.DriveSubsystem;
 
 public class AutoTrajectoryCommand extends CommandBase {
+    private static final PIDSettings pid = new PIDSettings(0.2, 0, 0);
+
     private DriveSubsystem driveSubsystem;
     private Trajectory trajectory;
     private long startTime;
@@ -25,7 +27,7 @@ public class AutoTrajectoryCommand extends CommandBase {
 
     @Override
     public void initialize() {
-        driveSubsystem.setSettings(DriveSubsystem.autoSettings);
+        driveSubsystem.setSettings(pid);
         driveSubsystem.reset();
         initialPose = trajectory.getInitialPose();
         startTime = System.currentTimeMillis();

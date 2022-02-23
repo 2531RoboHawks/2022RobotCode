@@ -76,15 +76,10 @@ public class DriveSubsystem extends SubsystemBase {
   private EncoderInfo backRightInfo = new EncoderInfo();
   private EncoderInfo backLeftInfo = new EncoderInfo();
 
-  // TODO: tune
-  public static final PIDSettings teleopSettings = new PIDSettings(0.2, 0, 0);
-  public static final PIDSettings autoSettings = new PIDSettings(0.02, 0, 0);
-  public static final PIDSettings recordPlaybackSettings = new PIDSettings(0.2, 0, 0);
-
   public DriveSubsystem() {
     mecanumDrive = new MecanumDrive(frontLeft, backLeft, frontRight, backRight);
 
-    setSettings(teleopSettings);
+    setSettings(new PIDSettings());
 
     frontRight.setInverted(true);
     backRight.setInverted(true);
@@ -98,10 +93,10 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public void setSettings(PIDSettings pid) {
-    TalonUtils.configurePID(frontLeft, teleopSettings);
-    TalonUtils.configurePID(frontRight, teleopSettings);
-    TalonUtils.configurePID(backLeft, teleopSettings);
-    TalonUtils.configurePID(backRight, teleopSettings);
+    TalonUtils.configurePID(frontLeft, pid);
+    TalonUtils.configurePID(frontRight, pid);
+    TalonUtils.configurePID(backLeft, pid);
+    TalonUtils.configurePID(backRight, pid);
   }
 
   public void drivePercent(double ySpeed, double xSpeed, double zRotation, boolean fieldOriented) {

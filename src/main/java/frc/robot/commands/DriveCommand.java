@@ -5,10 +5,13 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.PIDSettings;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.DriveSubsystem;
 
 public class DriveCommand extends CommandBase {
+  private static final PIDSettings pid = new PIDSettings(0.2, 0, 0);
+
   private DriveSubsystem driveSubsystem;
   private boolean fieldOriented = true;
 
@@ -18,7 +21,7 @@ public class DriveCommand extends CommandBase {
 
   @Override
   public void initialize() {
-    driveSubsystem.setSettings(DriveSubsystem.teleopSettings);
+    driveSubsystem.setSettings(pid);
     driveSubsystem.reset();
   }
 
