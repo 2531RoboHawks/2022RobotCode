@@ -2,6 +2,8 @@ package frc.robot.commands.playback;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -23,9 +25,11 @@ public class Playback {
     }
 
     public void save(String name) {
-        File outputFile = new File(containerPath, name + ".json");
         try {
-            jsonMapper.writeValue(outputFile, this);
+            Path outputPath = containerPath.toPath().getParent().resolve(name + ".json");
+            String json = jsonMapper.writeValueAsString(this);
+            Files.writeString(outputPath, json);
+            System.out.println("Saved to " + outputPath);
         } catch (IOException e) {
             System.out.println("Could not write playback file");
             e.printStackTrace();
@@ -33,9 +37,11 @@ public class Playback {
     }
 
     public static Playback load(String name) {
-        File file = new File(containerPath, name + ".json");
         try {
-            return jsonMapper.readValue(file, Playback.class);
+            Path inputPath = containerPath.toPath().resolve(name + ".json");
+            Playback playback = jsonMapper.readValue(inputPath.toFile(), Playback.class);
+            System.out.println(playback.getSteps().length);
+            return playback;
         } catch (IOException e) {
             e.printStackTrace();
             return null;

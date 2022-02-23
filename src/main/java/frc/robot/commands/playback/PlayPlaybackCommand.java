@@ -11,6 +11,7 @@ public class PlayPlaybackCommand extends CommandBase {
 
     public PlayPlaybackCommand(DriveSubsystem driveSubsystem, Playback playback) {
         this.driveSubsystem = driveSubsystem;
+        this.playback = playback;
         addRequirements(driveSubsystem);
     }
 
