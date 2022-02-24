@@ -6,7 +6,7 @@ import frc.robot.subsystems.IntakeSubsystem;
 
 public class IntakeCommand extends CommandBase {
   private IntakeSubsystem intakeSubsystem;
-  private boolean manualOverride;
+  private boolean isDown;
 
   public IntakeCommand(IntakeSubsystem intakeSubsystem) {
     this.intakeSubsystem = intakeSubsystem;
@@ -14,21 +14,18 @@ public class IntakeCommand extends CommandBase {
 
   @Override
   public void initialize() {
-    manualOverride = false;
+    isDown = false;
   }
 
   @Override
   public void execute() {
     if (RobotContainer.gamepad.getRawButtonPressed(6)) {
-      manualOverride = !manualOverride;
-      System.out.println("Toggled shooter manual override: " + manualOverride);
+      isDown = !isDown;
+      System.out.println("Toggled intake: " + isDown);
     }
 
-    if (manualOverride) {
-
-    } else {
-
-    }
+    intakeSubsystem.setDown(isDown);
+    intakeSubsystem.setRPM(0.2);
   }
 
   @Override

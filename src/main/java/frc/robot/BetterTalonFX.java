@@ -73,4 +73,9 @@ public class BetterTalonFX {
     public void configurePID(PIDSettings pid) {
         configurePID(pid.kp, pid.ki, pid.kd);
     }
+
+    public void configureRamp(double secondsFromNeutralToFull) {
+        talon.configOpenloopRamp(secondsFromNeutralToFull);
+        talon.configClosedloopRamp(secondsFromNeutralToFull);
+    }
 }

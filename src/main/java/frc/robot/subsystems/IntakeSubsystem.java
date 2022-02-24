@@ -1,32 +1,27 @@
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
-
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.TalonUtils;
+import frc.robot.BetterSparkMAXBrushless;
+import frc.robot.PIDSettings;
 
 public class IntakeSubsystem extends SubsystemBase {
-    // TODO: CAN, BetterTalonFX
-    private static TalonFX intake = new TalonFX(1);
-    private static final double kp = 0.1;
-    private static final double ki = 0.001;
-    private static final double kd = 5;
+    private BetterSparkMAXBrushless intakeWheel = new BetterSparkMAXBrushless(20);
 
     public IntakeSubsystem() {
-        TalonUtils.configurePID(intake, kp, ki, kd);
+        intakeWheel.configurePID(new PIDSettings(0.00006, 0, 0));
     }
 
     public void setRPM(double rpm) {
-        intake.set(ControlMode.Velocity, TalonUtils.rpmToSensorVelocity(rpm));
-    }
-
-    public double getRPM() {
-        return TalonUtils.sensorVelocityToRPM(intake.getSelectedSensorVelocity());
+        // TODO
+        intakeWheel.set(rpm);
     }
 
     public void stop() {
-        intake.set(ControlMode.PercentOutput, 0);
+        intakeWheel.stop();
+    }
+
+    public void setDown(boolean down) {
+        // TODO
     }
 
     @Override

@@ -6,22 +6,28 @@ import frc.robot.PIDSettings;
 
 public class ClimbSubsystem extends SubsystemBase {
     // TODO
-    private BetterTalonFX talon = new BetterTalonFX(0);
+    private BetterTalonFX leftTalon = new BetterTalonFX(21);
+    private BetterTalonFX rightTalon = new BetterTalonFX(22);
+
     private static final PIDSettings talonPid = new PIDSettings(0, 0, 0);
     private static final double secondsFromNeutralToFull = 1;
 
     public ClimbSubsystem() {
-        talon.configurePID(talonPid);
-        talon.getWPI().configClosedloopRamp(secondsFromNeutralToFull);
-        talon.getWPI().configOpenloopRamp(secondsFromNeutralToFull);
+        leftTalon.configurePID(talonPid);
+        leftTalon.configureRamp(secondsFromNeutralToFull);
+
+        rightTalon.configurePID(talonPid);
+        rightTalon.configureRamp(secondsFromNeutralToFull);
     }
 
     public void setArmExtension(double sensorUnits) {
-        talon.setFixedEncoderTarget(sensorUnits);
+        leftTalon.setFixedEncoderTarget(sensorUnits);
+        rightTalon.setFixedEncoderTarget(sensorUnits);
     }
 
     public void stopArm() {
-        talon.stop();
+        leftTalon.stop();
+        rightTalon.stop();
     }
 
     public void stopAll() {
@@ -30,7 +36,8 @@ public class ClimbSubsystem extends SubsystemBase {
 
     public void reset() {
         stopAll();
-        talon.zeroFixedEncoderTarget();
+        leftTalon.zeroFixedEncoderTarget();
+        rightTalon.zeroFixedEncoderTarget();
     }
 
     @Override
