@@ -3,6 +3,9 @@ package frc.robot;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
+/**
+ * @deprecated
+ */
 public class TalonUtils {
     // TalonFX sensor velocity uses "raw sensor units per 100ms"
     // 2048 sensor units = 1 revolution
