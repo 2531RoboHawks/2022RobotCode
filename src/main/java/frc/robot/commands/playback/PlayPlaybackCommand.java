@@ -7,11 +7,13 @@ import frc.robot.subsystems.DriveSubsystem;
 public class PlayPlaybackCommand extends CommandBase {
     private DriveSubsystem driveSubsystem;
     private Playback playback;
+    private PlaybackStep initialState;
     private int index;
 
     public PlayPlaybackCommand(DriveSubsystem driveSubsystem, Playback playback) {
         this.driveSubsystem = driveSubsystem;
         this.playback = playback;
+        initialState = playback.getSteps()[0];
         addRequirements(driveSubsystem);
     }
 
@@ -31,10 +33,10 @@ public class PlayPlaybackCommand extends CommandBase {
         index += 1;
 
         driveSubsystem.driveFixedSensorUnits(new MecanumDriveInfo(
-            step.targetFrontLeft,
-            step.targetFrontRight,
-            step.targetBackLeft,
-            step.targetBackLeft
+            step.targetFrontLeft - initialState.targetFrontLeft,
+            step.targetFrontRight - initialState.targetFrontRight,
+            step.targetBackLeft - initialState.targetBackLeft,
+            step.targetBackRight - initialState.targetBackRight
         ));
     }
 
