@@ -27,7 +27,7 @@ public class AutoTrajectoryCommand extends CommandBase {
 
     @Override
     public void initialize() {
-        driveSubsystem.setSettings(pid);
+        driveSubsystem.setPID(pid);
         driveSubsystem.reset();
         initialPose = trajectory.getInitialPose();
         startTime = System.currentTimeMillis();

@@ -79,7 +79,7 @@ public class DriveSubsystem extends SubsystemBase {
   public DriveSubsystem() {
     mecanumDrive = new MecanumDrive(frontLeft, backLeft, frontRight, backRight);
 
-    setSettings(new PIDSettings());
+    setPID(new PIDSettings());
 
     frontRight.setInverted(true);
     backRight.setInverted(true);
@@ -92,11 +92,16 @@ public class DriveSubsystem extends SubsystemBase {
     reset();
   }
 
-  public void setSettings(PIDSettings pid) {
+  private PIDSettings lastPidSettings;
+  public void setPID(PIDSettings pid) {
+    lastPidSettings = pid;
     TalonUtils.configurePID(frontLeft, pid);
     TalonUtils.configurePID(frontRight, pid);
     TalonUtils.configurePID(backLeft, pid);
     TalonUtils.configurePID(backRight, pid);
+  }
+  public PIDSettings getPID() {
+    return lastPidSettings;
   }
 
   public void drivePercent(double ySpeed, double xSpeed, double zRotation, boolean fieldOriented) {

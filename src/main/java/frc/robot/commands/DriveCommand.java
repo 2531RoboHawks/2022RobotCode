@@ -22,7 +22,7 @@ public class DriveCommand extends CommandBase {
 
   @Override
   public void initialize() {
-    driveSubsystem.setSettings(pid);
+    driveSubsystem.setPID(pid);
     driveSubsystem.reset();
   }
 

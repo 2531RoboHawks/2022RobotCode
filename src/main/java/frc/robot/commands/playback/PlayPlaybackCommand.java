@@ -20,7 +20,7 @@ public class PlayPlaybackCommand extends CommandBase {
     @Override
     public void initialize() {
         System.out.println("Playback START");
-        driveSubsystem.setSettings(playback.pid);
+        driveSubsystem.setPID(playback.pid);
         driveSubsystem.reset();
         index = 0;
     }
