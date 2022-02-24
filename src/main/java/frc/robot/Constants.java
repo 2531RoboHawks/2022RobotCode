@@ -13,5 +13,11 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-    
+    public static class Controls {
+        public static int Turbo = 3;
+        public static int ToggleFieldOriented = 4;
+        public static int ResetDrive = 2;
+
+        public static int ToggleIntake = 6;
+    }
 }

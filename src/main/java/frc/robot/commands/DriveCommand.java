@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
 import frc.robot.PIDSettings;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.DriveSubsystem;
@@ -32,16 +33,16 @@ public class DriveCommand extends CommandBase {
 
   @Override
   public void execute() {
-    boolean turbo = RobotContainer.gamepad.getRawButton(6);
+    boolean turbo = RobotContainer.gamepad.getRawButton(Constants.Controls.Turbo);
     double xyMultiplier = turbo ? 1 : 0.3;
     double rotationMultiplier = turbo ? 0.35 : 0.25;
 
-    if (RobotContainer.gamepad.getRawButtonPressed(4)) {
+    if (RobotContainer.gamepad.getRawButtonPressed(Constants.Controls.ToggleFieldOriented)) {
       fieldOriented = !fieldOriented;
       System.out.println("Field oriented: " + fieldOriented);
     }
 
-    if (RobotContainer.gamepad.getRawButtonPressed(2)) {
+    if (RobotContainer.gamepad.getRawButtonPressed(Constants.Controls.ResetDrive)) {
       driveSubsystem.resetGyro();
       driveSubsystem.resetEncoders();
     }

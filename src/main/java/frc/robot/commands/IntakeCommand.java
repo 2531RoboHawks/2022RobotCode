@@ -1,6 +1,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.IntakeSubsystem;
 
@@ -19,7 +20,7 @@ public class IntakeCommand extends CommandBase {
 
   @Override
   public void execute() {
-    if (RobotContainer.gamepad.getRawButtonPressed(6)) {
+    if (RobotContainer.gamepad.getRawButtonPressed(Constants.Controls.ToggleIntake)) {
       isDown = !isDown;
       System.out.println("Toggled intake: " + isDown);
     }
