@@ -40,16 +40,16 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  public static final ClimbSubsystem climbSubsystem = new ClimbSubsystem();
+  // public static final ClimbSubsystem climbSubsystem = new ClimbSubsystem();
   public static final DriveSubsystem driveSubsystem = new DriveSubsystem();
-  public static final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
-  public static final ShootSubsystem shootSubsystem = new ShootSubsystem();
-  public static final VisionSubsystem visionSubsystem = new VisionSubsystem();
+  // public static final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
+  // public static final ShootSubsystem shootSubsystem = new ShootSubsystem();
+  // public static final VisionSubsystem visionSubsystem = new VisionSubsystem();
 
-  public static final ClimbCommand climbCommand = new ClimbCommand(climbSubsystem);
+  // public static final ClimbCommand climbCommand = new ClimbCommand(climbSubsystem);
   public static final DriveCommand driveCommand = new DriveCommand(driveSubsystem);
-  public static final IntakeCommand intakeCommand = new IntakeCommand(intakeSubsystem);
-  public static final ShootCommand shootCommand = new ShootCommand(shootSubsystem);
+  // public static final IntakeCommand intakeCommand = new IntakeCommand(intakeSubsystem);
+  // public static final ShootCommand shootCommand = new ShootCommand(shootSubsystem);
   
   public static Joystick gamepad = new Joystick(0);
 

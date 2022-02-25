@@ -28,12 +28,12 @@ import frc.robot.TalonUtils;
 public class DriveSubsystem extends SubsystemBase {
   private AHRS navxGyro = new AHRS(SPI.Port.kMXP);
   private ADXRS450_Gyro analogDevicesGyro = new ADXRS450_Gyro(SPI.Port.kOnboardCS2);
-  private WPI_PigeonIMU pigeon = new WPI_PigeonIMU(0);
+  // private WPI_PigeonIMU pigeon = new WPI_PigeonIMU(0);
 
-  private WPI_TalonFX frontLeft = new WPI_TalonFX(0);
-  private WPI_TalonFX frontRight = new WPI_TalonFX(1);
-  private WPI_TalonFX backLeft = new WPI_TalonFX(2);
-  private WPI_TalonFX backRight = new WPI_TalonFX(3);
+  private WPI_TalonFX frontLeft = new WPI_TalonFX(30);
+  private WPI_TalonFX frontRight = new WPI_TalonFX(31);
+  private WPI_TalonFX backLeft = new WPI_TalonFX(32);
+  private WPI_TalonFX backRight = new WPI_TalonFX(33);
 
   public static final MecanumDriveKinematics kinematics = new MecanumDriveKinematics(
     // In meters from center of robot
@@ -86,7 +86,7 @@ public class DriveSubsystem extends SubsystemBase {
 
     analogDevicesGyro.calibrate();
     navxGyro.calibrate();
-    pigeon.calibrate();
+    // pigeon.calibrate();
 
     odometry = new MecanumDriveOdometry(kinematics, getRotation2d());
     reset();
@@ -110,7 +110,7 @@ public class DriveSubsystem extends SubsystemBase {
       ySpeed,
       xSpeed,
       zRotation,
-      fieldOriented ? navxGyro.getAngle() : 0
+      fieldOriented ? getAngle() : 0
     );
   }
 
@@ -177,7 +177,7 @@ public class DriveSubsystem extends SubsystemBase {
   public void resetGyro() {
     navxGyro.reset();
     analogDevicesGyro.reset();
-    pigeon.reset();
+    // pigeon.reset();
   }
 
   public void resetEncoders() {
@@ -236,12 +236,12 @@ public class DriveSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    odometry.update(getRotation2d(), getWheelSpeeds());
+    // odometry.update(getRotation2d(), getWheelSpeeds());
 
-    SmartDashboard.putNumber("Pose X", getPose().getX());
-    SmartDashboard.putNumber("Pose Y", getPose().getX());
-    SmartDashboard.putNumber("NavX Gyro", navxGyro.getAngle());
-    SmartDashboard.putNumber("Analog Devices Gyro", analogDevicesGyro.getAngle());
-    SmartDashboard.putNumber("Pigeon Gyro", pigeon.getAngle());
+    // SmartDashboard.putNumber("Pose X", getPose().getX());
+    // SmartDashboard.putNumber("Pose Y", getPose().getX());
+    // SmartDashboard.putNumber("NavX Gyro", navxGyro.getAngle());
+    // SmartDashboard.putNumber("Analog Devices Gyro", analogDevicesGyro.getAngle());
+    // SmartDashboard.putNumber("Pigeon Gyro", pigeon.getAngle());
   }
 }
