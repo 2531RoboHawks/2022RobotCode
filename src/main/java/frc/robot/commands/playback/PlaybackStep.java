@@ -6,11 +6,6 @@ public class PlaybackStep {
     // in seconds
     public double time = 0;
 
-    // in [-1, 1]
-    public double inputX = 0;
-    public double inputY = 0;
-    public double inputZ = 0;
-
     // in raw sensor units
     public double targetFrontLeft = 0;
     public double targetFrontRight = 0;
