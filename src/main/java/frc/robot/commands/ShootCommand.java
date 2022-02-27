@@ -13,13 +13,14 @@ public class ShootCommand extends CommandBase {
     this.shootSubsystem = shootSubsystem;
     addRequirements(shootSubsystem);
 
-    SmartDashboard.putNumber("Intake Target RPM", 0);
-    SmartDashboard.putNumber("Revwheel Target RPM", 0);
+    // TODO this is temporary
+    SmartDashboard.putNumber("Intake Target RPM", 2000);
+    SmartDashboard.putNumber("Revwheel Target RPM", 1500);
   }
 
   @Override
   public void initialize() {
-    turretTargetPosition = shootSubsystem.getTurretPosition();
+
   }
 
   public double scale(double n) {
@@ -29,27 +30,32 @@ public class ShootCommand extends CommandBase {
 
   @Override
   public void execute() {
-    if (RobotContainer.gamepad.getRawButton(8)) {
-      // TODO: Need to see if the encoder position is saved between restarts, then this is easy
-      // Otherwise we need to have robot reset encoder consistently
-      // turretTargetPosition = 0;
-    } else {
-      double delta = scale(RobotContainer.gamepad.getX() * 0.3);
-      if (RobotContainer.gamepad.getTrigger()) {
-        delta *= 2;
-      }
-      turretTargetPosition += delta;
-    }
-    shootSubsystem.setTurretPosition(turretTargetPosition);  
-    SmartDashboard.putNumber("Turret Target Position", turretTargetPosition);
+    // if (RobotContainer.gamepad.getRawButton(8)) {
+    //   // TODO: Need to see if the encoder position is saved between restarts, then this is easy
+    //   // Otherwise we need to have robot reset encoder consistently
+    //   // turretTargetPosition = 0;
+    // } else {
+    //   double delta = scale(RobotContainer.gamepad.getX() * 0.3);
+    //   if (RobotContainer.gamepad.getTrigger()) {
+    //     delta *= 2;
+    //   }
+    //   turretTargetPosition += delta;
+    // }
+    // shootSubsystem.setTurretPosition(turretTargetPosition);  
+    // SmartDashboard.putNumber("Turret Target Position", turretTargetPosition);
 
-    shootSubsystem.setIntakeRPM(SmartDashboard.getNumber("Intake Target RPM", 0));
-    shootSubsystem.setRevwheelRPM(SmartDashboard.getNumber("Revwheel Target RPM", 0));
+    // TODO this is temporary
+    if (RobotContainer.gamepad.getRawButton(5)) {
+      shootSubsystem.setIntakeRPM(SmartDashboard.getNumber("Intake Target RPM", 0));
+      shootSubsystem.setRevwheelRPM(SmartDashboard.getNumber("Revwheel Target RPM", 0));
+    } else {
+      shootSubsystem.stop();
+    }
   }
 
   @Override
   public void end(boolean interrupted) {
-    shootSubsystem.stopEverything();
+    shootSubsystem.stop();
   }
 
   @Override

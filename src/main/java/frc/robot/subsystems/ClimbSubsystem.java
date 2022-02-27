@@ -5,7 +5,6 @@ import frc.robot.BetterTalonFX;
 import frc.robot.PIDSettings;
 
 public class ClimbSubsystem extends SubsystemBase {
-    // TODO
     private BetterTalonFX leftTalon = new BetterTalonFX(21);
     private BetterTalonFX rightTalon = new BetterTalonFX(22);
 
@@ -25,17 +24,13 @@ public class ClimbSubsystem extends SubsystemBase {
         rightTalon.setFixedEncoderTarget(sensorUnits);
     }
 
-    public void stopArm() {
+    public void stop() {
         leftTalon.stop();
         rightTalon.stop();
     }
 
-    public void stopAll() {
-        stopAll();
-    }
-
     public void reset() {
-        stopAll();
+        stop();
         leftTalon.zeroFixedEncoderTarget();
         rightTalon.zeroFixedEncoderTarget();
     }

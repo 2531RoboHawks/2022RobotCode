@@ -20,13 +20,12 @@ public class IntakeCommand extends CommandBase {
 
   @Override
   public void execute() {
-    if (RobotContainer.gamepad.getRawButtonPressed(Constants.Controls.ToggleIntake)) {
+    if (RobotContainer.gamepad.getRawButtonPressed(Constants.Controls.ToggleIntakeDown)) {
       isDown = !isDown;
       System.out.println("Toggled intake: " + isDown);
     }
 
-    intakeSubsystem.setDown(isDown);
-    intakeSubsystem.setRPM(0.2);
+    intakeSubsystem.setRPM(isDown ? 0.2 : 0);
   }
 
   @Override

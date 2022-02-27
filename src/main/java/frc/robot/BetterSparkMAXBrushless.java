@@ -6,15 +6,19 @@ import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-public class BetterSparkMAXBrushless {
+public class BetterSparkMaxBrushless {
     private CANSparkMax canSparkMax;
     private SparkMaxPIDController pidController;
     private RelativeEncoder encoder;
 
-    public BetterSparkMAXBrushless(int id) {
+    public BetterSparkMaxBrushless(int id) {
         canSparkMax = new CANSparkMax(id, MotorType.kBrushless);
         encoder = canSparkMax.getEncoder();
         pidController = canSparkMax.getPIDController();
+    }
+
+    public void setInverted(boolean inverted) {
+        canSparkMax.setInverted(true);
     }
 
     public void set(double power) {
@@ -46,6 +50,10 @@ public class BetterSparkMAXBrushless {
         pidController.setP(pidSettings.kp);
         pidController.setI(pidSettings.ki);
         pidController.setD(pidSettings.kd);
+    }
+
+    public void setMaxPIDOutput(double output) {
+        pidController.setOutputRange(-output, output);
     }
 
     public CANSparkMax getCanSparkMax() {
