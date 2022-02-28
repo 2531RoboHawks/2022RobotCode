@@ -60,6 +60,7 @@ public class RobotContainer {
   public final DriveCommand driveCommand = new DriveCommand(driveSubsystem);
   public final IntakeCommand intakeCommand = new IntakeCommand(intakeSubsystem);
   public final ShootCommand shootCommand = new ShootCommand(shootSubsystem);
+  public final RecordPlaybackCommand recordPlaybackCommand = new RecordPlaybackCommand(driveSubsystem);
   
   public static Joystick gamepad = new Joystick(0);
 
@@ -73,6 +74,7 @@ public class RobotContainer {
     SmartDashboard.putData("Drive command", driveCommand);
     SmartDashboard.putData("Intake command", intakeCommand);
     SmartDashboard.putData("Shoot command", shootCommand);
+    SmartDashboard.putData("Record playback command", recordPlaybackCommand);
   }
 
   /**
