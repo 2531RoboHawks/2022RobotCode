@@ -7,7 +7,6 @@ import frc.robot.subsystems.IntakeSubsystem;
 
 public class IntakeCommand extends CommandBase {
   private IntakeSubsystem intakeSubsystem;
-  private boolean isDown;
 
   public IntakeCommand(IntakeSubsystem intakeSubsystem) {
     this.intakeSubsystem = intakeSubsystem;
@@ -15,15 +14,13 @@ public class IntakeCommand extends CommandBase {
 
   @Override
   public void initialize() {
-    isDown = false;
-    intakeSubsystem.setDown(isDown);
+    intakeSubsystem.setDown(false);
   }
 
   @Override
   public void execute() {
     if (RobotContainer.gamepad.getRawButtonPressed(Constants.Controls.ToggleIntakeDown)) {
-      isDown = !isDown;
-      intakeSubsystem.setDown(isDown);
+      intakeSubsystem.toggleDown();
     }
   }
 
