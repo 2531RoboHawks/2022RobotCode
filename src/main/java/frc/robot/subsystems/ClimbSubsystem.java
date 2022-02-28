@@ -12,7 +12,7 @@ public class ClimbSubsystem extends SubsystemBase {
     public BetterTalonFX rightTalon = new BetterTalonFX(22);
     private Solenoid solenoid = new Solenoid(PneumaticsModuleType.CTREPCM, 2);
 
-    private static final PIDSettings talonPid = new PIDSettings(0.05, 0, 0);
+    private static final PIDSettings talonPid = new PIDSettings(0.014, 0, 0);
     private static final double secondsFromNeutralToFull = 1;
 
     public ClimbSubsystem() {
@@ -25,22 +25,27 @@ public class ClimbSubsystem extends SubsystemBase {
         setPistonExtended(false);
     }
 
-    public void setArmExtension(double sensorUnits) {
-        // TODO: Tune numbers
+    public double getArmExtensionTarget() {
+        return leftTalon.getFixedEncoderTarget();
+    }
+    public void setArmExtensionTarget(double sensorUnits) {
         double MIN = 0;
-        double MAX = 300000;
+        double MAX = 360000;
         if (sensorUnits < MIN) {
-            System.out.println("sensorUnits exceeded minimum: " + sensorUnits);
+            System.out.println("CLIMB TOO LOW: " + sensorUnits);
             sensorUnits = MIN;
         }
         if (sensorUnits > MAX) {
-            System.out.println("sensorUnits exceeded maximum: " + sensorUnits);
+            System.out.println("CLIMB TOO HIGH: " + sensorUnits);
             sensorUnits = MAX;
         }
         leftTalon.setFixedEncoderTarget(sensorUnits);
         rightTalon.setFixedEncoderTarget(sensorUnits);
     }
-
+    public void zero() {
+        leftTalon.zeroFixedEncoderTarget();
+        rightTalon.zeroFixedEncoderTarget();
+    }
     public void setExtensionPercent(double percent) {
         leftTalon.setPower(percent);
         rightTalon.setPower(percent);
@@ -58,11 +63,6 @@ public class ClimbSubsystem extends SubsystemBase {
     public void stop() {
         leftTalon.stop();
         rightTalon.stop();
-    }
-
-    public void zero() {
-        leftTalon.zeroFixedEncoderTarget();
-        rightTalon.zeroFixedEncoderTarget();
     }
 
     @Override

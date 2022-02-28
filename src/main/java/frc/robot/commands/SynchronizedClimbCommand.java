@@ -10,7 +10,6 @@ import frc.robot.subsystems.IntakeSubsystem;
 public class SynchronizedClimbCommand extends CommandBase {
   private ClimbSubsystem climbSubsystem;
   private IntakeSubsystem intakeSubsystem;
-  private double target;
 
   public SynchronizedClimbCommand(ClimbSubsystem climbSubsystem, IntakeSubsystem intakeSubsystem) {
     this.climbSubsystem = climbSubsystem;
@@ -22,7 +21,6 @@ public class SynchronizedClimbCommand extends CommandBase {
   public void initialize() {
     intakeSubsystem.setDown(true);
     climbSubsystem.zero();
-    target = 0;
   }
 
   @Override
@@ -30,10 +28,15 @@ public class SynchronizedClimbCommand extends CommandBase {
     if (RobotContainer.gamepad.getRawButtonPressed(Constants.Controls.ToggleClimbArmManually)) {
       climbSubsystem.togglePistonExtended();
     }
+    // Temporary
+    if (RobotContainer.gamepad.getRawButtonPressed(Constants.Controls.ToggleIntakeDown)) {
+      intakeSubsystem.toggleDown();
+    }
 
     double power = -InputUtils.deadzone(RobotContainer.gamepad.getRawAxis(1));
-    target += power * 1500;
-    climbSubsystem.setArmExtension(target);
+    double delta = power * 3000;
+    double newTarget = climbSubsystem.getArmExtensionTarget() + delta;
+    climbSubsystem.setArmExtensionTarget(newTarget);
   }
 
   @Override
