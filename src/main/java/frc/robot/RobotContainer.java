@@ -19,10 +19,13 @@ import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.commands.AutoClimbCommand;
 import frc.robot.commands.AutoTrajectoryCommand;
-import frc.robot.commands.ClimbCommand;
+import frc.robot.commands.SynchronizedClimbCommand;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.IntakeCommand;
+import frc.robot.commands.ManualClimbCommand;
 import frc.robot.commands.ShootCommand;
 import frc.robot.commands.playback.PlayPlaybackCommand;
 import frc.robot.commands.playback.Playback;
@@ -51,7 +54,9 @@ public class RobotContainer {
   // public static final VisionSubsystem visionSubsystem = new VisionSubsystem();
   public static final CompressorSubsystem compressorSubsystem = new CompressorSubsystem();
 
-  public final ClimbCommand climbCommand = new ClimbCommand(climbSubsystem);
+  public final SynchronizedClimbCommand synchronizedClimbCommand = new SynchronizedClimbCommand(climbSubsystem, intakeSubsystem);
+  public final ManualClimbCommand manualClimbCommand = new ManualClimbCommand(climbSubsystem, intakeSubsystem);
+  public final AutoClimbCommand autoClimbCommand = new AutoClimbCommand(climbSubsystem, intakeSubsystem);
   public final DriveCommand driveCommand = new DriveCommand(driveSubsystem);
   public final IntakeCommand intakeCommand = new IntakeCommand(intakeSubsystem);
   public final ShootCommand shootCommand = new ShootCommand(shootSubsystem);
@@ -61,6 +66,13 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     configureButtonBindings();
+
+    SmartDashboard.putData("Synchronized climb command", synchronizedClimbCommand);
+    SmartDashboard.putData("Manual climb command", manualClimbCommand);
+    SmartDashboard.putData("Auto climb command", autoClimbCommand);
+    SmartDashboard.putData("Drive command", driveCommand);
+    SmartDashboard.putData("Intake command", intakeCommand);
+    SmartDashboard.putData("Shoot command", shootCommand);
   }
 
   /**
@@ -70,7 +82,7 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    new JoystickButton(gamepad, 6).whenHeld(new RecordPlaybackCommand(driveSubsystem));
+    // new JoystickButton(gamepad, 6).whenHeld(new RecordPlaybackCommand(driveSubsystem));
     // new JoystickButton(gamepad, 6).whenHeld(new PlayPlaybackCommand(driveSubsystem, Playback.load("test")));
   }
 

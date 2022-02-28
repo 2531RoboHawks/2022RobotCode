@@ -6,6 +6,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
+import frc.robot.InputUtils;
 import frc.robot.PIDSettings;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.DriveSubsystem;
@@ -28,7 +29,7 @@ public class DriveCommand extends CommandBase {
   }
 
   private double scale(double n) {
-    if (Math.abs(n) < 0.1) return 0;
+    n = InputUtils.deadzone(n);
     return n * n * Math.signum(n);
   }
 

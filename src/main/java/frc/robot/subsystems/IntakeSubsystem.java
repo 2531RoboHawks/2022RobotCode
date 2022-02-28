@@ -8,12 +8,11 @@ import frc.robot.PIDSettings;
 
 public class IntakeSubsystem extends SubsystemBase {
     private BetterSparkMaxBrushless intakeWheel = new BetterSparkMaxBrushless(20);
-    private Solenoid solenoid = new Solenoid(PneumaticsModuleType.CTREPCM, 1);
+    private Solenoid solenoid = new Solenoid(PneumaticsModuleType.CTREPCM, 3);
 
     public IntakeSubsystem() {
         intakeWheel.configurePID(new PIDSettings(0.00006, 0, 0));
-
-        setDown(true);
+        setDown(false);
     }
 
     public void setRPM(double rpm) {
@@ -23,6 +22,7 @@ public class IntakeSubsystem extends SubsystemBase {
     }
 
     public void setDown(boolean down) {
+        System.out.println("Intake down: " + down);
         solenoid.set(down);
     }
 
