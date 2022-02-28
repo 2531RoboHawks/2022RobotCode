@@ -5,7 +5,6 @@ import java.util.List;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.MecanumDriveInfo;
-import frc.robot.PIDSettings;
 import frc.robot.commands.DriveCommand;
 import frc.robot.subsystems.DriveSubsystem;
 

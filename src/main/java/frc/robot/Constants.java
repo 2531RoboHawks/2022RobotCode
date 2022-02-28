@@ -18,6 +18,6 @@ public final class Constants {
         public static int ToggleFieldOriented = 4;
         public static int ResetDrive = 2;
 
-        public static int ToggleIntakeDown = 6;
+        public static int ToggleIntakeDown = 1;
     }
 }

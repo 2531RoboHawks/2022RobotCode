@@ -7,13 +7,13 @@ import frc.robot.subsystems.DriveSubsystem;
 public class PlayPlaybackCommand extends CommandBase {
     private DriveSubsystem driveSubsystem;
     private Playback playback;
-    private PlaybackStep initialState;
-    private int index;
+    private PlaybackStep initialStep;
+    private long start;
 
     public PlayPlaybackCommand(DriveSubsystem driveSubsystem, Playback playback) {
         this.driveSubsystem = driveSubsystem;
         this.playback = playback;
-        initialState = playback.getSteps()[0];
+        initialStep = playback.getInitialStep();
         addRequirements(driveSubsystem);
     }
 
@@ -22,27 +22,29 @@ public class PlayPlaybackCommand extends CommandBase {
         System.out.println("Playback START");
         driveSubsystem.setPID(playback.pid);
         driveSubsystem.reset();
-        index = 0;
+        start = System.currentTimeMillis();
     }
 
     @Override
     public void execute() {
-        System.out.println("Running playback step " + index);
-
-        PlaybackStep step = playback.getSteps()[index];
-        index += 1;
-
+        double seconds = (System.currentTimeMillis() - start) / 1000.0;
+        PlaybackStep step = playback.getStepAtTime(seconds);
+        System.out.println("Running playback step " + seconds + "s:");
+        System.out.println("  FL: " + (step.targetFrontLeft - initialStep.targetFrontLeft));
+        System.out.println("  FR: " + (step.targetFrontRight - initialStep.targetFrontRight));
+        System.out.println("  BL: " + (step.targetBackLeft - initialStep.targetBackLeft));
+        System.out.println("  BR: " + (step.targetBackRight - initialStep.targetBackRight));
         driveSubsystem.driveFixedSensorUnits(new MecanumDriveInfo(
-            step.targetFrontLeft - initialState.targetFrontLeft,
-            step.targetFrontRight - initialState.targetFrontRight,
-            step.targetBackLeft - initialState.targetBackLeft,
-            step.targetBackRight - initialState.targetBackRight
+            step.targetFrontLeft - initialStep.targetFrontLeft,
+            step.targetFrontRight - initialStep.targetFrontRight,
+            step.targetBackLeft - initialStep.targetBackLeft,
+            step.targetBackRight - initialStep.targetBackRight
         ));
     }
 
     @Override
     public boolean isFinished() {
-        return index >= playback.getSteps().length;
+        return (System.currentTimeMillis() - start) >= playback.getTotalTime();
     }
 
     @Override

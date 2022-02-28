@@ -1,5 +1,6 @@
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
@@ -22,10 +23,9 @@ public class IntakeCommand extends CommandBase {
   public void execute() {
     if (RobotContainer.gamepad.getRawButtonPressed(Constants.Controls.ToggleIntakeDown)) {
       isDown = !isDown;
-      System.out.println("Toggled intake: " + isDown);
     }
-
-    intakeSubsystem.setRPM(isDown ? 0.2 : 0);
+    intakeSubsystem.setDown(isDown);
+    // intakeSubsystem.setRPM(0.2);
   }
 
   @Override

@@ -6,36 +6,57 @@ import frc.robot.subsystems.ClimbSubsystem;
 
 public class ClimbCommand extends CommandBase {
   private ClimbSubsystem climbSubsystem;
-  private boolean manualOverride;
+  private double target;
+  private boolean manual;
 
   public ClimbCommand(ClimbSubsystem climbSubsystem) {
     this.climbSubsystem = climbSubsystem;
     addRequirements(climbSubsystem);
   }
-  
+
   @Override
   public void initialize() {
     climbSubsystem.reset();
-    manualOverride = false;
+    target = 0;
+    manual = false;
+  }
+
+  private double applyDeadzone(double n) {
+    if (Math.abs(n) < 0.1) return 0;
+    return n;
   }
 
   @Override
   public void execute() {
-    if (RobotContainer.gamepad.getRawButtonPressed(7)) {
-      manualOverride = !manualOverride;
-      System.out.println("Toggled climber manual override: " + manualOverride);
+    // Temporary
+    if (RobotContainer.gamepad.getRawButtonPressed(1)) {
+      manual = !manual;
+      climbSubsystem.reset();
+      target = 0;
+      System.out.println("Toggled manual climb: " + manual);
     }
 
-    if (manualOverride) {
+    // Temporary
+    if (RobotContainer.gamepad.getRawButtonPressed(2)) {
+      System.out.println("Toggled arm");
+      climbSubsystem.togglePistonExtended();
+    }
 
+    if (manual) {
+      double left = -applyDeadzone(RobotContainer.gamepad.getRawAxis(1));
+      double right = -applyDeadzone(RobotContainer.gamepad.getRawAxis(5));
+      climbSubsystem.leftTalon.setPower(left);
+      climbSubsystem.rightTalon.setPower(right);
     } else {
-      climbSubsystem.setArmExtension(10000);
+      double power = -applyDeadzone(RobotContainer.gamepad.getRawAxis(1));
+      target += power * 1500;
+      climbSubsystem.setArmExtension(target);
     }
   }
 
   @Override
   public void end(boolean interrupted) {
-    climbSubsystem.stopAll();
+    climbSubsystem.stop();
   }
 
   @Override

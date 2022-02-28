@@ -15,7 +15,7 @@ public class ShootCommand extends CommandBase {
 
     // TODO this is temporary
     SmartDashboard.putNumber("Intake Target RPM", 2000);
-    SmartDashboard.putNumber("Revwheel Target RPM", 1500);
+    SmartDashboard.putNumber("Revwheel Target RPM", 4000);
   }
 
   @Override

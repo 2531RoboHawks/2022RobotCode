@@ -18,6 +18,7 @@ public class DriveCommand extends CommandBase {
 
   public DriveCommand(DriveSubsystem driveSubsystem) {
     this.driveSubsystem = driveSubsystem;
+    addRequirements(driveSubsystem);
   }
 
   @Override

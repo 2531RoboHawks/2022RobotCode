@@ -65,6 +65,10 @@ public class BetterTalonFX {
         fixedEncoderTarget = 0;
     }
 
+    public double getPositionSensorUnits() {
+        return talon.getSelectedSensorPosition() - fixedEncoderTargetZero;
+    }
+
     public void configurePID(double kp, double ki, double kd) {
         talon.config_kP(0, kp);
         talon.config_kI(0, ki);

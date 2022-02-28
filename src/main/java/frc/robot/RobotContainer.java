@@ -24,7 +24,11 @@ import frc.robot.commands.ClimbCommand;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.ShootCommand;
+import frc.robot.commands.playback.PlayPlaybackCommand;
+import frc.robot.commands.playback.Playback;
+import frc.robot.commands.playback.RecordPlaybackCommand;
 import frc.robot.subsystems.ClimbSubsystem;
+import frc.robot.subsystems.CompressorSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShootSubsystem;
@@ -40,13 +44,14 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  // public static final ClimbSubsystem climbSubsystem = new ClimbSubsystem();
+  public static final ClimbSubsystem climbSubsystem = new ClimbSubsystem();
   public static final DriveSubsystem driveSubsystem = new DriveSubsystem();
   public static final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
   public static final ShootSubsystem shootSubsystem = new ShootSubsystem();
   // public static final VisionSubsystem visionSubsystem = new VisionSubsystem();
+  public static final CompressorSubsystem compressorSubsystem = new CompressorSubsystem();
 
-  // public static final ClimbCommand climbCommand = new ClimbCommand(climbSubsystem);
+  public final ClimbCommand climbCommand = new ClimbCommand(climbSubsystem);
   public final DriveCommand driveCommand = new DriveCommand(driveSubsystem);
   public final IntakeCommand intakeCommand = new IntakeCommand(intakeSubsystem);
   public final ShootCommand shootCommand = new ShootCommand(shootSubsystem);
@@ -65,7 +70,8 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-
+    new JoystickButton(gamepad, 6).whenHeld(new RecordPlaybackCommand(driveSubsystem));
+    // new JoystickButton(gamepad, 6).whenHeld(new PlayPlaybackCommand(driveSubsystem, Playback.load("test")));
   }
 
   /**
@@ -74,28 +80,6 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    TrajectoryConfig config = new TrajectoryConfig(2.0, .5);
-    Trajectory exampleTrajectory = TrajectoryGenerator.generateTrajectory(
-      new Pose2d(0, 0, Rotation2d.fromDegrees(0)),
-      List.of(
-        new Translation2d(1, 1),
-        new Translation2d(-1, 3)
-      ),
-      new Pose2d(0, 4, Rotation2d.fromDegrees(180)),
-      config
-    );
-
-    Trajectory trajectory = exampleTrajectory;
-    try {
-      String path = "output/circle.wpilib.json";
-      Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(path);
-      trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
-    } catch (IOException exception) {
-      System.out.println("Cannot read trajectory!!! " + exception);
-      return null;
-    }
-
-    Command command = new AutoTrajectoryCommand(driveSubsystem, trajectory);
-    return command.andThen(() -> driveSubsystem.stop());
+    return new PlayPlaybackCommand(driveSubsystem, Playback.load("test"));
   }
 }

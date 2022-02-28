@@ -32,6 +32,34 @@ public class Playback {
         this.pid = pid;
     }
 
+    public Playback clone() {
+        Playback cloned = new Playback();
+        cloned.steps = steps;
+        cloned.pid = pid;
+        return cloned;
+    }
+
+    public PlaybackStep getInitialStep() {
+        return steps[0];
+    }
+
+    public PlaybackStep getLastStep() {
+        return steps[steps.length - 1];
+    }
+
+    public PlaybackStep getStepAtTime(double seconds) {
+        for (PlaybackStep step : steps) {
+            if (step.time >= seconds) {
+                return step;
+            }
+        }
+        return getLastStep();
+    }
+
+    public double getTotalTime() {
+        return getLastStep().time;
+    }
+
     public void save(String name) {
         try {
             Path outputPath = containerPath.toPath().getParent().resolve(name + ".json");

@@ -7,7 +7,7 @@ import frc.robot.BetterTalonFX;
 import frc.robot.PIDSettings;
 
 public class ShootSubsystem extends SubsystemBase {
-    private BetterSparkMaxBrushless turret = new BetterSparkMaxBrushless(15);
+    private BetterSparkMaxBrushless turret = new BetterSparkMaxBrushless(17);
     private static final PIDSettings turretPidSettings = new PIDSettings(0.2, 0, 0);
     private static final double turretMaxPower = 0.2;
     private static final double turretGearRatio = 215.0 / 16.0;
