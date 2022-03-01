@@ -81,6 +81,16 @@ public class DriveSubsystem extends SubsystemBase {
 
     setPID(new PIDSettings());
 
+    double secondsFromNeutralToFull = 0.1;
+    frontLeft.configOpenloopRamp(secondsFromNeutralToFull);
+    frontLeft.configClosedloopRamp(secondsFromNeutralToFull);
+    frontRight.configOpenloopRamp(secondsFromNeutralToFull);
+    frontRight.configClosedloopRamp(secondsFromNeutralToFull);
+    backLeft.configOpenloopRamp(secondsFromNeutralToFull);
+    backLeft.configClosedloopRamp(secondsFromNeutralToFull);
+    backRight.configOpenloopRamp(secondsFromNeutralToFull);
+    backRight.configClosedloopRamp(secondsFromNeutralToFull);
+
     frontRight.setInverted(true);
     backRight.setInverted(true);
 
@@ -237,7 +247,7 @@ public class DriveSubsystem extends SubsystemBase {
 
     // SmartDashboard.putNumber("Pose X", getPose().getX());
     // SmartDashboard.putNumber("Pose Y", getPose().getX());
-    // SmartDashboard.putNumber("NavX Gyro", navxGyro.getAngle());
+    SmartDashboard.putNumber("Gyro", getAngle());
     // SmartDashboard.putNumber("Analog Devices Gyro", analogDevicesGyro.getAngle());
     // SmartDashboard.putNumber("Pigeon Gyro", pigeon.getAngle());
   }
