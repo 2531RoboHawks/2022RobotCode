@@ -24,11 +24,11 @@ public class ManualClimbCommand extends CommandBase {
 
     @Override
     public void execute() {
-        if (RobotContainer.gamepad.getRawButtonPressed(Constants.Controls.ToggleClimbArmManually)) {
+        if (RobotContainer.helms.getRawButtonPressed(Constants.Controls.ToggleClimbArmManually)) {
             climbSubsystem.togglePistonExtended();
         }
         // Temporary
-        if (RobotContainer.gamepad.getRawButtonPressed(Constants.Controls.ToggleIntakeDown)) {
+        if (RobotContainer.helms.getRawButtonPressed(Constants.Controls.ToggleIntakeDown)) {
             intakeSubsystem.toggleDown();
         }
         // if (intakeSubsystem.isDown()) {
@@ -37,8 +37,8 @@ public class ManualClimbCommand extends CommandBase {
         //     intakeSubsystem.stop();
         // }
 
-        double left = -InputUtils.deadzone(RobotContainer.gamepad.getRawAxis(1)) * 0.25;
-        double right = -InputUtils.deadzone(RobotContainer.gamepad.getRawAxis(5)) * 0.25;
+        double left = -InputUtils.deadzone(RobotContainer.helms.getRawAxis(1)) * 0.25;
+        double right = -InputUtils.deadzone(RobotContainer.helms.getRawAxis(5)) * 0.25;
         climbSubsystem.leftTalon.setPower(left);
         climbSubsystem.rightTalon.setPower(right);
     }

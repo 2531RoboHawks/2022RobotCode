@@ -71,6 +71,7 @@ public class RobotContainer {
   public final LimelightTrackCommand limelightTrackCommand = new LimelightTrackCommand(visionSubsystem, driveSubsystem);
 
   public static Joystick gamepad = new Joystick(0);
+  public static Joystick helms = new Joystick(1);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {

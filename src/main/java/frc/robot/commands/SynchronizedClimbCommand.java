@@ -25,15 +25,15 @@ public class SynchronizedClimbCommand extends CommandBase {
 
   @Override
   public void execute() {
-    if (RobotContainer.gamepad.getRawButtonPressed(Constants.Controls.ToggleClimbArmManually)) {
+    if (RobotContainer.helms.getRawButtonPressed(Constants.Controls.ToggleClimbArmManually)) {
       climbSubsystem.togglePistonExtended();
     }
     // Temporary
-    if (RobotContainer.gamepad.getRawButtonPressed(Constants.Controls.ToggleIntakeDown)) {
+    if (RobotContainer.helms.getRawButtonPressed(Constants.Controls.ToggleIntakeDown)) {
       intakeSubsystem.toggleDown();
     }
 
-    double power = -InputUtils.deadzone(RobotContainer.gamepad.getRawAxis(1));
+    double power = -InputUtils.deadzone(RobotContainer.helms.getRawAxis(1));
     double delta = power * 3000;
     double newTarget = climbSubsystem.getArmExtensionTarget() + delta;
     climbSubsystem.setArmExtensionTarget(newTarget);
