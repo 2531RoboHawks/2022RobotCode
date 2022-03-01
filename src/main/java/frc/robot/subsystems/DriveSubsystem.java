@@ -105,7 +105,6 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public void drivePercent(double ySpeed, double xSpeed, double zRotation, boolean fieldOriented) {
-    // TODO: unused
     mecanumDrive.driveCartesian(
       ySpeed,
       xSpeed,
@@ -124,7 +123,6 @@ public class DriveSubsystem extends SubsystemBase {
 
   public void driveTeleop(double y, double x, double z, boolean fieldOriented) {
     // scale [-1, 1] to raw sensor units
-    // TODO make this work better, use eg. m/s?
     x *= 2048;
     y *= 2048;
     z *= 2048;
@@ -135,7 +133,6 @@ public class DriveSubsystem extends SubsystemBase {
       vector.rotate(-getAngle());
     }
 
-    // TODO: use gyro to correct rotation drift?
     frontLeftInfo.changeTargetBy(vector.x + vector.y + z);
     frontRightInfo.changeTargetBy(vector.x - vector.y - z);
     backLeftInfo.changeTargetBy(vector.x - vector.y + z);
