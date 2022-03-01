@@ -44,11 +44,14 @@ public class ShootSubsystem extends SubsystemBase {
         elevatorWheel.setPower(percent);
     }
 
-    public void setTurretPosition(double position) {
-        // turretPid.setReference(position, CANSparkMax.ControlType.kPosition);
+    public void setTurretPosition(double turns) {
+        turret.setPosition(turns);
     }
     public void setTurretPercent(double percent) {
         turret.set(percent);
+    }
+    public void zeroTurret() {
+        turret.zero();
     }
 
     public void stop() {

@@ -37,6 +37,7 @@ public class BetterSparkMaxBrushless {
     }
 
     public void zero() {
+        // TODO This probably doesn't work
         encoder.setPosition(0);
     }
     public void setPosition(double turns) {
