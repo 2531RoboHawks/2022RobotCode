@@ -25,7 +25,6 @@ import frc.robot.commands.SynchronizedClimbCommand;
 import frc.robot.commands.ZeroTurretCommand;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.IntakeCommand;
-import frc.robot.commands.KeepTurretZeroedCommand;
 import frc.robot.commands.LimelightTrackCommand;
 import frc.robot.commands.ManualClimbCommand;
 import frc.robot.commands.ShootCommand;
@@ -63,7 +62,6 @@ public class RobotContainer {
   public final IntakeCommand intakeCommand = new IntakeCommand(intakeSubsystem);
   public final ShootCommand shootCommand = new ShootCommand(shootSubsystem);
   public final RecordPlaybackCommand recordPlaybackCommand = new RecordPlaybackCommand(driveSubsystem);
-  public final KeepTurretZeroedCommand keepTurretZeroedCommand = new KeepTurretZeroedCommand(shootSubsystem);
   public final ZeroTurretCommand zeroTurretCommand = new ZeroTurretCommand(shootSubsystem);
   
   public final LimelightTrackCommand limelightTrackCommand = new LimelightTrackCommand(visionSubsystem, driveSubsystem);
@@ -82,7 +80,6 @@ public class RobotContainer {
     SmartDashboard.putData("Shoot command", shootCommand);
     SmartDashboard.putData("Record playback command", recordPlaybackCommand);
     SmartDashboard.putData("Limelight Track command", limelightTrackCommand);
-    SmartDashboard.putData("Keep Turret Zeroed Command", keepTurretZeroedCommand);
     SmartDashboard.putData("Zero Turret Command", zeroTurretCommand);
   }
 
