@@ -23,7 +23,7 @@ public class IntakeCommand extends CommandBase {
       intakeSubsystem.toggleDown();
     }
     if (intakeSubsystem.isDown()) {
-      intakeSubsystem.setPower(0.7);
+      intakeSubsystem.setPower(0.3);
     } else {
       intakeSubsystem.stop();
     }

@@ -78,8 +78,8 @@ public class Robot extends TimedRobot {
       m_autonomousCommand.cancel();
     }
     m_robotContainer.driveCommand.schedule();
-    // m_robotContainer.shootCommand.schedule();
-    // m_robotContainer.intakeCommand.schedule();
+    m_robotContainer.shootCommand.schedule();
+    m_robotContainer.intakeCommand.schedule();
   }
 
   /** This function is called periodically during operator control. */

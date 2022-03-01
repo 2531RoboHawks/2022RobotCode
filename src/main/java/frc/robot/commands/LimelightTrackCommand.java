@@ -12,10 +12,9 @@ import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 
 public class LimelightTrackCommand extends CommandBase {
-  DriveSubsystem driveSubsystem;
-  VisionSubsystem visionSubsystem;
-
-  PIDController pidController = new PIDController(0.2, 0, 0);
+  private DriveSubsystem driveSubsystem;
+  private VisionSubsystem visionSubsystem;
+  private PIDController pidController = new PIDController(0.05, 0, 0);
 
   /** Creates a new LimelightTrackCommand. */
   public LimelightTrackCommand(VisionSubsystem visionSubsystem, DriveSubsystem driveSubsystem) {
@@ -23,7 +22,7 @@ public class LimelightTrackCommand extends CommandBase {
     this.driveSubsystem = driveSubsystem;
     addRequirements(this.visionSubsystem);
     addRequirements(this.driveSubsystem);
-    }
+  }
 
   // Called when the command is initially scheduled.
   @Override
@@ -36,7 +35,7 @@ public class LimelightTrackCommand extends CommandBase {
   public void execute() {
     double amount = pidController.calculate(visionSubsystem.getX());
     if(visionSubsystem.hasValidTarget()) {
-      this.driveSubsystem.drivePercent(0, 0, amount, false);
+      this.driveSubsystem.drivePercent(0, 0, -amount, false);
     } else {
       this.driveSubsystem.stop();
     }

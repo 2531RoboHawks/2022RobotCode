@@ -91,7 +91,7 @@ public class RobotContainer {
   private void configureButtonBindings() {
     // new JoystickButton(gamepad, 6).whenHeld(new RecordPlaybackCommand(driveSubsystem));
     // new JoystickButton(gamepad, 6).whenHeld(new PlayPlaybackCommand(driveSubsystem, Playback.load("test")));
-    new JoystickButton(gamepad, 5).toggleWhenPressed(new SequentialCommandGroup(limelightTrackCommand, shootCommand));
+    new JoystickButton(gamepad, 5).whenHeld(limelightTrackCommand);
   }
 
   /**

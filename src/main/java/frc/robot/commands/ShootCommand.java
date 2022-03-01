@@ -31,36 +31,7 @@ public class ShootCommand extends CommandBase {
 
   @Override
   public void execute() {
-    // if (RobotContainer.gamepad.getRawButton(8)) {
-    //   // TODO: Need to see if the encoder position is saved between restarts, then this is easy
-    //   // Otherwise we need to have robot reset encoder consistently
-    //   // turretTargetPosition = 0;
-    // } else {
-    //   double delta = scale(RobotContainer.gamepad.getX() * 0.3);
-    //   if (RobotContainer.gamepad.getTrigger()) {
-    //     delta *= 2;
-    //   }
-    //   turretTargetPosition += delta;
-    // }
-    // shootSubsystem.setTurretPosition(turretTargetPosition);  
-    // SmartDashboard.putNumber("Turret Target Position", turretTargetPosition);
-
-    /*
-
-
-
-    */
-
     if (RobotContainer.gamepad.getRawButton(Constants.Controls.TurnShoot)) {
-      shootSubsystem.setRevwheelRPM(5000);
-      shootSubsystem.setElevatorRPM(2000);
-    } else {
-      shootSubsystem.stop();
-    }
-
-
-    // TODO this is temporary
-    if (RobotContainer.gamepad.getRawButton(5)) {
       shootSubsystem.setElevatorRPM(SmartDashboard.getNumber("Intake Target RPM", 0));
       shootSubsystem.setRevwheelRPM(SmartDashboard.getNumber("Revwheel Target RPM", 0));
     } else {
