@@ -64,6 +64,6 @@ public class ShootSubsystem extends SubsystemBase {
     public void periodic() {
         SmartDashboard.putNumber("Actual Revwheel RPM", revwheel.getRPM());
         SmartDashboard.putNumber("Actual Intake RPM", elevatorWheel.getRPM());
-        SmartDashboard.putNumber("Actual Turret Positon", turret.getPosition());
+        SmartDashboard.putNumber("Actual Turret Position", turret.getPosition());
     }
 }
