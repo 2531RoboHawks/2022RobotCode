@@ -22,6 +22,11 @@ public class IntakeCommand extends CommandBase {
     if (RobotContainer.gamepad.getRawButtonPressed(Constants.Controls.ToggleIntakeDown)) {
       intakeSubsystem.toggleDown();
     }
+    if (intakeSubsystem.isDown()) {
+      intakeSubsystem.setPower(0.7);
+    } else {
+      intakeSubsystem.stop();
+    }
   }
 
   @Override
