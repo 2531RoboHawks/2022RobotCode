@@ -27,15 +27,9 @@ public class ManualClimbCommand extends CommandBase {
         if (RobotContainer.helms.getRawButtonPressed(Constants.Controls.ToggleClimbArmManually)) {
             climbSubsystem.togglePistonExtended();
         }
-        // Temporary
         if (RobotContainer.helms.getRawButtonPressed(Constants.Controls.ToggleIntakeDown)) {
             intakeSubsystem.toggleDown();
         }
-        // if (intakeSubsystem.isDown()) {
-        //     intakeSubsystem.setPower(0.7);
-        // } else {
-        //     intakeSubsystem.stop();
-        // }
 
         double left = -InputUtils.deadzone(RobotContainer.helms.getRawAxis(1)) * 0.25;
         double right = -InputUtils.deadzone(RobotContainer.helms.getRawAxis(5)) * 0.25;
