@@ -25,6 +25,7 @@ import frc.robot.commands.AutoTrajectoryCommand;
 import frc.robot.commands.SynchronizedClimbCommand;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.IntakeCommand;
+import frc.robot.commands.LimelightTrackCommand;
 import frc.robot.commands.ManualClimbCommand;
 import frc.robot.commands.ShootCommand;
 import frc.robot.commands.playback.PlayPlaybackCommand;
@@ -37,6 +38,7 @@ import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShootSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
@@ -51,7 +53,7 @@ public class RobotContainer {
   public static final DriveSubsystem driveSubsystem = new DriveSubsystem();
   public static final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
   public static final ShootSubsystem shootSubsystem = new ShootSubsystem();
-  // public static final VisionSubsystem visionSubsystem = new VisionSubsystem();
+  public static final VisionSubsystem visionSubsystem = new VisionSubsystem();
   public static final CompressorSubsystem compressorSubsystem = new CompressorSubsystem();
 
   public final SynchronizedClimbCommand synchronizedClimbCommand = new SynchronizedClimbCommand(climbSubsystem, intakeSubsystem);
@@ -62,6 +64,8 @@ public class RobotContainer {
   public final ShootCommand shootCommand = new ShootCommand(shootSubsystem);
   public final RecordPlaybackCommand recordPlaybackCommand = new RecordPlaybackCommand(driveSubsystem);
   
+  public final LimelightTrackCommand limelightTrackCommand = new LimelightTrackCommand(visionSubsystem, driveSubsystem);
+
   public static Joystick gamepad = new Joystick(0);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -75,6 +79,7 @@ public class RobotContainer {
     SmartDashboard.putData("Intake command", intakeCommand);
     SmartDashboard.putData("Shoot command", shootCommand);
     SmartDashboard.putData("Record playback command", recordPlaybackCommand);
+    SmartDashboard.putData("Limelight Track command", limelightTrackCommand);
   }
 
   /**
@@ -86,6 +91,7 @@ public class RobotContainer {
   private void configureButtonBindings() {
     // new JoystickButton(gamepad, 6).whenHeld(new RecordPlaybackCommand(driveSubsystem));
     // new JoystickButton(gamepad, 6).whenHeld(new PlayPlaybackCommand(driveSubsystem, Playback.load("test")));
+    new JoystickButton(gamepad, 5).toggleWhenPressed(new SequentialCommandGroup(limelightTrackCommand, shootCommand));
   }
 
   /**

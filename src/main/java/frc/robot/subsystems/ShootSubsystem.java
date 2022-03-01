@@ -15,7 +15,7 @@ public class ShootSubsystem extends SubsystemBase {
     private BetterTalonFX revwheel = new BetterTalonFX(15);
     private static final PIDSettings revwheelPidSettings = new PIDSettings(0.15, 0.001, 0);
 
-    private BetterTalonFX intake = new BetterTalonFX(9);
+    private BetterTalonFX elevatorWheel = new BetterTalonFX(9);
     private static final PIDSettings intakePidSettings = new PIDSettings(0.1, 0.001, 5);
 
     public ShootSubsystem() {
@@ -25,8 +25,8 @@ public class ShootSubsystem extends SubsystemBase {
 
         revwheel.configurePID(revwheelPidSettings);
 
-        intake.setInverted(true);
-        intake.configurePID(intakePidSettings);
+        elevatorWheel.setInverted(true);
+        elevatorWheel.configurePID(intakePidSettings);
     }
 
     public void setRevwheelRPM(double rpm) {
@@ -37,11 +37,11 @@ public class ShootSubsystem extends SubsystemBase {
         revwheel.setPower(percent);
     }
 
-    public void setIntakeRPM(double rpm) {
-        intake.setRPM(rpm);
+    public void setElevatorRPM(double rpm) {
+        elevatorWheel.setRPM(rpm);
     }
-    public void setIntakePercent(double percent) {
-        intake.setPower(percent);
+    public void setElevatorPercent(double percent) {
+        elevatorWheel.setPower(percent);
     }
 
     public void setTurretPosition(double position) {
@@ -53,14 +53,14 @@ public class ShootSubsystem extends SubsystemBase {
 
     public void stop() {
         revwheel.stop();
-        intake.stop();
+        elevatorWheel.stop();
         turret.stop();
     }
 
     @Override
     public void periodic() {
         SmartDashboard.putNumber("Actual Revwheel RPM", revwheel.getRPM());
-        SmartDashboard.putNumber("Actual Intake RPM", intake.getRPM());
+        SmartDashboard.putNumber("Actual Intake RPM", elevatorWheel.getRPM());
         SmartDashboard.putNumber("Actual Turret Positon", turret.getPosition());
     }
 }

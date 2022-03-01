@@ -2,6 +2,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.ShootSubsystem;
 
@@ -44,9 +45,23 @@ public class ShootCommand extends CommandBase {
     // shootSubsystem.setTurretPosition(turretTargetPosition);  
     // SmartDashboard.putNumber("Turret Target Position", turretTargetPosition);
 
+    /*
+
+
+
+    */
+
+    if (RobotContainer.gamepad.getRawButton(Constants.Controls.TurnShoot)) {
+      shootSubsystem.setRevwheelRPM(5000);
+      shootSubsystem.setElevatorRPM(2000);
+    } else {
+      shootSubsystem.stop();
+    }
+
+
     // TODO this is temporary
     if (RobotContainer.gamepad.getRawButton(5)) {
-      shootSubsystem.setIntakeRPM(SmartDashboard.getNumber("Intake Target RPM", 0));
+      shootSubsystem.setElevatorRPM(SmartDashboard.getNumber("Intake Target RPM", 0));
       shootSubsystem.setRevwheelRPM(SmartDashboard.getNumber("Revwheel Target RPM", 0));
     } else {
       shootSubsystem.stop();

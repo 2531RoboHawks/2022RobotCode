@@ -21,5 +21,8 @@ public final class Constants {
         public static final int ToggleIntakeDown = 1;
 
         public static final int ToggleClimbArmManually = 2;
+
+        public static final int TurnShoot = 6;
+        public static final int TurretShoot = 5;
     }
 }
