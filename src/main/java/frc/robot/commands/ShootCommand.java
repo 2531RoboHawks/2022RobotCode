@@ -31,6 +31,8 @@ public class ShootCommand extends CommandBase {
 
   @Override
   public void execute() {
+    shootSubsystem.setTurretPosition(turretTargetPosition);
+
     if (RobotContainer.gamepad.getRawButton(Constants.Controls.TurnShoot)) {
       shootSubsystem.setElevatorRPM(SmartDashboard.getNumber("Intake Target RPM", 0));
       shootSubsystem.setRevwheelRPM(SmartDashboard.getNumber("Revwheel Target RPM", 0));
