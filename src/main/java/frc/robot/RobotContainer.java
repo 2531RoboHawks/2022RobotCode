@@ -73,6 +73,10 @@ public class RobotContainer {
   public RobotContainer() {
     configureButtonBindings();
 
+    intakeSubsystem.setDefaultCommand(intakeCommand);
+    driveSubsystem.setDefaultCommand(driveCommand);
+    shootSubsystem.setDefaultCommand(shootCommand);
+
     SmartDashboard.putData("Synchronized climb command", synchronizedClimbCommand);
     SmartDashboard.putData("Manual climb command", manualClimbCommand);
     SmartDashboard.putData("Drive command", driveCommand);
