@@ -10,20 +10,18 @@ import frc.robot.subsystems.ShootSubsystem;
 public class ShootCommand extends CommandBase {
   private ShootSubsystem shootSubsystem;
   private double turretTargetPosition = 0;
-  private long startedRevvingAt;
 
   public ShootCommand(ShootSubsystem shootSubsystem) {
     this.shootSubsystem = shootSubsystem;
     addRequirements(shootSubsystem);
 
     SmartDashboard.putNumber("Elevator Target RPM", 2000);
-    SmartDashboard.putNumber("Revwheel Target RPM", 4000);
+    SmartDashboard.putNumber("Revwheel Target RPM", 5000);
   }
 
   @Override
   public void initialize() {
     shootSubsystem.zeroTurret();
-    startedRevvingAt = 0;
   }
 
   public double scale(double n) {
@@ -42,21 +40,22 @@ public class ShootCommand extends CommandBase {
     shootSubsystem.setTurretPosition(turretTargetPosition);
 
     if (RobotContainer.gamepad.getRawButton(Constants.Controls.Shoot)) {
-      if (startedRevvingAt == 0) {
-        startedRevvingAt = System.currentTimeMillis();
-      }
       shootSubsystem.setRevwheelRPM(SmartDashboard.getNumber("Revwheel Target RPM", 0));
-      if (RobotContainer.gamepad.getRawButton(Constants.Controls.Elevator)) {
-        shootSubsystem.setElevatorRPM(SmartDashboard.getNumber("Elevator Target RPM", 0));
-      }
     } else {
-      startedRevvingAt = 0;
       shootSubsystem.stopRevwheel();
+    }
+    if (RobotContainer.gamepad.getRawButton(Constants.Controls.Elevator)) {
+      shootSubsystem.setElevatorRPM(SmartDashboard.getNumber("Elevator Target RPM", 0));
+    } else {
       shootSubsystem.stopElevator();
     }
 
     if (RobotContainer.gamepad.getRawButton(Constants.Controls.Traverse)) {
-      shootSubsystem.setTraversePercent(.3);
+      shootSubsystem.setTraversePercent(.5);
+    } else if (RobotContainer.gamepad.getRawButton(Constants.Controls.TraverseReverse)) {
+      shootSubsystem.setTraversePercent(-.3);
+    } else {
+      shootSubsystem.stopTraverse();
     }
   }
 

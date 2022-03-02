@@ -43,8 +43,12 @@ public class ShootSubsystem extends SubsystemBase {
     public void setRevwheelPercent(double percent) {
         revwheel.setPower(percent);
     }
+
     public void setTraversePercent(double percent) {
         traverse.set(VictorSPXControlMode.PercentOutput, percent);
+    }
+    public void stopTraverse() {
+        traverse.set(VictorSPXControlMode.PercentOutput, 0);
     }
 
     public void setElevatorRPM(double rpm) {
@@ -56,15 +60,15 @@ public class ShootSubsystem extends SubsystemBase {
 
     public void setTurretPosition(double turns) {
         System.out.println("Set turret position: " + turns);
-        //turret.setPosition(turns);
+        turret.setPosition(turns);
     }
     public void setTurretPercent(double percent) {
         System.out.println("Set turret percent: " + percent);
         turret.set(percent);
     }
     public void zeroTurret() {
-        //System.out.println("Zeroed turret");
-        //turret.zero();
+        System.out.println("Zeroed turret");
+        turret.zero();
     }
 
     public void stopRevwheel() {
@@ -74,7 +78,7 @@ public class ShootSubsystem extends SubsystemBase {
         elevatorWheel.stop();
     }
     public void stopTurret() {
-        //turret.stop();
+        turret.stop();
     }
     public void stopEverything() {
         stopRevwheel();

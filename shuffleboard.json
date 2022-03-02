@@ -579,7 +579,7 @@
             "content": {
               "_type": "ComboBox Chooser",
               "_source0": "network_table:///SmartDashboard/SendableChooser[0]",
-              "_title": "SmartDashboard/SendableChooser[0]"
+              "_title": "/SmartDashboard/SendableChooser[0]"
             }
           },
           "4,2": {
@@ -590,7 +590,7 @@
             "content": {
               "_type": "Command",
               "_source0": "network_table:///SmartDashboard/Zero Turret Command",
-              "_title": "SmartDashboard/Zero Turret Command"
+              "_title": "/SmartDashboard/Zero Turret Command"
             }
           },
           "4,3": {
@@ -601,7 +601,7 @@
             "content": {
               "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/Actual Turret Position",
-              "_title": "SmartDashboard/Actual Turret Position"
+              "_title": "/SmartDashboard/Actual Turret Position"
             }
           },
           "0,2": {
@@ -612,7 +612,7 @@
             "content": {
               "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/Left Climb",
-              "_title": "SmartDashboard/Left Climb"
+              "_title": "/SmartDashboard/Left Climb"
             }
           },
           "0,3": {
@@ -623,7 +623,7 @@
             "content": {
               "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/Right Climb",
-              "_title": "SmartDashboard/Right Climb"
+              "_title": "/SmartDashboard/Right Climb"
             }
           }
         }
@@ -648,7 +648,7 @@
             "content": {
               "_type": "Boolean Box",
               "_source0": "network_table:///SmartDashboard/Field Oriented",
-              "_title": "SmartDashboard/Field Oriented",
+              "_title": "/SmartDashboard/Field Oriented",
               "Colors/Color when true": "#7CFC00FF",
               "Colors/Color when false": "#8B0000FF"
             }
@@ -661,7 +661,7 @@
             "content": {
               "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/Revwheel Target RPM",
-              "_title": "SmartDashboard/Revwheel Target RPM"
+              "_title": "/SmartDashboard/Revwheel Target RPM"
             }
           },
           "9,0": {
@@ -672,7 +672,7 @@
             "content": {
               "_type": "Command",
               "_source0": "network_table:///SmartDashboard/Synchronized climb command",
-              "_title": "SmartDashboard/Synchronized climb command"
+              "_title": "/SmartDashboard/Synchronized climb command"
             }
           },
           "9,1": {
@@ -683,7 +683,7 @@
             "content": {
               "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/Left Climb",
-              "_title": "SmartDashboard/Left Climb"
+              "_title": "/SmartDashboard/Left Climb"
             }
           },
           "9,2": {
@@ -694,7 +694,7 @@
             "content": {
               "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/Right Climb",
-              "_title": "SmartDashboard/Right Climb"
+              "_title": "/SmartDashboard/Right Climb"
             }
           },
           "3,3": {
@@ -705,7 +705,7 @@
             "content": {
               "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/Actual Turret Position",
-              "_title": "SmartDashboard/Actual Turret Position"
+              "_title": "/SmartDashboard/Actual Turret Position"
             }
           },
           "0,2": {
@@ -716,7 +716,7 @@
             "content": {
               "_type": "Boolean Box",
               "_source0": "network_table:///SmartDashboard/Intake Down",
-              "_title": "SmartDashboard/Intake Down",
+              "_title": "/SmartDashboard/Intake Down",
               "Colors/Color when true": "#7CFC00FF",
               "Colors/Color when false": "#8B0000FF"
             }
@@ -729,7 +729,7 @@
             "content": {
               "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/Actual Intake RPM",
-              "_title": "SmartDashboard/Actual Intake RPM"
+              "_title": "/SmartDashboard/Actual Intake RPM"
             }
           },
           "3,1": {
@@ -740,7 +740,7 @@
             "content": {
               "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/Actual Elevator RPM",
-              "_title": "SmartDashboard/Actual Elevator RPM"
+              "_title": "/SmartDashboard/Actual Elevator RPM"
             }
           },
           "3,0": {
@@ -751,7 +751,7 @@
             "content": {
               "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/Actual Revwheel RPM",
-              "_title": "SmartDashboard/Actual Revwheel RPM"
+              "_title": "/SmartDashboard/Actual Revwheel RPM"
             }
           },
           "5,1": {
@@ -762,7 +762,7 @@
             "content": {
               "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/Elevator Target RPM",
-              "_title": "SmartDashboard/Elevator Target RPM"
+              "_title": "/SmartDashboard/Elevator Target RPM"
             }
           }
         }
@@ -787,7 +787,7 @@
             "content": {
               "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/Limelight Distance",
-              "_title": "SmartDashboard/Limelight Distance"
+              "_title": "/SmartDashboard/Limelight Distance"
             }
           }
         }

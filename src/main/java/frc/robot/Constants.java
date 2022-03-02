@@ -23,6 +23,7 @@ public final class Constants {
         public static final int Shoot = 5;
         public static final int Elevator = 6;
         public static final int Traverse = 7;
+        public static final int TraverseReverse = 8;
 
         public static final int ToggleIntakeDown = 1;
 

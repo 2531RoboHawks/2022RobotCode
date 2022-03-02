@@ -15,6 +15,7 @@ public class BetterSparkMaxBrushless {
         canSparkMax = new CANSparkMax(id, MotorType.kBrushless);
         encoder = canSparkMax.getEncoder();
         pidController = canSparkMax.getPIDController();
+        zero();
     }
 
     public void setInverted(boolean inverted) {
@@ -36,12 +37,12 @@ public class BetterSparkMaxBrushless {
         return encoder.getVelocity();
     }
 
+    private double zero;
     public void zero() {
-        // TODO This probably doesn't work
-        encoder.setPosition(0);
+        zero = encoder.getPosition();
     }
     public void setPosition(double turns) {
-        pidController.setReference(turns, ControlType.kPosition);
+        pidController.setReference(zero + turns, ControlType.kPosition);
     }
     public double getPosition() {
         return encoder.getPosition();
