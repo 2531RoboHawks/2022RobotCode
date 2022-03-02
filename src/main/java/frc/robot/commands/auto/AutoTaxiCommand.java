@@ -22,7 +22,7 @@ public class AutoTaxiCommand extends CommandBase {
 
     @Override
     public void execute() {
-        driveSubsystem.drivePercent(0.15, 0, 0, false);
+        driveSubsystem.drivePercent(0.2, 0, 0, false);
     }
 
     @Override

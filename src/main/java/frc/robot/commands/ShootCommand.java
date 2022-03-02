@@ -46,13 +46,17 @@ public class ShootCommand extends CommandBase {
         startedRevvingAt = System.currentTimeMillis();
       }
       shootSubsystem.setRevwheelRPM(SmartDashboard.getNumber("Revwheel Target RPM", 0));
-      if (System.currentTimeMillis() > startedRevvingAt + 2000) {
+      if (RobotContainer.gamepad.getRawButton(Constants.Controls.Elevator)) {
         shootSubsystem.setElevatorRPM(SmartDashboard.getNumber("Elevator Target RPM", 0));
       }
     } else {
       startedRevvingAt = 0;
       shootSubsystem.stopRevwheel();
       shootSubsystem.stopElevator();
+    }
+
+    if (RobotContainer.gamepad.getRawButton(Constants.Controls.Traverse)) {
+      shootSubsystem.setTraversePercent(.3);
     }
   }
 

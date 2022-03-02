@@ -6,6 +6,10 @@ import frc.robot.BetterSparkMaxBrushless;
 import frc.robot.BetterTalonFX;
 import frc.robot.PIDSettings;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.VictorSPXControlMode;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+
 public class ShootSubsystem extends SubsystemBase {
     private BetterSparkMaxBrushless turret = new BetterSparkMaxBrushless(17);
     private static final PIDSettings turretPidSettings = new PIDSettings(0.2, 0, 0);
@@ -17,6 +21,9 @@ public class ShootSubsystem extends SubsystemBase {
 
     private BetterTalonFX elevatorWheel = new BetterTalonFX(9);
     private static final PIDSettings elevatorPidSettings = new PIDSettings(0.1, 0.001, 5);
+
+    private VictorSPX traverse = new VictorSPX(8);
+
 
     public ShootSubsystem() {
         turret.configurePID(turretPidSettings);
@@ -36,6 +43,9 @@ public class ShootSubsystem extends SubsystemBase {
     public void setRevwheelPercent(double percent) {
         revwheel.setPower(percent);
     }
+    public void setTraversePercent(double percent) {
+        traverse.set(VictorSPXControlMode.PercentOutput, percent);
+    }
 
     public void setElevatorRPM(double rpm) {
         elevatorWheel.setRPM(rpm);
@@ -46,15 +56,15 @@ public class ShootSubsystem extends SubsystemBase {
 
     public void setTurretPosition(double turns) {
         System.out.println("Set turret position: " + turns);
-        turret.setPosition(turns);
+        //turret.setPosition(turns);
     }
     public void setTurretPercent(double percent) {
         System.out.println("Set turret percent: " + percent);
         turret.set(percent);
     }
     public void zeroTurret() {
-        System.out.println("Zeroed turret");
-        turret.zero();
+        //System.out.println("Zeroed turret");
+        //turret.zero();
     }
 
     public void stopRevwheel() {
@@ -64,7 +74,7 @@ public class ShootSubsystem extends SubsystemBase {
         elevatorWheel.stop();
     }
     public void stopTurret() {
-        turret.stop();
+        //turret.stop();
     }
     public void stopEverything() {
         stopRevwheel();

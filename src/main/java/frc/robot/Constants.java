@@ -21,6 +21,8 @@ public final class Constants {
         public static final int TurretRight = 2;
         public static final int TurretLeft = 3;
         public static final int Shoot = 5;
+        public static final int Elevator = 6;
+        public static final int Traverse = 7;
 
         public static final int ToggleIntakeDown = 1;
 
