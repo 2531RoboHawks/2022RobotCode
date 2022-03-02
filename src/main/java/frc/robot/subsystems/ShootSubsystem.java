@@ -59,7 +59,6 @@ public class ShootSubsystem extends SubsystemBase {
     }
 
     public void setTurretPosition(double turns) {
-        System.out.println("Set turret position: " + turns);
         turret.setPosition(turns);
     }
     public void setTurretPercent(double percent) {
