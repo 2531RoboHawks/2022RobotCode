@@ -25,7 +25,8 @@ import frc.robot.commands.AutoTrajectoryCommand;
 import frc.robot.commands.SynchronizedClimbCommand;
 import frc.robot.commands.ZeroTurretCommand;
 import frc.robot.commands.auto.AutoDriveCommand;
-import frc.robot.commands.auto.AutoShootHeldBallCommand;
+import frc.robot.commands.auto.ShootBallCommand;
+import frc.robot.commands.auto.MoveSetDistanceFromTarget;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.LimelightTrackCommand;
@@ -92,8 +93,21 @@ public class RobotContainer {
     SmartDashboard.putData("Zero Turret Command", zeroTurretCommand);
 
     autoChooser.setDefaultOption("None", null);
-    autoChooser.addOption("Taxi Forward", new AutoDriveCommand(driveSubsystem, 5, 0.2));
-    autoChooser.addOption("Shoot Held Ball & Taxi", new AutoShootHeldBallCommand(driveSubsystem, shootSubsystem, intakeSubsystem));
+    autoChooser.addOption(
+      "Taxi Forward",
+      new AutoDriveCommand(driveSubsystem, 3, 0.2)
+    );
+    autoChooser.addOption(
+      "Shoot Ball",
+      new ShootBallCommand(driveSubsystem, shootSubsystem)
+        .andThen(new AutoDriveCommand(driveSubsystem, 3, -0.2))
+    );
+    autoChooser.addOption(
+      "Limelight Shoot",
+      new MoveSetDistanceFromTarget(driveSubsystem, visionSubsystem, 55)
+        .andThen(new ShootBallCommand(driveSubsystem, shootSubsystem))
+        .andThen(new AutoDriveCommand(driveSubsystem, 3, -0.2))
+    );
     SmartDashboard.putData(autoChooser);
   }
 
