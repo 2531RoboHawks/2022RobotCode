@@ -19,10 +19,12 @@ import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.AutoTrajectoryCommand;
 import frc.robot.commands.SynchronizedClimbCommand;
 import frc.robot.commands.ZeroTurretCommand;
+import frc.robot.commands.auto.AutoTaxiCommand;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.LimelightTrackCommand;
@@ -69,6 +71,8 @@ public class RobotContainer {
   public static Joystick gamepad = new Joystick(0);
   public static Joystick helms = new Joystick(1);
 
+  private SendableChooser<Command> autoChooser = new SendableChooser<>();
+
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     configureButtonBindings();
@@ -85,6 +89,10 @@ public class RobotContainer {
     SmartDashboard.putData("Record playback command", recordPlaybackCommand);
     SmartDashboard.putData("Limelight Track command", limelightTrackCommand);
     SmartDashboard.putData("Zero Turret Command", zeroTurretCommand);
+
+    autoChooser.setDefaultOption("None", null);
+    autoChooser.addOption("Taxi", new AutoTaxiCommand(driveSubsystem));
+    SmartDashboard.putData(autoChooser);
   }
 
   /**
@@ -96,7 +104,7 @@ public class RobotContainer {
   private void configureButtonBindings() {
     // new JoystickButton(gamepad, 6).whenHeld(new RecordPlaybackCommand(driveSubsystem));
     // new JoystickButton(gamepad, 6).whenHeld(new PlayPlaybackCommand(driveSubsystem, Playback.load("test")));
-    new JoystickButton(gamepad, 5).whenHeld(limelightTrackCommand);
+    // new JoystickButton(gamepad, 5).whenHeld(limelightTrackCommand);
   }
 
   /**
@@ -105,6 +113,6 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return new PlayPlaybackCommand(driveSubsystem, Playback.load("test"));
+    return autoChooser.getSelected();
   }
 }

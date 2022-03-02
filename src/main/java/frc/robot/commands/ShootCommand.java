@@ -3,6 +3,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
+import frc.robot.InputUtils;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.ShootSubsystem;
 
@@ -14,14 +15,13 @@ public class ShootCommand extends CommandBase {
     this.shootSubsystem = shootSubsystem;
     addRequirements(shootSubsystem);
 
-    // TODO this is temporary
-    SmartDashboard.putNumber("Intake Target RPM", 2000);
+    SmartDashboard.putNumber("Elevator Target RPM", 2000);
     SmartDashboard.putNumber("Revwheel Target RPM", 4000);
   }
 
   @Override
   public void initialize() {
-
+    shootSubsystem.zeroTurret();
   }
 
   public double scale(double n) {
@@ -31,10 +31,18 @@ public class ShootCommand extends CommandBase {
 
   @Override
   public void execute() {
-    shootSubsystem.setTurretPosition(turretTargetPosition);
+    double turretAim = (
+      InputUtils.deadzone(RobotContainer.gamepad.getRawAxis(Constants.Controls.TurretRight)) -
+      InputUtils.deadzone(RobotContainer.gamepad.getRawAxis(Constants.Controls.TurretLeft))
+    );
+    turretAim *= 0.4;
+    if (turretAim != 0) {
+      turretTargetPosition += turretAim;
+      shootSubsystem.setTurretPosition(turretTargetPosition);
+    }
 
     if (RobotContainer.gamepad.getRawButton(Constants.Controls.TurnShoot)) {
-      shootSubsystem.setElevatorRPM(SmartDashboard.getNumber("Intake Target RPM", 0));
+      shootSubsystem.setElevatorRPM(SmartDashboard.getNumber("Elevator Target RPM", 0));
       shootSubsystem.setRevwheelRPM(SmartDashboard.getNumber("Revwheel Target RPM", 0));
     } else {
       shootSubsystem.stop();

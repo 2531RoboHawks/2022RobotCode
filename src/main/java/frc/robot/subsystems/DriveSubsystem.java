@@ -7,7 +7,6 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.sensors.WPI_PigeonIMU;
-import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
 import edu.wpi.first.wpilibj.drive.Vector2d;
@@ -18,17 +17,13 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.MecanumDriveKinematics;
 import edu.wpi.first.math.kinematics.MecanumDriveOdometry;
 import edu.wpi.first.math.kinematics.MecanumDriveWheelSpeeds;
-import edu.wpi.first.wpilibj.ADXRS450_Gyro;
-import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.MecanumDriveInfo;
 import frc.robot.PIDSettings;
 import frc.robot.TalonUtils;
 
 public class DriveSubsystem extends SubsystemBase {
-  private AHRS navxGyro = new AHRS(SPI.Port.kMXP);
-  private ADXRS450_Gyro analogDevicesGyro = new ADXRS450_Gyro(SPI.Port.kOnboardCS2);
-  // private WPI_PigeonIMU pigeon = new WPI_PigeonIMU(0);
+  private WPI_PigeonIMU pigeon = new WPI_PigeonIMU(1);
 
   private WPI_TalonFX frontLeft = new WPI_TalonFX(30);
   private WPI_TalonFX frontRight = new WPI_TalonFX(31);
@@ -94,10 +89,6 @@ public class DriveSubsystem extends SubsystemBase {
     frontRight.setInverted(true);
     backRight.setInverted(true);
 
-    analogDevicesGyro.calibrate();
-    navxGyro.calibrate();
-    // pigeon.calibrate();
-
     odometry = new MecanumDriveOdometry(kinematics, getRotation2d());
     reset();
   }
@@ -140,7 +131,7 @@ public class DriveSubsystem extends SubsystemBase {
     // Vector2d arguments are supposed to be backwards
     Vector2d vector = new Vector2d(y, x);
     if (fieldOriented) {
-      vector.rotate(-getAngle());
+      vector.rotate(getAngle());
     }
 
     frontLeftInfo.changeTargetBy(vector.x + vector.y + z);
@@ -174,17 +165,15 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public double getAngle() {
-    return navxGyro.getAngle();
+    return pigeon.getAngle();
   }
 
   public Rotation2d getRotation2d() {
-    return navxGyro.getRotation2d();
+    return pigeon.getRotation2d();
   }
 
   public void resetGyro() {
-    navxGyro.reset();
-    analogDevicesGyro.reset();
-    // pigeon.reset();
+    pigeon.reset();
   }
 
   public void resetEncoders() {
@@ -243,12 +232,10 @@ public class DriveSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    // odometry.update(getRotation2d(), getWheelSpeeds());
+    odometry.update(getRotation2d(), getWheelSpeeds());
 
-    // SmartDashboard.putNumber("Pose X", getPose().getX());
-    // SmartDashboard.putNumber("Pose Y", getPose().getX());
+    SmartDashboard.putNumber("Pose X", getPose().getX());
+    SmartDashboard.putNumber("Pose Y", getPose().getY());
     SmartDashboard.putNumber("Gyro", getAngle());
-    // SmartDashboard.putNumber("Analog Devices Gyro", analogDevicesGyro.getAngle());
-    // SmartDashboard.putNumber("Pigeon Gyro", pigeon.getAngle());
   }
 }

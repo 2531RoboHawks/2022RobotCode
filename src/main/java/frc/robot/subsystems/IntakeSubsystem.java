@@ -12,7 +12,7 @@ public class IntakeSubsystem extends SubsystemBase {
     private Solenoid solenoid = new Solenoid(PneumaticsModuleType.CTREPCM, 3);
 
     public IntakeSubsystem() {
-        intakeWheel.configurePID(new PIDSettings(0.00006, 0, 0));
+        intakeWheel.configurePID(new PIDSettings(0.0005, 0, 0));
         setDown(false);
     }
 
@@ -26,15 +26,21 @@ public class IntakeSubsystem extends SubsystemBase {
         intakeWheel.set(power);
     }
 
+    private boolean isIntakeSupposedToBeDown = false;
     public void setDown(boolean down) {
+        isIntakeSupposedToBeDown = down;
         System.out.println("Intake down: " + down);
         solenoid.set(down);
+        SmartDashboard.putBoolean("Intake Down", down);
     }
     public void toggleDown() {
       setDown(!isDown());
     }
     public boolean isDown() {
         return solenoid.get();
+    }
+    public boolean isIntakeSupposedToBeDown() {
+        return isIntakeSupposedToBeDown;
     }
 
     public void stop() {

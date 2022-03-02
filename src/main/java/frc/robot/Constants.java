@@ -18,6 +18,9 @@ public final class Constants {
         public static final int ToggleFieldOriented = 4;
         public static final int ResetDrive = 2;
 
+        public static final int TurretRight = 2;
+        public static final int TurretLeft = 3;
+
         public static final int ToggleIntakeDown = 1;
 
         public static final int ToggleClimbArmManually = 2;

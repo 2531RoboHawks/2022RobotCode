@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.InputUtils;
@@ -12,7 +13,7 @@ import frc.robot.RobotContainer;
 import frc.robot.subsystems.DriveSubsystem;
 
 public class DriveCommand extends CommandBase {
-  private static final PIDSettings pid = new PIDSettings(0.2, 0, 0);
+  private static final PIDSettings pid = new PIDSettings(0.1, 0, 0);
 
   private DriveSubsystem driveSubsystem;
   private boolean fieldOriented = true;
@@ -26,6 +27,7 @@ public class DriveCommand extends CommandBase {
   public void initialize() {
     driveSubsystem.setPID(pid);
     driveSubsystem.reset();
+    SmartDashboard.putBoolean("Field Oriented", fieldOriented);
   }
 
   private double scale(double n) {
@@ -42,6 +44,7 @@ public class DriveCommand extends CommandBase {
     if (RobotContainer.gamepad.getRawButtonPressed(Constants.Controls.ToggleFieldOriented)) {
       fieldOriented = !fieldOriented;
       System.out.println("Field oriented: " + fieldOriented);
+      SmartDashboard.putBoolean("Field Oriented", fieldOriented);
     }
 
     if (RobotContainer.gamepad.getRawButtonPressed(Constants.Controls.ResetDrive)) {
