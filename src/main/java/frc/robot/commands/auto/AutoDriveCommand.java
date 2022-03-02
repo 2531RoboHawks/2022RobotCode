@@ -1,15 +1,17 @@
 package frc.robot.commands.auto;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.subsystems.DriveSubsystem;
 
-public class AutoTaxiCommand extends CommandBase {
+public class AutoDriveCommand extends CommandBase {
     private DriveSubsystem driveSubsystem;
-    public AutoTaxiCommand(DriveSubsystem driveSubsystem) {
+    private double seconds;
+    private double speed;
+
+    public AutoDriveCommand(DriveSubsystem driveSubsystem, double seconds, double speed) {
         this.driveSubsystem = driveSubsystem;
+        this.seconds = seconds;
+        this.speed = speed;
         addRequirements(driveSubsystem);
     }
 
@@ -22,7 +24,7 @@ public class AutoTaxiCommand extends CommandBase {
 
     @Override
     public void execute() {
-        driveSubsystem.drivePercent(0.2, 0, 0, false);
+        driveSubsystem.drivePercent(speed, 0, 0, false);
     }
 
     @Override
@@ -32,6 +34,6 @@ public class AutoTaxiCommand extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return System.currentTimeMillis() > start + 5000;
+        return System.currentTimeMillis() > start + (seconds * 1000);
     }
 }

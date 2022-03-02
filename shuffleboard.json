@@ -560,17 +560,6 @@
               "_title": "/SmartDashboard/Manual climb command"
             }
           },
-          "0,1": {
-            "size": [
-              2,
-              1
-            ],
-            "content": {
-              "_type": "Command",
-              "_source0": "network_table:///SmartDashboard/Smart climb command",
-              "_title": "/SmartDashboard/Smart climb command"
-            }
-          },
           "4,0": {
             "size": [
               2,
@@ -625,6 +614,17 @@
               "_source0": "network_table:///SmartDashboard/Right Climb",
               "_title": "/SmartDashboard/Right Climb"
             }
+          },
+          "0,1": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Command",
+              "_source0": "network_table:///SmartDashboard/Synchronized climb command",
+              "_title": "/SmartDashboard/Synchronized climb command"
+            }
           }
         }
       }
@@ -664,7 +664,7 @@
               "_title": "/SmartDashboard/Revwheel Target RPM"
             }
           },
-          "9,0": {
+          "7,0": {
             "size": [
               2,
               1
@@ -675,7 +675,7 @@
               "_title": "/SmartDashboard/Synchronized climb command"
             }
           },
-          "9,1": {
+          "7,1": {
             "size": [
               2,
               1
@@ -686,7 +686,7 @@
               "_title": "/SmartDashboard/Left Climb"
             }
           },
-          "9,2": {
+          "7,2": {
             "size": [
               2,
               1
@@ -788,6 +788,27 @@
               "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/Limelight Distance",
               "_title": "/SmartDashboard/Limelight Distance"
+            }
+          },
+          "0,1": {
+            "size": [
+              3,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///limelight/ledMode",
+              "_title": "Limelight enabled"
+            }
+          },
+          "0,2": {
+            "size": [
+              3,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_title": "HOW THE THING ABOVE WORKS"
             }
           }
         }

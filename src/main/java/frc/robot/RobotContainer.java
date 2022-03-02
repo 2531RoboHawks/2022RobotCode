@@ -24,7 +24,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.AutoTrajectoryCommand;
 import frc.robot.commands.SynchronizedClimbCommand;
 import frc.robot.commands.ZeroTurretCommand;
-import frc.robot.commands.auto.AutoTaxiCommand;
+import frc.robot.commands.auto.AutoDriveCommand;
+import frc.robot.commands.auto.AutoShootHeldBallCommand;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.LimelightTrackCommand;
@@ -91,7 +92,8 @@ public class RobotContainer {
     SmartDashboard.putData("Zero Turret Command", zeroTurretCommand);
 
     autoChooser.setDefaultOption("None", null);
-    autoChooser.addOption("Taxi Forward", new AutoTaxiCommand(driveSubsystem));
+    autoChooser.addOption("Taxi Forward", new AutoDriveCommand(driveSubsystem, 5, 0.2));
+    autoChooser.addOption("Shoot Held Ball & Taxi", new AutoShootHeldBallCommand(driveSubsystem, shootSubsystem, intakeSubsystem));
     SmartDashboard.putData(autoChooser);
   }
 
