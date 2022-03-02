@@ -44,7 +44,7 @@ public class BetterSparkMaxBrushless {
         pidController.setReference(turns, ControlType.kPosition);
     }
     public double getPosition() {
-        return 0;
+        return encoder.getPosition();
     }
 
     public void configurePID(PIDSettings pidSettings) {

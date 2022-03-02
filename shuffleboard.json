@@ -624,12 +624,12 @@
             "content": {
               "_type": "Boolean Box",
               "_source0": "network_table:///SmartDashboard/Field Oriented",
-              "_title": "SmartDashboard/Field Oriented",
+              "_title": "/SmartDashboard/Field Oriented",
               "Colors/Color when true": "#7CFC00FF",
               "Colors/Color when false": "#8B0000FF"
             }
           },
-          "3,0": {
+          "5,0": {
             "size": [
               2,
               1
@@ -717,6 +717,28 @@
               "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/Actual Elevator RPM",
               "_title": "SmartDashboard/Actual Elevator RPM"
+            }
+          },
+          "3,0": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Actual Revwheel RPM",
+              "_title": "SmartDashboard/Actual Revwheel RPM"
+            }
+          },
+          "5,1": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Elevator Target RPM",
+              "_title": "SmartDashboard/Elevator Target RPM"
             }
           }
         }

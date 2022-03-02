@@ -57,10 +57,19 @@ public class ShootSubsystem extends SubsystemBase {
         turret.zero();
     }
 
-    public void stop() {
+    public void stopRevwheel() {
         revwheel.stop();
+    }
+    public void stopElevator() {
         elevatorWheel.stop();
+    }
+    public void stopTurret() {
         turret.stop();
+    }
+    public void stopEverything() {
+        stopRevwheel();
+        stopElevator();
+        stopTurret();
     }
 
     @Override

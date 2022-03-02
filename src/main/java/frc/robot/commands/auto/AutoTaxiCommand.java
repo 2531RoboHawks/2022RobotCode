@@ -10,8 +10,7 @@ public class AutoTaxiCommand extends SequentialCommandGroup {
         addRequirements(driveSubsystem);
 
         addCommands(new InstantCommand(() -> {
-            driveSubsystem.stop();
-            driveSubsystem.drivePercent(0.2, 0, 0, false);
+            driveSubsystem.drivePercent(0.15, 0, 0, false);
         }));
         addCommands(new WaitCommand(5));
         addCommands(new InstantCommand(() -> {

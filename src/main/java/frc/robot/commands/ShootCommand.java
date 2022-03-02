@@ -10,6 +10,7 @@ import frc.robot.subsystems.ShootSubsystem;
 public class ShootCommand extends CommandBase {
   private ShootSubsystem shootSubsystem;
   private double turretTargetPosition = 0;
+  private long startedRevvingAt;
 
   public ShootCommand(ShootSubsystem shootSubsystem) {
     this.shootSubsystem = shootSubsystem;
@@ -22,6 +23,7 @@ public class ShootCommand extends CommandBase {
   @Override
   public void initialize() {
     shootSubsystem.zeroTurret();
+    startedRevvingAt = 0;
   }
 
   public double scale(double n) {
@@ -31,27 +33,32 @@ public class ShootCommand extends CommandBase {
 
   @Override
   public void execute() {
-    double turretAim = (
-      InputUtils.deadzone(RobotContainer.gamepad.getRawAxis(Constants.Controls.TurretRight)) -
-      InputUtils.deadzone(RobotContainer.gamepad.getRawAxis(Constants.Controls.TurretLeft))
+    double turretAim = -(
+      InputUtils.deadzone(RobotContainer.helms.getRawAxis(Constants.Controls.TurretRight)) -
+      InputUtils.deadzone(RobotContainer.helms.getRawAxis(Constants.Controls.TurretLeft))
     );
-    turretAim *= 0.4;
-    if (turretAim != 0) {
-      turretTargetPosition += turretAim;
-      shootSubsystem.setTurretPosition(turretTargetPosition);
-    }
+    turretAim *= 0.1;
+    turretTargetPosition += turretAim;
+    shootSubsystem.setTurretPosition(turretTargetPosition);
 
-    if (RobotContainer.gamepad.getRawButton(Constants.Controls.TurnShoot)) {
-      shootSubsystem.setElevatorRPM(SmartDashboard.getNumber("Elevator Target RPM", 0));
+    if (RobotContainer.gamepad.getRawButton(Constants.Controls.Shoot)) {
+      if (startedRevvingAt == 0) {
+        startedRevvingAt = System.currentTimeMillis();
+      }
       shootSubsystem.setRevwheelRPM(SmartDashboard.getNumber("Revwheel Target RPM", 0));
+      if (System.currentTimeMillis() > startedRevvingAt + 2000) {
+        shootSubsystem.setElevatorRPM(SmartDashboard.getNumber("Elevator Target RPM", 0));
+      }
     } else {
-      shootSubsystem.stop();
+      startedRevvingAt = 0;
+      shootSubsystem.stopRevwheel();
+      shootSubsystem.stopElevator();
     }
   }
 
   @Override
   public void end(boolean interrupted) {
-    shootSubsystem.stop();
+    shootSubsystem.stopEverything();
   }
 
   @Override
