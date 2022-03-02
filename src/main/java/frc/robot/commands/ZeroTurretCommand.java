@@ -8,7 +8,7 @@ public class ZeroTurretCommand extends CommandBase {
 
     public ZeroTurretCommand(ShootSubsystem shootSubsystem) {
         this.shootSubsystem = shootSubsystem;
-        // NOTE: Intentionally do not addRequirements for now
+        addRequirements(shootSubsystem);
     }
 
     @Override

@@ -22,6 +22,7 @@ public class ShootCommand extends CommandBase {
   @Override
   public void initialize() {
     shootSubsystem.zeroTurret();
+    
   }
 
   public double scale(double n) {
@@ -31,12 +32,12 @@ public class ShootCommand extends CommandBase {
 
   @Override
   public void execute() {
-    double turretAim = -(
-      InputUtils.deadzone(RobotContainer.helms.getRawAxis(Constants.Controls.TurretRight)) -
-      InputUtils.deadzone(RobotContainer.helms.getRawAxis(Constants.Controls.TurretLeft))
-    );
-    turretAim *= 0.1;
-    turretTargetPosition += turretAim;
+    // double turretAim = -(
+    //   InputUtils.deadzone(RobotContainer.helms.getRawAxis(Constants.Controls.TurretRight)) -
+    //   InputUtils.deadzone(RobotContainer.helms.getRawAxis(Constants.Controls.TurretLeft))
+    // );
+    // turretAim *= 0.1;
+    // turretTargetPosition += turretAim;
     shootSubsystem.setTurretPosition(turretTargetPosition);
 
     if (RobotContainer.gamepad.getRawButton(Constants.Controls.Shoot)) {
