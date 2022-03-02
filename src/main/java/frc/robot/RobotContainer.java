@@ -91,7 +91,7 @@ public class RobotContainer {
     SmartDashboard.putData("Zero Turret Command", zeroTurretCommand);
 
     autoChooser.setDefaultOption("None", null);
-    autoChooser.addOption("Taxi", new AutoTaxiCommand(driveSubsystem));
+    autoChooser.addOption("Taxi Forward", new AutoTaxiCommand(driveSubsystem));
     SmartDashboard.putData(autoChooser);
   }
 
