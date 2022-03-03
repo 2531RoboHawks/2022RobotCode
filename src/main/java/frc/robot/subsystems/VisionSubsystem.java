@@ -13,6 +13,7 @@ public class VisionSubsystem extends SubsystemBase {
     private NetworkTableEntry tx = table.getEntry("tx");
     private NetworkTableEntry ty = table.getEntry("ty");
     private NetworkTableEntry ta = table.getEntry("ta");
+    private NetworkTableEntry ledMode = table.getEntry("ledMode");
 
     public VisionSubsystem() {
 
@@ -36,10 +37,18 @@ public class VisionSubsystem extends SubsystemBase {
 
     public double getDistance() {
         double targetHeight = 102.5; // inches
-        double mountHeight = 38.375; // inches
+        double mountHeight = 38.25; // inches
         double mountAngle = 34; // degrees
         double y = getY();
-        return (targetHeight - mountHeight) / Math.tan((mountAngle + y) * (Math.PI / 180.0));
+        return (targetHeight - mountHeight) / Math.tan((mountAngle + y) * (Math.PI / 180.0)) + 8.0;
+    }
+
+    public void setLightsEnabled(boolean enabled) {
+        // 0 - pipeline default
+        // 1 - force off
+        // 2 - force blink
+        // 3 - force on
+        ledMode.setNumber(enabled ? 0 : 3);
     }
 
     @Override

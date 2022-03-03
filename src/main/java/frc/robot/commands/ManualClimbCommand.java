@@ -19,7 +19,6 @@ public class ManualClimbCommand extends CommandBase {
 
     @Override
     public void initialize() {
-        intakeSubsystem.setDown(true);
         intakeSubsystem.stop();
     }
 
