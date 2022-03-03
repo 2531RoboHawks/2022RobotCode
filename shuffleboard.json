@@ -479,6 +479,11 @@
                   "Visuals/Starting angle": 180.0,
                   "Visuals/Show tick mark ring": true,
                   "Visuals/Counter clockwise": false
+                },
+                {
+                  "_type": "PID Controller",
+                  "_source0": "network_table:///LiveWindow/Ungrouped/PIDController[2]",
+                  "_title": "LiveWindow/Ungrouped/PIDController[2]"
                 }
               ]
             }
@@ -686,9 +691,9 @@
               "_title": "/SmartDashboard/Left Climb"
             }
           },
-          "7,2": {
+          "5,2": {
             "size": [
-              2,
+              1,
               1
             ],
             "content": {
@@ -764,6 +769,25 @@
               "_source0": "network_table:///SmartDashboard/Elevator Target RPM",
               "_title": "/SmartDashboard/Elevator Target RPM"
             }
+          },
+          "6,2": {
+            "size": [
+              3,
+              2
+            ],
+            "content": {
+              "_type": "Camera Stream",
+              "_source0": "camera_server://limelight",
+              "_title": "limelight",
+              "Crosshair/Show crosshair": true,
+              "Crosshair/Crosshair color": "#FFFFFFFF",
+              "Controls/Show controls": true,
+              "Controls/Rotation": "NONE",
+              "compression": -1.0,
+              "fps": -1,
+              "imageWidth": -1,
+              "imageHeight": -1
+            }
           }
         }
       }
@@ -798,17 +822,7 @@
             "content": {
               "_type": "Text View",
               "_source0": "network_table:///limelight/ledMode",
-              "_title": "Limelight enabled"
-            }
-          },
-          "0,2": {
-            "size": [
-              3,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_title": "HOW THE THING ABOVE WORKS"
+              "_title": "Limelight enabled (0 \u003d ON, 1 \u003d OFF)"
             }
           }
         }
@@ -818,7 +832,7 @@
   "windowGeometry": {
     "x": -8.0,
     "y": -8.0,
-    "width": 1616.0,
-    "height": 876.0
+    "width": 1382.0,
+    "height": 784.0
   }
 }
