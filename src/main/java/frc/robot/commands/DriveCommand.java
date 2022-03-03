@@ -51,7 +51,7 @@ public class DriveCommand extends CommandBase {
       if (RobotContainer.gamepad.getRawButtonPressed(Constants.Controls.ResetDrive)) {
         driveSubsystem.resetGyro();
         driveSubsystem.resetEncoders();
-      }  
+      }
     } else {
       // TEMPORARY
       if (RobotContainer.gamepad.getRawButton(Constants.Controls.ResetDrive)) {
