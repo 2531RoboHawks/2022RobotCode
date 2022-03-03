@@ -16,7 +16,7 @@ public class ShootBallCommand extends SequentialCommandGroup {
         addRequirements(driveSubsystem, shootSubsystem);
 
         addCommands(new InstantCommand(() -> {
-            shootSubsystem.setRevwheelRPM(4000);
+            shootSubsystem.setRevwheelRPM(4500);
         }));
         addCommands(new WaitCommand(5));
         addCommands(new InstantCommand(() -> {

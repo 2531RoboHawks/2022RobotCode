@@ -40,7 +40,7 @@ public class MoveSetDistanceFromTarget extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return pid.atSetpoint() || System.currentTimeMillis() > start + 5000;
+        return pid.atSetpoint() || System.currentTimeMillis() > start + 3000;
     }
 
     @Override
