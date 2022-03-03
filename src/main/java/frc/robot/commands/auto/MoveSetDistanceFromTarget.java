@@ -24,6 +24,7 @@ public class MoveSetDistanceFromTarget extends CommandBase {
         pid.setSetpoint(distance);
         pid.reset();
         driveSubsystem.reset();
+        visionSubsystem.ensureEnabled();
     }
 
     @Override
@@ -43,5 +44,6 @@ public class MoveSetDistanceFromTarget extends CommandBase {
     @Override
     public void end(boolean interrupted) {
         driveSubsystem.stop();
+        visionSubsystem.noLongerNeeded();
     }
 }

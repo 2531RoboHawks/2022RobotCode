@@ -26,6 +26,7 @@ public class LimelightTrackCommand extends CommandBase {
   @Override
   public void initialize() {
     pidController.setSetpoint(0);
+    visionSubsystem.ensureEnabled();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -42,7 +43,8 @@ public class LimelightTrackCommand extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    this.driveSubsystem.stop();
+    driveSubsystem.stop();
+    visionSubsystem.noLongerNeeded();
   }
 
   // Returns true when the command should end.

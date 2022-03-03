@@ -43,12 +43,21 @@ public class VisionSubsystem extends SubsystemBase {
         return (targetHeight - mountHeight) / Math.tan((mountAngle + y) * (Math.PI / 180.0)) + 8.0;
     }
 
-    public void setLightsEnabled(boolean enabled) {
+    public void ensureEnabled() {
+        setLightsEnabled(true);
+    }
+
+    public void noLongerNeeded() {
+        setLightsEnabled(false);
+    }
+
+    private void setLightsEnabled(boolean enabled) {
+        System.out.println("Limelight enabled: " + enabled);
         // 0 - pipeline default
         // 1 - force off
         // 2 - force blink
         // 3 - force on
-        ledMode.setNumber(enabled ? 0 : 3);
+        ledMode.setNumber(enabled ? 3 : 1);
     }
 
     @Override
