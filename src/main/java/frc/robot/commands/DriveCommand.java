@@ -16,7 +16,7 @@ public class DriveCommand extends CommandBase {
   private static final PIDSettings pid = new PIDSettings(0.2, 0, 0);
 
   private DriveSubsystem driveSubsystem;
-  private boolean fieldOriented = true;
+  private boolean fieldOriented = false;
 
   public DriveCommand(DriveSubsystem driveSubsystem) {
     this.driveSubsystem = driveSubsystem;
