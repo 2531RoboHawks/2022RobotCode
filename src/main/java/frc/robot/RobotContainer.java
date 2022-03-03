@@ -106,7 +106,7 @@ public class RobotContainer {
       "Limelight Shoot",
       new MoveSetDistanceFromTarget(driveSubsystem, visionSubsystem, 55)
         .andThen(new ShootBallCommand(driveSubsystem, shootSubsystem))
-        .andThen(new AutoDriveCommand(driveSubsystem, 3, -0.2))
+        .andThen(new AutoDriveCommand(driveSubsystem, 3, -0.15))
     );
     SmartDashboard.putData(autoChooser);
   }
