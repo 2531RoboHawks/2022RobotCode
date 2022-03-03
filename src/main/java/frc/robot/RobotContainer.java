@@ -92,12 +92,12 @@ public class RobotContainer {
     SmartDashboard.putData("Limelight Track command", limelightTrackCommand);
     SmartDashboard.putData("Zero Turret Command", zeroTurretCommand);
 
-    autoChooser.setDefaultOption("None", null);
+    autoChooser.addOption("None", null);
     autoChooser.addOption(
       "Taxi Forward",
       new AutoDriveCommand(driveSubsystem, 3, 0.2)
     );
-    autoChooser.addOption(
+    autoChooser.setDefaultOption(
       "Shoot Ball",
       new ShootBallCommand(driveSubsystem, shootSubsystem)
         .andThen(new AutoDriveCommand(driveSubsystem, 3, -0.2))
