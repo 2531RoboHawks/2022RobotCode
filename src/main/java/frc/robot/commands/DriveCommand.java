@@ -47,9 +47,16 @@ public class DriveCommand extends CommandBase {
       SmartDashboard.putBoolean("Field Oriented", fieldOriented);
     }
 
-    if (RobotContainer.gamepad.getRawButtonPressed(Constants.Controls.ResetDrive)) {
-      driveSubsystem.resetGyro();
-      driveSubsystem.resetEncoders();
+    if (fieldOriented) {
+      if (RobotContainer.gamepad.getRawButtonPressed(Constants.Controls.ResetDrive)) {
+        driveSubsystem.resetGyro();
+        driveSubsystem.resetEncoders();
+      }  
+    } else {
+      // TEMPORARY
+      if (RobotContainer.gamepad.getRawButton(Constants.Controls.ResetDrive)) {
+        xyMultiplier /= 2;
+      }
     }
 
     double x = RobotContainer.gamepad.getX();
