@@ -5,12 +5,12 @@ import frc.robot.subsystems.DriveSubsystem;
 
 public class AutoDriveCommand extends CommandBase {
     private DriveSubsystem driveSubsystem;
-    private double seconds;
+    private double millis;
     private double speed;
 
     public AutoDriveCommand(DriveSubsystem driveSubsystem, double seconds, double speed) {
         this.driveSubsystem = driveSubsystem;
-        this.seconds = seconds;
+        this.millis = seconds * 1000.0;
         this.speed = speed;
         addRequirements(driveSubsystem);
     }
@@ -34,6 +34,6 @@ public class AutoDriveCommand extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return System.currentTimeMillis() > start + (seconds * 1000);
+        return System.currentTimeMillis() > start + millis;
     }
 }
