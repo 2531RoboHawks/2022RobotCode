@@ -56,7 +56,7 @@ public class DriveCommand extends CommandBase {
     double y = -RobotContainer.gamepad.getY();
     double z = RobotContainer.gamepad.getRawAxis(4);
 
-    driveSubsystem.driveTeleop(
+    driveSubsystem.drivePercent(
       scale(y) * xyMultiplier,
       scale(x) * xyMultiplier,
       scale(z) * rotationMultiplier,
