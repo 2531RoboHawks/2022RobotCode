@@ -9,6 +9,7 @@ public class MoveSetDistanceFromTarget extends CommandBase {
     private DriveSubsystem driveSubsystem;
     private VisionSubsystem visionSubsystem;
     private double distance;
+    private long start;
     private PIDController pid = new PIDController(0.01, 0, 0);
 
     public MoveSetDistanceFromTarget(DriveSubsystem driveSubsystem, VisionSubsystem visionSubsystem, double distance) {
@@ -20,6 +21,7 @@ public class MoveSetDistanceFromTarget extends CommandBase {
 
     @Override
     public void initialize() {
+        start = System.currentTimeMillis();
         pid.setTolerance(0.5);
         pid.setSetpoint(distance);
         pid.reset();
@@ -38,7 +40,7 @@ public class MoveSetDistanceFromTarget extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return pid.atSetpoint();
+        return pid.atSetpoint() || System.currentTimeMillis() > start + 5000;
     }
 
     @Override
