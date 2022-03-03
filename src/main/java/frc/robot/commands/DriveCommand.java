@@ -56,6 +56,7 @@ public class DriveCommand extends CommandBase {
       // TEMPORARY
       if (RobotContainer.gamepad.getRawButton(Constants.Controls.ResetDrive)) {
         xyMultiplier /= 2;
+        rotationMultiplier /= 2;
       }
     }
 
