@@ -119,14 +119,14 @@ public class RobotContainer {
         .andThen(new AutoTurnArounCommand(driveSubsystem))
         .andThen(new InstantCommand(() -> {
           intakeSubsystem.setDown(true);
-          shootSubsystem.setTraversePercent(0.3);
+          shootSubsystem.setTraversePercent(0.8);
         }, intakeSubsystem, shootSubsystem))
         .andThen(new AutoDriveCommand(driveSubsystem, 3, 0.2, 0, 0))
         .andThen(new InstantCommand(() -> {
           intakeSubsystem.setDown(false);
         }, intakeSubsystem))
         .andThen(new AutoTurnArounCommand(driveSubsystem))
-        .andThen(new MoveSetDistanceFromTarget(driveSubsystem, visionSubsystem, 65).withTimeout(3))
+        .andThen(new MoveSetDistanceFromTarget(driveSubsystem, visionSubsystem, 65).withTimeout(2.5))
         .andThen(new ShootBallCommand(driveSubsystem, shootSubsystem))
     );
     SmartDashboard.putData(autoChooser);
