@@ -52,9 +52,9 @@ public class ShootCommand extends CommandBase {
     }
 
     if (RobotContainer.gamepad.getRawButton(Constants.Controls.Traverse)) {
-      shootSubsystem.setTraversePercent(0.6);
+      shootSubsystem.setTraversePercent(.6);
     } else if (RobotContainer.gamepad.getRawButton(Constants.Controls.TraverseReverse)) {
-      shootSubsystem.setTraversePercent(-0.6);
+      shootSubsystem.setTraversePercent(-.6);
     } else {
       shootSubsystem.stopTraverse();
     }

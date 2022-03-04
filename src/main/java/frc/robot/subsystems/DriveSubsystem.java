@@ -114,6 +114,14 @@ public class DriveSubsystem extends SubsystemBase {
     );
   }
 
+  public void drivePercent2(double ySpeed, double xSpeed, double zRotation) {
+    frontLeft.set(ControlMode.PercentOutput, ySpeed + xSpeed + zRotation);
+    frontRight.set(ControlMode.PercentOutput, ySpeed - xSpeed - zRotation);
+    backLeft.set(ControlMode.PercentOutput, ySpeed - xSpeed + zRotation);
+    backRight.set(ControlMode.PercentOutput, ySpeed + xSpeed - zRotation);
+    mecanumDrive.feed();
+  }
+
   private void updateMotorsToTargetValues() {
     frontLeft.set(ControlMode.Position, frontLeftInfo.getTargetValueIncludingZero());
     frontRight.set(ControlMode.Position, frontRightInfo.getTargetValueIncludingZero());
