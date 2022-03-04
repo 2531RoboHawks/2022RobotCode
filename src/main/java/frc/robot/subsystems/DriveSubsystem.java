@@ -76,7 +76,7 @@ public class DriveSubsystem extends SubsystemBase {
 
     setPID(new PIDSettings());
 
-    double secondsFromNeutralToFull = 0.1;
+    double secondsFromNeutralToFull = 0.5;
     frontLeft.configOpenloopRamp(secondsFromNeutralToFull);
     frontLeft.configClosedloopRamp(secondsFromNeutralToFull);
     frontRight.configOpenloopRamp(secondsFromNeutralToFull);

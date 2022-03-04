@@ -38,7 +38,7 @@ public class DriveCommand extends CommandBase {
   @Override
   public void execute() {
     boolean turbo = RobotContainer.gamepad.getRawButton(Constants.Controls.Turbo);
-    double xMultiplier = turbo ? 1 : 0.4;
+    double xMultiplier = turbo ? 1 : 0.6;
     double yMultiplier = turbo ? 1 : 0.3;
     double rotationMultiplier = turbo ? 0.35 : 0.25;
 
@@ -65,6 +65,7 @@ public class DriveCommand extends CommandBase {
     double x = RobotContainer.gamepad.getX();
     double y = -RobotContainer.gamepad.getY();
     double z = RobotContainer.gamepad.getRawAxis(4);
+    if (Math.abs(x) < 0.2) x = 0;
 
     driveSubsystem.drivePercent(
       scale(y) * yMultiplier,

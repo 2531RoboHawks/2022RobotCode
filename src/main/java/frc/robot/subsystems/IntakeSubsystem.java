@@ -16,31 +16,34 @@ public class IntakeSubsystem extends SubsystemBase {
         setDown(false);
     }
 
-    public void setRPM(double rpm) {
+    private void setRPM(double rpm) {
         // TODO Broken
         System.out.println("Intake RPM: " + rpm);
         intakeWheel.setRPM(rpm);
     }
-    public void setPower(double power) {
+    private void setPower(double power) {
         System.out.println("Intake power: " + power);
         intakeWheel.set(power);
     }
 
-    private boolean isIntakeSupposedToBeDown = false;
-    public void setDown(boolean down) {
-        isIntakeSupposedToBeDown = down;
+    public void setDown(boolean down, boolean canRunIntake) {
         System.out.println("Intake down: " + down);
         solenoid.set(down);
         SmartDashboard.putBoolean("Intake Down", down);
+        if (down && canRunIntake) {
+            setPower(0.4);
+        } else {
+            stop();
+        }
+    }
+    public void setDown(boolean down) {
+        setDown(down, true);
     }
     public void toggleDown() {
       setDown(!isDown());
     }
     public boolean isDown() {
         return solenoid.get();
-    }
-    public boolean isIntakeSupposedToBeDown() {
-        return isIntakeSupposedToBeDown;
     }
 
     public void stop() {

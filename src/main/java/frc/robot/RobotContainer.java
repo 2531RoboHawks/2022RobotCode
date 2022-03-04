@@ -25,6 +25,7 @@ import frc.robot.commands.AutoTrajectoryCommand;
 import frc.robot.commands.SynchronizedClimbCommand;
 import frc.robot.commands.ZeroTurretCommand;
 import frc.robot.commands.auto.AutoDriveCommand;
+import frc.robot.commands.auto.AutoTurnArounCommand;
 import frc.robot.commands.auto.ShootBallCommand;
 import frc.robot.commands.auto.MoveSetDistanceFromTarget;
 import frc.robot.commands.DriveCommand;
@@ -42,7 +43,9 @@ import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShootSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
@@ -95,18 +98,36 @@ public class RobotContainer {
     autoChooser.addOption("None", null);
     autoChooser.addOption(
       "Taxi Forward",
-      new AutoDriveCommand(driveSubsystem, 5, 0.15)
+      new AutoDriveCommand(driveSubsystem, 5, 0.2, 0, 0)
     );
     autoChooser.setDefaultOption(
       "Shoot Ball",
       new ShootBallCommand(driveSubsystem, shootSubsystem)
-        .andThen(new AutoDriveCommand(driveSubsystem, 5, -0.15))
+        .andThen(new AutoDriveCommand(driveSubsystem, 5, -0.2, 0, 0))
     );
-    autoChooser.addOption(
+    autoChooser.setDefaultOption(
       "Limelight Shoot",
       new MoveSetDistanceFromTarget(driveSubsystem, visionSubsystem, 65)
         .andThen(new ShootBallCommand(driveSubsystem, shootSubsystem))
-        .andThen(new AutoDriveCommand(driveSubsystem, 5, -0.15))
+        .andThen(new AutoDriveCommand(driveSubsystem, 5, -0.2, 0, 0))
+    );
+    autoChooser.addOption(
+      "Surprise",
+      new MoveSetDistanceFromTarget(driveSubsystem, visionSubsystem, 65)
+        .withTimeout(1)
+        .andThen(new ShootBallCommand(driveSubsystem, shootSubsystem))
+        .andThen(new AutoTurnArounCommand(driveSubsystem))
+        .andThen(new InstantCommand(() -> {
+          intakeSubsystem.setDown(true);
+          shootSubsystem.setTraversePercent(0.3);
+        }, intakeSubsystem, shootSubsystem))
+        .andThen(new AutoDriveCommand(driveSubsystem, 3, 0.2, 0, 0))
+        .andThen(new InstantCommand(() -> {
+          intakeSubsystem.setDown(false);
+        }, intakeSubsystem))
+        .andThen(new AutoTurnArounCommand(driveSubsystem))
+        .andThen(new MoveSetDistanceFromTarget(driveSubsystem, visionSubsystem, 65).withTimeout(3))
+        .andThen(new ShootBallCommand(driveSubsystem, shootSubsystem))
     );
     SmartDashboard.putData(autoChooser);
   }

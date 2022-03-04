@@ -19,7 +19,7 @@ public class SynchronizedClimbCommand extends CommandBase {
 
   @Override
   public void initialize() {
-    intakeSubsystem.setDown(true);
+    intakeSubsystem.setDown(true, false);
     intakeSubsystem.stop();
     climbSubsystem.zero();
   }

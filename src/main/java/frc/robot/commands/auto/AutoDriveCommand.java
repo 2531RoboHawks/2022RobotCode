@@ -6,12 +6,16 @@ import frc.robot.subsystems.DriveSubsystem;
 public class AutoDriveCommand extends CommandBase {
     private DriveSubsystem driveSubsystem;
     private double millis;
-    private double speed;
+    private double ySpeed;
+    private double xSpeed;
+    private double zRotation;
 
-    public AutoDriveCommand(DriveSubsystem driveSubsystem, double seconds, double speed) {
+    public AutoDriveCommand(DriveSubsystem driveSubsystem, double seconds, double ySpeed, double xSpeed, double zRotation) {
         this.driveSubsystem = driveSubsystem;
         this.millis = seconds * 1000.0;
-        this.speed = speed;
+        this.ySpeed = ySpeed;
+        this.xSpeed = xSpeed;
+        this.zRotation = zRotation;
         addRequirements(driveSubsystem);
     }
 
@@ -24,7 +28,7 @@ public class AutoDriveCommand extends CommandBase {
 
     @Override
     public void execute() {
-        driveSubsystem.drivePercent(speed, 0, 0, false);
+        driveSubsystem.drivePercent(ySpeed, xSpeed, zRotation, false);
     }
 
     @Override
