@@ -95,18 +95,18 @@ public class RobotContainer {
     autoChooser.addOption("None", null);
     autoChooser.addOption(
       "Taxi Forward",
-      new AutoDriveCommand(driveSubsystem, 3, 0.2)
+      new AutoDriveCommand(driveSubsystem, 5, 0.15)
     );
     autoChooser.setDefaultOption(
       "Shoot Ball",
       new ShootBallCommand(driveSubsystem, shootSubsystem)
-        .andThen(new AutoDriveCommand(driveSubsystem, 3, -0.2))
+        .andThen(new AutoDriveCommand(driveSubsystem, 5, -0.15))
     );
     autoChooser.addOption(
       "Limelight Shoot",
       new MoveSetDistanceFromTarget(driveSubsystem, visionSubsystem, 65)
         .andThen(new ShootBallCommand(driveSubsystem, shootSubsystem))
-        .andThen(new AutoDriveCommand(driveSubsystem, 3, -0.15))
+        .andThen(new AutoDriveCommand(driveSubsystem, 5, -0.15))
     );
     SmartDashboard.putData(autoChooser);
   }
