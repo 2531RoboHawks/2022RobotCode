@@ -104,7 +104,7 @@ public class RobotContainer {
     );
     autoChooser.addOption(
       "Limelight Shoot",
-      new MoveSetDistanceFromTarget(driveSubsystem, visionSubsystem, 55)
+      new MoveSetDistanceFromTarget(driveSubsystem, visionSubsystem, 65)
         .andThen(new ShootBallCommand(driveSubsystem, shootSubsystem))
         .andThen(new AutoDriveCommand(driveSubsystem, 3, -0.15))
     );

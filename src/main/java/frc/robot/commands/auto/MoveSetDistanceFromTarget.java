@@ -31,16 +31,24 @@ public class MoveSetDistanceFromTarget extends CommandBase {
 
     @Override
     public void execute() {
-        double value = pid.calculate(visionSubsystem.getDistance());
-        double maxSpeed = 0.3;
-        if (value > maxSpeed) value = maxSpeed;
-        if (value < -maxSpeed) value = -maxSpeed;
-        driveSubsystem.drivePercent(-value, 0, 0, false);
+        if (System.currentTimeMillis() < start + 1000) {
+            // wait for light to turn on
+            return;
+        }
+        if (visionSubsystem.hasValidTarget()) {
+            double value = pid.calculate(visionSubsystem.getDistance());
+            double maxSpeed = 0.3;
+            if (value > maxSpeed) value = maxSpeed;
+            if (value < -maxSpeed) value = -maxSpeed;
+            driveSubsystem.drivePercent(-value, 0, 0, false);    
+        } else {
+            driveSubsystem.stop();
+        }
     }
 
     @Override
     public boolean isFinished() {
-        return pid.atSetpoint() || System.currentTimeMillis() > start + 3000;
+        return pid.atSetpoint() || System.currentTimeMillis() > start + 4000;
     }
 
     @Override

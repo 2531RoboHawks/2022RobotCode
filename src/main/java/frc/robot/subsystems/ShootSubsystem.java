@@ -17,7 +17,7 @@ public class ShootSubsystem extends SubsystemBase {
     private static final double turretGearRatio = 215.0 / 16.0;
 
     private BetterTalonFX revwheel = new BetterTalonFX(15);
-    private static final PIDSettings revwheelPidSettings = new PIDSettings(0.15, 0.001, 0);
+    private static final PIDSettings revwheelPidSettings = new PIDSettings(0.075, 0.00009, 0);
 
     private BetterTalonFX elevatorWheel = new BetterTalonFX(9);
     private static final PIDSettings elevatorPidSettings = new PIDSettings(0.1, 0.001, 5);
