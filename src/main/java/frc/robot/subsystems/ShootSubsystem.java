@@ -31,6 +31,7 @@ public class ShootSubsystem extends SubsystemBase {
         turret.setInverted(true);
 
         revwheel.configurePID(revwheelPidSettings);
+        revwheel.configureRamp(0.5);
 
         elevatorWheel.setInverted(true);
         elevatorWheel.configurePID(elevatorPidSettings);
