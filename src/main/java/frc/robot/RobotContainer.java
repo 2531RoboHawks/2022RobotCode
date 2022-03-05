@@ -105,13 +105,13 @@ public class RobotContainer {
       new ShootBallCommand(driveSubsystem, shootSubsystem)
         .andThen(new AutoDriveCommand(driveSubsystem, 5, -0.2, 0, 0))
     );
-    autoChooser.setDefaultOption(
+    autoChooser.addOption(
       "Limelight Shoot",
       new MoveSetDistanceFromTarget(driveSubsystem, visionSubsystem, 65)
         .andThen(new ShootBallCommand(driveSubsystem, shootSubsystem))
         .andThen(new AutoDriveCommand(driveSubsystem, 5, -0.2, 0, 0))
     );
-    autoChooser.addOption(
+    autoChooser.setDefaultOption(
       "Surprise",
       new MoveSetDistanceFromTarget(driveSubsystem, visionSubsystem, 65)
         .withTimeout(1)
@@ -126,6 +126,7 @@ public class RobotContainer {
           intakeSubsystem.setDown(false);
         }, intakeSubsystem))
         .andThen(new AutoTurnArounCommand(driveSubsystem))
+        .andThen(new LimelightTrackCommand(visionSubsystem, driveSubsystem).withTimeout(1))
         .andThen(new MoveSetDistanceFromTarget(driveSubsystem, visionSubsystem, 65).withTimeout(2.5))
         .andThen(new ShootBallCommand(driveSubsystem, shootSubsystem))
     );
