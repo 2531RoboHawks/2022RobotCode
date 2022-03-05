@@ -40,11 +40,11 @@ public class ShootCommand extends CommandBase {
     // turretTargetPosition += turretAim;
     // shootSubsystem.setTurretPosition(turretTargetPosition);
 
-    if (RobotContainer.gamepad.getRawButton(Constants.Controls.Shoot)) {
-      shootSubsystem.setRevwheelRPM(SmartDashboard.getNumber("Revwheel Target RPM", 0));
-    } else {
-      shootSubsystem.stopRevwheel();
-    }
+    // if (RobotContainer.gamepad.getRawButton(Constants.Controls.Shoot)) {
+    //   shootSubsystem.setRevwheelRPM(SmartDashboard.getNumber("Revwheel Target RPM", 0));
+    // } else {
+    //   shootSubsystem.stopRevwheel();
+    // }
     if (RobotContainer.gamepad.getRawButton(Constants.Controls.Elevator)) {
       shootSubsystem.setElevatorRPM(SmartDashboard.getNumber("Elevator Target RPM", 0));
     } else {

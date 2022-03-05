@@ -84,7 +84,3 @@ public class DriveCommand extends CommandBase {
     return false;
   }
 }
-
-// The following comment is required per request of the captains as a form of appeasement
-// If we remove it, which we would love to do, we will get a yelling from a certain player, so we just won't
-// sans

@@ -111,14 +111,14 @@ public class RobotContainer {
         .andThen(new ShootBallCommand(driveSubsystem, shootSubsystem))
         .andThen(new AutoDriveCommand(driveSubsystem, 5, -0.2, 0, 0))
     );
-    autoChooser.addOption(
+    autoChooser.setDefaultOption(
       "One Ball Delayed",
       new WaitCommand(5)
         .andThen(new MoveSetDistanceFromTarget(driveSubsystem, visionSubsystem, 65))
         .andThen(new ShootBallCommand(driveSubsystem, shootSubsystem))
         .andThen(new AutoDriveCommand(driveSubsystem, 5, -0.2, 0, 0))
     );
-    autoChooser.setDefaultOption(
+    autoChooser.addOption(
       "Two Ball",
       new MoveSetDistanceFromTarget(driveSubsystem, visionSubsystem, 65)
         .withTimeout(1)
@@ -149,7 +149,7 @@ public class RobotContainer {
   private void configureButtonBindings() {
     // new JoystickButton(gamepad, 6).whenHeld(new RecordPlaybackCommand(driveSubsystem));
     // new JoystickButton(gamepad, 6).whenHeld(new PlayPlaybackCommand(driveSubsystem, Playback.load("test")));
-    // new JoystickButton(gamepad, 5).whenHeld(limelightTrackCommand);
+    new JoystickButton(helms, 8).toggleWhenActive(synchronizedClimbCommand);
   }
 
   /**
