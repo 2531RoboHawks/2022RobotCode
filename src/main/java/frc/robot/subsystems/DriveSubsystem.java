@@ -245,5 +245,10 @@ public class DriveSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Pose X", getPose().getX());
     SmartDashboard.putNumber("Pose Y", getPose().getY());
     SmartDashboard.putNumber("Gyro", getAngle());
+
+    SmartDashboard.putNumber("FL Amps", frontLeft.getSupplyCurrent());
+    SmartDashboard.putNumber("FR Amps", frontRight.getSupplyCurrent());
+    SmartDashboard.putNumber("BL Amps", backLeft.getSupplyCurrent());
+    SmartDashboard.putNumber("BR Amps", backRight.getSupplyCurrent());
   }
 }

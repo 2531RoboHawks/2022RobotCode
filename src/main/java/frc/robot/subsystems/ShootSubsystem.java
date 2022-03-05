@@ -93,5 +93,8 @@ public class ShootSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("Actual Revwheel RPM", revwheel.getRPM());
         SmartDashboard.putNumber("Actual Elevator RPM", elevatorWheel.getRPM());
         SmartDashboard.putNumber("Actual Turret Position", turret.getPosition());
+        SmartDashboard.putNumber("Traverse Volts", traverse.getBusVoltage());
+        SmartDashboard.putNumber("Turret Amps", turret.getCanSparkMax().getOutputCurrent());
+        SmartDashboard.putNumber("Turret Volts", turret.getCanSparkMax().getBusVoltage());
     }
 }

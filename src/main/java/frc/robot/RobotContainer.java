@@ -97,29 +97,36 @@ public class RobotContainer {
 
     autoChooser.addOption("None", null);
     autoChooser.addOption(
-      "Taxi Forward",
+      "Taxi",
       new AutoDriveCommand(driveSubsystem, 5, 0.2, 0, 0)
     );
     autoChooser.setDefaultOption(
-      "Shoot Ball",
+      "Primitive One Ball",
       new ShootBallCommand(driveSubsystem, shootSubsystem)
         .andThen(new AutoDriveCommand(driveSubsystem, 5, -0.2, 0, 0))
     );
     autoChooser.addOption(
-      "Limelight Shoot",
+      "One Ball",
       new MoveSetDistanceFromTarget(driveSubsystem, visionSubsystem, 65)
         .andThen(new ShootBallCommand(driveSubsystem, shootSubsystem))
         .andThen(new AutoDriveCommand(driveSubsystem, 5, -0.2, 0, 0))
     );
+    autoChooser.addOption(
+      "One Ball Delayed",
+      new WaitCommand(5)
+        .andThen(new MoveSetDistanceFromTarget(driveSubsystem, visionSubsystem, 65))
+        .andThen(new ShootBallCommand(driveSubsystem, shootSubsystem))
+        .andThen(new AutoDriveCommand(driveSubsystem, 5, -0.2, 0, 0))
+    );
     autoChooser.setDefaultOption(
-      "Surprise",
+      "Two Ball",
       new MoveSetDistanceFromTarget(driveSubsystem, visionSubsystem, 65)
         .withTimeout(1)
         .andThen(new ShootBallCommand(driveSubsystem, shootSubsystem))
         .andThen(new AutoTurnArounCommand(driveSubsystem))
         .andThen(new InstantCommand(() -> {
           intakeSubsystem.setDown(true);
-          shootSubsystem.setTraversePercent(0.8);
+          shootSubsystem.setTraversePercent(0.6);
         }, intakeSubsystem, shootSubsystem))
         .andThen(new AutoDriveCommand(driveSubsystem, 3, 0.2, 0, 0))
         .andThen(new InstantCommand(() -> {

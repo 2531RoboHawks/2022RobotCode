@@ -38,7 +38,7 @@ public class ShootCommand extends CommandBase {
     // );
     // turretAim *= 0.1;
     // turretTargetPosition += turretAim;
-    shootSubsystem.setTurretPosition(turretTargetPosition);
+    // shootSubsystem.setTurretPosition(turretTargetPosition);
 
     if (RobotContainer.gamepad.getRawButton(Constants.Controls.Shoot)) {
       shootSubsystem.setRevwheelRPM(SmartDashboard.getNumber("Revwheel Target RPM", 0));
@@ -52,9 +52,9 @@ public class ShootCommand extends CommandBase {
     }
 
     if (RobotContainer.gamepad.getRawButton(Constants.Controls.Traverse)) {
-      shootSubsystem.setTraversePercent(0.8);
+      shootSubsystem.setTraversePercent(0.85);
     } else if (RobotContainer.gamepad.getRawButton(Constants.Controls.TraverseReverse)) {
-      shootSubsystem.setTraversePercent(-0.8);
+      shootSubsystem.setTraversePercent(-0.85);
     } else {
       shootSubsystem.stopTraverse();
     }
