@@ -35,6 +35,8 @@ public class ShootSubsystem extends SubsystemBase {
 
         elevatorWheel.setInverted(true);
         elevatorWheel.configurePID(elevatorPidSettings);
+
+        traverse.setInverted(true);
     }
 
     public void setRevwheelRPM(double rpm) {
