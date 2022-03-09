@@ -20,7 +20,6 @@ import edu.wpi.first.math.kinematics.MecanumDriveWheelSpeeds;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.MecanumDriveInfo;
 import frc.robot.PIDSettings;
-import frc.robot.TalonUtils;
 
 public class DriveSubsystem extends SubsystemBase {
   private WPI_PigeonIMU pigeon = new WPI_PigeonIMU(1);
@@ -48,43 +47,20 @@ public class DriveSubsystem extends SubsystemBase {
   private static final double unitsToMeters = wheelCircumference / (unitsPerTurn * gearRatio);
   private static final double metersToUnits = 1.0 / unitsToMeters;
 
-  private static class EncoderInfo {
-    private double targetValue = 0;
-    private double zero = 0;
-    double getTargetValueIncludingZero() {
-      return targetValue + zero;
-    }
-    void setTarget(double newTarget) {
-      targetValue = newTarget;
-    }
-    void changeTargetBy(double delta) {
-      targetValue += delta;
-    }
-    private void setZero(double newZero) {
-      zero = newZero;
-      targetValue = 0;
-    }
-  }
-
-  private EncoderInfo frontRightInfo = new EncoderInfo();
-  private EncoderInfo frontLeftInfo = new EncoderInfo();
-  private EncoderInfo backRightInfo = new EncoderInfo();
-  private EncoderInfo backLeftInfo = new EncoderInfo();
-
   public DriveSubsystem() {
     mecanumDrive = new MecanumDrive(frontLeft, backLeft, frontRight, backRight);
 
     setPID(new PIDSettings());
 
-    double secondsFromNeutralToFull = 0.5;
-    frontLeft.configOpenloopRamp(secondsFromNeutralToFull);
-    frontLeft.configClosedloopRamp(secondsFromNeutralToFull);
-    frontRight.configOpenloopRamp(secondsFromNeutralToFull);
-    frontRight.configClosedloopRamp(secondsFromNeutralToFull);
-    backLeft.configOpenloopRamp(secondsFromNeutralToFull);
-    backLeft.configClosedloopRamp(secondsFromNeutralToFull);
-    backRight.configOpenloopRamp(secondsFromNeutralToFull);
-    backRight.configClosedloopRamp(secondsFromNeutralToFull);
+    // double secondsFromNeutralToFull = 0.5;
+    // frontLeft.configOpenloopRamp(secondsFromNeutralToFull);
+    // frontLeft.configClosedloopRamp(secondsFromNeutralToFull);
+    // frontRight.configOpenloopRamp(secondsFromNeutralToFull);
+    // frontRight.configClosedloopRamp(secondsFromNeutralToFull);
+    // backLeft.configOpenloopRamp(secondsFromNeutralToFull);
+    // backLeft.configClosedloopRamp(secondsFromNeutralToFull);
+    // backRight.configOpenloopRamp(secondsFromNeutralToFull);
+    // backRight.configClosedloopRamp(secondsFromNeutralToFull);
 
     frontRight.setInverted(true);
     backRight.setInverted(true);
@@ -93,79 +69,24 @@ public class DriveSubsystem extends SubsystemBase {
     reset();
   }
 
+  // TODO: unused
   private PIDSettings lastPidSettings;
   public void setPID(PIDSettings pid) {
+    // TODO: unused
     lastPidSettings = pid;
-    TalonUtils.configurePID(frontLeft, pid);
-    TalonUtils.configurePID(frontRight, pid);
-    TalonUtils.configurePID(backLeft, pid);
-    TalonUtils.configurePID(backRight, pid);
   }
   public PIDSettings getPID() {
+    // TODO: unused
     return lastPidSettings;
   }
 
   public void drivePercent(double ySpeed, double xSpeed, double zRotation, boolean fieldOriented) {
-    mecanumDrive.driveCartesian(
-      ySpeed,
-      xSpeed,
-      zRotation,
-      fieldOriented ? getAngle() : 0
-    );
-  }
-
-  public void drivePercent2(double ySpeed, double xSpeed, double zRotation) {
+    // TODO implement fieldOriented if it's used
     frontLeft.set(ControlMode.PercentOutput, ySpeed + xSpeed + zRotation);
     frontRight.set(ControlMode.PercentOutput, ySpeed - xSpeed - zRotation);
     backLeft.set(ControlMode.PercentOutput, ySpeed - xSpeed + zRotation);
     backRight.set(ControlMode.PercentOutput, ySpeed + xSpeed - zRotation);
     mecanumDrive.feed();
-  }
-
-  private void updateMotorsToTargetValues() {
-    frontLeft.set(ControlMode.Position, frontLeftInfo.getTargetValueIncludingZero());
-    frontRight.set(ControlMode.Position, frontRightInfo.getTargetValueIncludingZero());
-    backLeft.set(ControlMode.Position, backLeftInfo.getTargetValueIncludingZero());
-    backRight.set(ControlMode.Position, backRightInfo.getTargetValueIncludingZero());
-    mecanumDrive.feed();
-  }
-
-  public void driveTeleop(double y, double x, double z, boolean fieldOriented) {
-    // scale [-1, 1] to raw sensor units
-    x *= 2048;
-    y *= 2048;
-    z *= 2048;
-
-    // Vector2d arguments are supposed to be backwards
-    Vector2d vector = new Vector2d(y, x);
-    if (fieldOriented) {
-      vector.rotate(getAngle());
-    }
-
-    frontLeftInfo.changeTargetBy(vector.x + vector.y + z);
-    frontRightInfo.changeTargetBy(vector.x - vector.y - z);
-    backLeftInfo.changeTargetBy(vector.x - vector.y + z);
-    backRightInfo.changeTargetBy(vector.x + vector.y - z);
-    updateMotorsToTargetValues();
-  }
-
-  public void driveAutoFixed(double x, double y) {
-    double calculatedX = x * metersToUnits;
-    double calculatedY = y * metersToUnits;
-    double calculatedZ = 0;
-    frontLeftInfo.setTarget(calculatedY + calculatedX + calculatedZ);
-    frontRightInfo.setTarget(calculatedY - calculatedX - calculatedZ);
-    backLeftInfo.setTarget(calculatedY - calculatedX + calculatedZ);
-    backRightInfo.setTarget(calculatedY + calculatedX - calculatedZ);
-    updateMotorsToTargetValues();
-  }
-
-  public void driveFixedSensorUnits(MecanumDriveInfo info) {
-    frontLeftInfo.setTarget(info.frontLeft);
-    frontRightInfo.setTarget(info.frontRight);
-    backLeftInfo.setTarget(info.backLeft);
-    backRightInfo.setTarget(info.backRight);
-    updateMotorsToTargetValues();
   }
 
   public void stop() {
@@ -185,11 +106,7 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public void resetEncoders() {
-    // setSelectedSensorPosition has proven unreliable
-    frontLeftInfo.setZero(frontLeft.getSelectedSensorPosition());
-    frontRightInfo.setZero(frontRight.getSelectedSensorPosition());
-    backLeftInfo.setZero(backLeft.getSelectedSensorPosition());
-    backRightInfo.setZero(backRight.getSelectedSensorPosition());
+    // TODO
   }
 
   public void reset() {
@@ -199,6 +116,7 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public MecanumDriveInfo getWheelPositions() {
+    // in raw sensor units
     return new MecanumDriveInfo(
       frontLeft.getSelectedSensorPosition(),
       frontRight.getSelectedSensorPosition(),
@@ -208,6 +126,7 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public MecanumDriveInfo getWheelVelocities() {
+    // in raw sensor units
     return new MecanumDriveInfo(
       frontLeft.getSelectedSensorVelocity(),
       frontRight.getSelectedSensorVelocity(),
@@ -216,20 +135,12 @@ public class DriveSubsystem extends SubsystemBase {
     );
   }
 
-  public MecanumDriveInfo getTargetValues() {
-    return new MecanumDriveInfo(
-      frontLeftInfo.targetValue,
-      frontRightInfo.targetValue,
-      backLeftInfo.targetValue,
-      backRightInfo.targetValue
-    );
-  }
-
   public Pose2d getPose() {
     return odometry.getPoseMeters();
   }
 
   public MecanumDriveWheelSpeeds getWheelSpeeds() {
+    // in m/s
     return new MecanumDriveWheelSpeeds(
       frontLeft.getSelectedSensorVelocity() * unitsToMeters * 10.0,
       frontRight.getSelectedSensorVelocity() * unitsToMeters * 10.0,

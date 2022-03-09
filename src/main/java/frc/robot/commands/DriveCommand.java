@@ -67,10 +67,11 @@ public class DriveCommand extends CommandBase {
     double z = RobotContainer.gamepad.getRawAxis(4);
     if (Math.abs(x) < 0.2) x = 0;
 
-    driveSubsystem.drivePercent2(
+    driveSubsystem.drivePercent(
       scale(y) * yMultiplier,
       scale(x) * xMultiplier,
-      scale(z) * rotationMultiplier
+      scale(z) * rotationMultiplier,
+      false
     );
   }
 

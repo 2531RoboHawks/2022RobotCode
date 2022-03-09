@@ -39,7 +39,8 @@ public class AutoTrajectoryCommand extends CommandBase {
         State state = trajectory.sample(currentTime);
         Pose2d pose = state.poseMeters;
 
-        driveSubsystem.driveAutoFixed(pose.getX() - initialPose.getX(), pose.getY() - initialPose.getY());
+        // TODO: unused, broken
+        // driveSubsystem.driveAutoFixed(pose.getX() - initialPose.getX(), pose.getY() - initialPose.getY());
     }
 
     @Override

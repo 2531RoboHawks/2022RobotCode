@@ -33,7 +33,8 @@ public class RecordPlaybackCommand extends CommandBase {
         PlaybackStep step = new PlaybackStep();
         step.time = (System.currentTimeMillis() - start) / 1000.0;
 
-        MecanumDriveInfo targetValues = driveSubsystem.getTargetValues();
+        // TODO: unused
+        MecanumDriveInfo targetValues = new MecanumDriveInfo(0, 0, 0, 0);
         step.targetFrontLeft = targetValues.frontLeft;
         step.targetFrontRight = targetValues.frontRight;
         step.targetBackLeft = targetValues.backLeft;
