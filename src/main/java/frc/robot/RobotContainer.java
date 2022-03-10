@@ -4,18 +4,21 @@
 
 package frc.robot;
 
-import java.io.IOException;
-import java.nio.file.Path;
 import java.util.List;
 
+import com.pathplanner.lib.PathPlanner;
+import com.pathplanner.lib.PathPlannerTrajectory;
+import com.pathplanner.lib.commands.PPMecanumControllerCommand;
+
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
-import edu.wpi.first.math.trajectory.TrajectoryUtil;
-import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
@@ -44,6 +47,7 @@ import frc.robot.subsystems.ShootSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.MecanumControllerCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -56,22 +60,22 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  public static final ClimbSubsystem climbSubsystem = new ClimbSubsystem();
+  // public static final ClimbSubsystem climbSubsystem = new ClimbSubsystem();
   public static final DriveSubsystem driveSubsystem = new DriveSubsystem();
-  public static final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
-  public static final ShootSubsystem shootSubsystem = new ShootSubsystem();
-  public static final VisionSubsystem visionSubsystem = new VisionSubsystem();
-  public static final CompressorSubsystem compressorSubsystem = new CompressorSubsystem();
+  // public static final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
+  // public static final ShootSubsystem shootSubsystem = new ShootSubsystem();
+  // public static final VisionSubsystem visionSubsystem = new VisionSubsystem();
+  // public static final CompressorSubsystem compressorSubsystem = new CompressorSubsystem();
 
-  public final SynchronizedClimbCommand synchronizedClimbCommand = new SynchronizedClimbCommand(climbSubsystem, intakeSubsystem);
-  public final ManualClimbCommand manualClimbCommand = new ManualClimbCommand(climbSubsystem, intakeSubsystem);
-  public final DriveCommand driveCommand = new DriveCommand(driveSubsystem);
-  public final IntakeCommand intakeCommand = new IntakeCommand(intakeSubsystem);
-  public final ShootCommand shootCommand = new ShootCommand(shootSubsystem);
-  public final RecordPlaybackCommand recordPlaybackCommand = new RecordPlaybackCommand(driveSubsystem);
-  public final ZeroTurretCommand zeroTurretCommand = new ZeroTurretCommand(shootSubsystem);
-  
-  public final LimelightTrackCommand limelightTrackCommand = new LimelightTrackCommand(visionSubsystem, driveSubsystem);
+  // public final SynchronizedClimbCommand synchronizedClimbCommand = new SynchronizedClimbCommand(climbSubsystem, intakeSubsystem);
+  // public final ManualClimbCommand manualClimbCommand = new ManualClimbCommand(climbSubsystem, intakeSubsystem);
+  // public final DriveCommand driveCommand = new DriveCommand(driveSubsystem);
+  // public final IntakeCommand intakeCommand = new IntakeCommand(intakeSubsystem);
+  // public final ShootCommand shootCommand = new ShootCommand(shootSubsystem);
+  // public final RecordPlaybackCommand recordPlaybackCommand = new RecordPlaybackCommand(driveSubsystem);
+  // public final ZeroTurretCommand zeroTurretCommand = new ZeroTurretCommand(shootSubsystem);
+
+  // public final LimelightTrackCommand limelightTrackCommand = new LimelightTrackCommand(visionSubsystem, driveSubsystem);
 
   public static Joystick gamepad = new Joystick(0);
   public static Joystick helms = new Joystick(1);
@@ -82,61 +86,97 @@ public class RobotContainer {
   public RobotContainer() {
     configureButtonBindings();
 
-    intakeSubsystem.setDefaultCommand(intakeCommand);
-    driveSubsystem.setDefaultCommand(driveCommand);
-    shootSubsystem.setDefaultCommand(shootCommand);
+    // intakeSubsystem.setDefaultCommand(intakeCommand);
+    driveSubsystem.setDefaultCommand(new DriveCommand(driveSubsystem));
+    // shootSubsystem.setDefaultCommand(shootCommand);
 
-    SmartDashboard.putData("Synchronized climb command", synchronizedClimbCommand);
-    SmartDashboard.putData("Manual climb command", manualClimbCommand);
-    SmartDashboard.putData("Drive command", driveCommand);
-    SmartDashboard.putData("Intake command", intakeCommand);
-    SmartDashboard.putData("Shoot command", shootCommand);
-    SmartDashboard.putData("Record playback command", recordPlaybackCommand);
-    SmartDashboard.putData("Limelight Track command", limelightTrackCommand);
-    SmartDashboard.putData("Zero Turret Command", zeroTurretCommand);
+    // SmartDashboard.putData("Synchronized climb command", synchronizedClimbCommand);
+    // SmartDashboard.putData("Manual climb command", manualClimbCommand);
+    // SmartDashboard.putData("Drive command", driveCommand);
+    // SmartDashboard.putData("Intake command", intakeCommand);
+    // SmartDashboard.putData("Shoot command", shootCommand);
+    // SmartDashboard.putData("Record playback command", recordPlaybackCommand);
+    // SmartDashboard.putData("Limelight Track command", limelightTrackCommand);
+    // SmartDashboard.putData("Zero Turret Command", zeroTurretCommand);
+
+    PathPlannerTrajectory ppTrajectory = PathPlanner.loadPath("New Path", 5, 5);
+
+    TrajectoryConfig trajectoryConfig = new TrajectoryConfig(5, 5).setKinematics(driveSubsystem.kinematics);
+    Trajectory wpiTrajectory = TrajectoryGenerator.generateTrajectory(
+      new Pose2d(0, 0, new Rotation2d(0)),
+      List.of(new Translation2d(1, 1), new Translation2d(2, -1), new Translation2d(1, -1)),
+      new Pose2d(0, 0, new Rotation2d(0)),
+      trajectoryConfig
+    );
 
     autoChooser.addOption("None", null);
-    autoChooser.addOption(
-      "Taxi",
-      new AutoDriveCommand(driveSubsystem, 5, 0.2, 0, 0)
-    );
     autoChooser.setDefaultOption(
-      "Primitive One Ball",
-      new ShootBallCommand(driveSubsystem, shootSubsystem)
-        .andThen(new AutoDriveCommand(driveSubsystem, 5, -0.2, 0, 0))
+      "Path Planner",
+      new SequentialCommandGroup(
+        new InstantCommand(() -> {
+          // driveSubsystem.resetOdometry(new Pose2d(
+          //   ppTrajectory.getInitialPose().getTranslation(),
+          //   ppTrajectory.getInitialState().holonomicRotation
+          // ));
+          driveSubsystem.resetOdometry(wpiTrajectory.getInitialPose());
+        }),
+        new MecanumControllerCommand(
+          wpiTrajectory,
+          driveSubsystem::getPose,
+          driveSubsystem.kinematics,
+          new PIDController(1, 0, 0),
+          new PIDController(1, 0, 0),
+          new ProfiledPIDController(1, 0, 0, new TrapezoidProfile.Constraints(3, 3)),
+          1,
+          driveSubsystem::driveWheelSpeeds,
+          driveSubsystem
+        ),
+        new InstantCommand(() -> {
+          driveSubsystem.stop();
+        })
+      )
     );
-    autoChooser.addOption(
-      "One Ball",
-      new MoveSetDistanceFromTarget(driveSubsystem, visionSubsystem, 65)
-        .andThen(new ShootBallCommand(driveSubsystem, shootSubsystem))
-        .andThen(new AutoDriveCommand(driveSubsystem, 5, -0.2, 0, 0))
-    );
-    autoChooser.setDefaultOption(
-      "One Ball Delayed",
-      new WaitCommand(5)
-        .andThen(new MoveSetDistanceFromTarget(driveSubsystem, visionSubsystem, 65))
-        .andThen(new ShootBallCommand(driveSubsystem, shootSubsystem))
-        .andThen(new AutoDriveCommand(driveSubsystem, 5, -0.2, 0, 0))
-    );
-    autoChooser.addOption(
-      "Two Ball",
-      new MoveSetDistanceFromTarget(driveSubsystem, visionSubsystem, 65)
-        .withTimeout(1)
-        .andThen(new ShootBallCommand(driveSubsystem, shootSubsystem))
-        .andThen(new AutoTurnArounCommand(driveSubsystem))
-        .andThen(new InstantCommand(() -> {
-          intakeSubsystem.setDown(true);
-          shootSubsystem.setTraversePercent(0.6);
-        }, intakeSubsystem, shootSubsystem))
-        .andThen(new AutoDriveCommand(driveSubsystem, 3, 0.2, 0, 0))
-        .andThen(new InstantCommand(() -> {
-          intakeSubsystem.setDown(false);
-        }, intakeSubsystem))
-        .andThen(new AutoTurnArounCommand(driveSubsystem))
-        .andThen(new LimelightTrackCommand(visionSubsystem, driveSubsystem).withTimeout(1))
-        .andThen(new MoveSetDistanceFromTarget(driveSubsystem, visionSubsystem, 65).withTimeout(2.5))
-        .andThen(new ShootBallCommand(driveSubsystem, shootSubsystem))
-    );
+    // autoChooser.addOption(
+    //   "Taxi",
+    //   new AutoDriveCommand(driveSubsystem, 5, 0.2, 0, 0)
+    // );
+    // autoChooser.setDefaultOption(
+    //   "Primitive One Ball",
+    //   new ShootBallCommand(driveSubsystem, shootSubsystem)
+    //     .andThen(new AutoDriveCommand(driveSubsystem, 5, -0.2, 0, 0))
+    // );
+    // autoChooser.addOption(
+    //   "One Ball",
+    //   new MoveSetDistanceFromTarget(driveSubsystem, visionSubsystem, 65)
+    //     .andThen(new ShootBallCommand(driveSubsystem, shootSubsystem))
+    //     .andThen(new AutoDriveCommand(driveSubsystem, 5, -0.2, 0, 0))
+    // );
+    // autoChooser.setDefaultOption(
+    //   "One Ball Delayed",
+    //   new WaitCommand(5)
+    //     .andThen(new MoveSetDistanceFromTarget(driveSubsystem, visionSubsystem, 65))
+    //     .andThen(new ShootBallCommand(driveSubsystem, shootSubsystem))
+    //     .andThen(new AutoDriveCommand(driveSubsystem, 5, -0.2, 0, 0))
+    // );
+    // autoChooser.addOption(
+    //   "Two Ball",
+    //   new MoveSetDistanceFromTarget(driveSubsystem, visionSubsystem, 65)
+    //     .withTimeout(1)
+    //     .andThen(new ShootBallCommand(driveSubsystem, shootSubsystem))
+    //     .andThen(new AutoTurnArounCommand(driveSubsystem))
+    //     .andThen(new InstantCommand(() -> {
+    //       intakeSubsystem.setDown(true);
+    //       shootSubsystem.setTraversePercent(0.6);
+    //     }, intakeSubsystem, shootSubsystem))
+    //     .andThen(new AutoDriveCommand(driveSubsystem, 3, 0.2, 0, 0))
+    //     .andThen(new InstantCommand(() -> {
+    //       intakeSubsystem.setDown(false);
+    //     }, intakeSubsystem))
+    //     .andThen(new AutoTurnArounCommand(driveSubsystem))
+    //     .andThen(new LimelightTrackCommand(visionSubsystem, driveSubsystem).withTimeout(1))
+    //     .andThen(new MoveSetDistanceFromTarget(driveSubsystem, visionSubsystem, 65).withTimeout(2.5))
+    //     .andThen(new ShootBallCommand(driveSubsystem, shootSubsystem))
+    // );
     SmartDashboard.putData(autoChooser);
   }
 
@@ -149,7 +189,7 @@ public class RobotContainer {
   private void configureButtonBindings() {
     // new JoystickButton(gamepad, 6).whenHeld(new RecordPlaybackCommand(driveSubsystem));
     // new JoystickButton(gamepad, 6).whenHeld(new PlayPlaybackCommand(driveSubsystem, Playback.load("test")));
-    new JoystickButton(helms, 8).toggleWhenActive(synchronizedClimbCommand);
+    // new JoystickButton(helms, 8).toggleWhenActive(synchronizedClimbCommand);
   }
 
   /**

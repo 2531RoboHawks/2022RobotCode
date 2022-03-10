@@ -37,10 +37,24 @@ public class DriveCommand extends CommandBase {
 
   @Override
   public void execute() {
+    double xMultiplier;
+    double yMultiplier;
+    double rotationMultiplier;
+    boolean slow = RobotContainer.gamepad.getRawButton(Constants.Controls.Slow);
     boolean turbo = RobotContainer.gamepad.getRawButton(Constants.Controls.Turbo);
-    double xMultiplier = turbo ? 1 : 0.5;
-    double yMultiplier = turbo ? 1 : 0.3;
-    double rotationMultiplier = turbo ? 0.35 : 0.25;
+    if (slow) {
+      xMultiplier = 0.5;
+      yMultiplier = 0.5;
+      rotationMultiplier = 0.5;
+    } else if (turbo) {
+      xMultiplier = 3;
+      yMultiplier = 3;
+      rotationMultiplier = 2;
+    } else {
+      xMultiplier = 1;
+      yMultiplier = 1;
+      rotationMultiplier = 1;
+    }
 
     if (RobotContainer.gamepad.getRawButtonPressed(Constants.Controls.ToggleFieldOriented)) {
       fieldOriented = !fieldOriented;
@@ -48,30 +62,21 @@ public class DriveCommand extends CommandBase {
       SmartDashboard.putBoolean("Field Oriented", fieldOriented);
     }
 
-    if (fieldOriented) {
-      if (RobotContainer.gamepad.getRawButtonPressed(Constants.Controls.ResetDrive)) {
-        driveSubsystem.resetGyro();
-        driveSubsystem.resetEncoders();
-      }
-    } else {
-      // TEMPORARY
-      if (RobotContainer.gamepad.getRawButton(Constants.Controls.ResetDrive)) {
-        xMultiplier *= 0.5;
-        yMultiplier *= 0.5;
-        rotationMultiplier *= 0.7;
-      }
-    }
+    // if (fieldOriented) {
+    //   if (RobotContainer.gamepad.getRawButtonPressed(Constants.Controls.ResetDrive)) {
+    //     driveSubsystem.resetGyro();
+    //     driveSubsystem.resetEncoders();
+    //   }
+    // }
 
     double x = RobotContainer.gamepad.getX();
     double y = -RobotContainer.gamepad.getY();
     double z = RobotContainer.gamepad.getRawAxis(4);
-    if (Math.abs(x) < 0.2) x = 0;
 
-    driveSubsystem.drivePercent(
+    driveSubsystem.drive(
       scale(y) * yMultiplier,
       scale(x) * xMultiplier,
-      scale(z) * rotationMultiplier,
-      false
+      scale(z) * rotationMultiplier
     );
   }
 

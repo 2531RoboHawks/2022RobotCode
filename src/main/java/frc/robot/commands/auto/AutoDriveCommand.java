@@ -28,7 +28,7 @@ public class AutoDriveCommand extends CommandBase {
 
     @Override
     public void execute() {
-        driveSubsystem.drivePercent(ySpeed, xSpeed, zRotation, false);
+        driveSubsystem.drivePercent(ySpeed, xSpeed, zRotation);
     }
 
     @Override

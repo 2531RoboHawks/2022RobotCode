@@ -40,7 +40,7 @@ public class RecordPlaybackCommand extends CommandBase {
         step.targetBackLeft = targetValues.backLeft;
         step.targetBackRight = targetValues.backRight;
 
-        MecanumDriveInfo velocities = driveSubsystem.getWheelVelocities();
+        MecanumDriveInfo velocities = driveSubsystem.getWheelRPM();
         step.velocityFrontLeft = velocities.frontLeft;
         step.velocityFrontRight = velocities.frontRight;
         step.velocityBackLeft = velocities.backLeft;

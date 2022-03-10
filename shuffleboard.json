@@ -439,6 +439,61 @@
               "_source0": "network_table:///SmartDashboard/Traverse Volts",
               "_title": "Traverse Volts"
             }
+          },
+          "10,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Front Left Speed",
+              "_title": "Front Left Speed"
+            }
+          },
+          "3,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Front Right Speed",
+              "_title": "Front Right Speed"
+            }
+          },
+          "7,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Back Left Speed",
+              "_title": "Back Left Speed"
+            }
+          },
+          "8,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Back Right Speed",
+              "_title": "Back Right Speed"
+            }
+          },
+          "9,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Target Fonrt Left Speed",
+              "_title": "Target Fonrt Left Speed"
+            }
           }
         }
       }
@@ -454,175 +509,6 @@
         "vgap": 16.0,
         "titleType": 0,
         "tiles": {
-          "0,0": {
-            "size": [
-              3,
-              4
-            ],
-            "content": {
-              "_type": "Subsystem Layout",
-              "_source0": "network_table:///LiveWindow/Ungrouped",
-              "_title": "Ungrouped",
-              "Layout/Label position": "BOTTOM",
-              "_children": [
-                {
-                  "_type": "Mecanum Drivebase",
-                  "_source0": "network_table:///LiveWindow/Ungrouped/MecanumDrive[1]",
-                  "_title": "MecanumDrive[1]",
-                  "Visuals/Show velocity vectors": true
-                },
-                {
-                  "_type": "Gyro",
-                  "_source0": "network_table:///LiveWindow/Ungrouped/ADXRS450_Gyro[2]",
-                  "_title": "ADXRS450_Gyro[2]",
-                  "Visuals/Major tick spacing": 45.0,
-                  "Visuals/Starting angle": 180.0,
-                  "Visuals/Show tick mark ring": true,
-                  "Visuals/Counter clockwise": false
-                },
-                {
-                  "_type": "Gyro",
-                  "_source0": "network_table:///LiveWindow/Ungrouped/navX-Sensor[4]",
-                  "_title": "navX-Sensor[4]",
-                  "Visuals/Major tick spacing": 45.0,
-                  "Visuals/Starting angle": 180.0,
-                  "Visuals/Show tick mark ring": true,
-                  "Visuals/Counter clockwise": false
-                },
-                {
-                  "_type": "Motor Controller",
-                  "_source0": "network_table:///LiveWindow/Ungrouped/Talon FX [8]",
-                  "_title": "Talon FX [8]",
-                  "Visuals/Orientation": "HORIZONTAL"
-                },
-                {
-                  "_type": "Motor Controller",
-                  "_source0": "network_table:///LiveWindow/Ungrouped/Talon FX [9]",
-                  "_title": "Talon FX [9]",
-                  "Visuals/Orientation": "HORIZONTAL"
-                },
-                {
-                  "_type": "Boolean Box",
-                  "_source0": "network_table:///LiveWindow/Ungrouped/Compressor[0]/Enabled",
-                  "_title": "Compressor[0]/Enabled",
-                  "Colors/Color when true": "#7CFC00FF",
-                  "Colors/Color when false": "#8B0000FF"
-                },
-                {
-                  "_type": "Boolean Box",
-                  "_source0": "network_table:///LiveWindow/Ungrouped/Compressor[0]/Pressure switch",
-                  "_title": "Compressor[0]/Pressure switch",
-                  "Colors/Color when true": "#7CFC00FF",
-                  "Colors/Color when false": "#8B0000FF"
-                },
-                {
-                  "_type": "Text View",
-                  "_source0": "network_table:///LiveWindow/Ungrouped/DoubleSolenoid[0,4]/Value",
-                  "_title": "DoubleSolenoid[0,4]/Value"
-                },
-                {
-                  "_type": "Motor Controller",
-                  "_source0": "network_table:///LiveWindow/Ungrouped/Talon FX [15]",
-                  "_title": "Talon FX [15]",
-                  "Visuals/Orientation": "HORIZONTAL"
-                },
-                {
-                  "_type": "Text View",
-                  "_source0": "network_table:///LiveWindow/Ungrouped/DoubleSolenoid[0,6]/Value",
-                  "_title": "DoubleSolenoid[0,6]/Value"
-                },
-                {
-                  "_type": "Boolean Box",
-                  "_source0": "network_table:///LiveWindow/Ungrouped/Solenoid[0,1]/Value",
-                  "_title": "Solenoid[0,1]/Value",
-                  "Colors/Color when true": "#7CFC00FF",
-                  "Colors/Color when false": "#8B0000FF"
-                },
-                {
-                  "_type": "Boolean Box",
-                  "_source0": "network_table:///LiveWindow/Ungrouped/Solenoid[0,0]/Value",
-                  "_title": "Solenoid[0,0]/Value",
-                  "Colors/Color when true": "#7CFC00FF",
-                  "Colors/Color when false": "#8B0000FF"
-                },
-                {
-                  "_type": "Motor Controller",
-                  "_source0": "network_table:///LiveWindow/Ungrouped/Talon FX [22]",
-                  "_title": "Talon FX [22]",
-                  "Visuals/Orientation": "HORIZONTAL"
-                },
-                {
-                  "_type": "Motor Controller",
-                  "_source0": "network_table:///LiveWindow/Ungrouped/Talon FX [21]",
-                  "_title": "Talon FX [21]",
-                  "Visuals/Orientation": "HORIZONTAL"
-                },
-                {
-                  "_type": "Text View",
-                  "_source0": "network_table:///LiveWindow/Ungrouped/DoubleSolenoid[0,0]/Value",
-                  "_title": "DoubleSolenoid[0,0]/Value"
-                },
-                {
-                  "_type": "Text View",
-                  "_source0": "network_table:///LiveWindow/Ungrouped/DoubleSolenoid[0,2]/Value",
-                  "_title": "DoubleSolenoid[0,2]/Value"
-                },
-                {
-                  "_type": "Boolean Box",
-                  "_source0": "network_table:///LiveWindow/Ungrouped/Solenoid[0,3]/Value",
-                  "_title": "Solenoid[0,3]/Value",
-                  "Colors/Color when true": "#7CFC00FF",
-                  "Colors/Color when false": "#8B0000FF"
-                },
-                {
-                  "_type": "Boolean Box",
-                  "_source0": "network_table:///LiveWindow/Ungrouped/Solenoid[0,2]/Value",
-                  "_title": "Solenoid[0,2]/Value",
-                  "Colors/Color when true": "#7CFC00FF",
-                  "Colors/Color when false": "#8B0000FF"
-                },
-                {
-                  "_type": "PID Controller",
-                  "_source0": "network_table:///LiveWindow/Ungrouped/PIDController[1]",
-                  "_title": "PIDController[1]"
-                },
-                {
-                  "_type": "Gyro",
-                  "_source0": "network_table:///LiveWindow/Ungrouped/Pigeon IMU [1]",
-                  "_title": "Pigeon IMU [1]",
-                  "Visuals/Major tick spacing": 45.0,
-                  "Visuals/Starting angle": 180.0,
-                  "Visuals/Show tick mark ring": true,
-                  "Visuals/Counter clockwise": false
-                },
-                {
-                  "_type": "PID Controller",
-                  "_source0": "network_table:///LiveWindow/Ungrouped/PIDController[2]",
-                  "_title": "LiveWindow/Ungrouped/PIDController[2]"
-                },
-                {
-                  "_type": "PID Controller",
-                  "_source0": "network_table:///LiveWindow/Ungrouped/PIDController[3]",
-                  "_title": "PIDController[3]"
-                },
-                {
-                  "_type": "PID Controller",
-                  "_source0": "network_table:///LiveWindow/Ungrouped/PIDController[4]",
-                  "_title": "PIDController[4]"
-                },
-                {
-                  "_type": "PID Controller",
-                  "_source0": "network_table:///LiveWindow/Ungrouped/PIDController[5]",
-                  "_title": "PIDController[5]"
-                },
-                {
-                  "_type": "PID Controller",
-                  "_source0": "network_table:///LiveWindow/Ungrouped/PIDController[6]",
-                  "_title": "PIDController[6]"
-                }
-              ]
-            }
-          },
           "3,0": {
             "size": [
               2,
@@ -673,6 +559,68 @@
               "_title": "ShootSubsystem",
               "Layout/Label position": "BOTTOM",
               "_children": []
+            }
+          },
+          "0,0": {
+            "size": [
+              2,
+              4
+            ],
+            "content": {
+              "_type": "Subsystem Layout",
+              "_source0": "network_table:///LiveWindow/Ungrouped",
+              "_title": "Ungrouped",
+              "Layout/Label position": "BOTTOM",
+              "_children": [
+                {
+                  "_type": "Motor Controller",
+                  "_source0": "network_table:///LiveWindow/Ungrouped/Talon FX [31]",
+                  "_title": "Talon FX [31]",
+                  "Visuals/Orientation": "HORIZONTAL"
+                },
+                {
+                  "_type": "PID Controller",
+                  "_source0": "network_table:///LiveWindow/Ungrouped/PIDController[3]",
+                  "_title": "PIDController[3]"
+                },
+                {
+                  "_type": "PID Controller",
+                  "_source0": "network_table:///LiveWindow/Ungrouped/PIDController[2]",
+                  "_title": "PIDController[2]"
+                },
+                {
+                  "_type": "PID Controller",
+                  "_source0": "network_table:///LiveWindow/Ungrouped/PIDController[1]",
+                  "_title": "PIDController[1]"
+                },
+                {
+                  "_type": "Gyro",
+                  "_source0": "network_table:///LiveWindow/Ungrouped/navX-Sensor[4]",
+                  "_title": "navX-Sensor[4]",
+                  "Visuals/Major tick spacing": 45.0,
+                  "Visuals/Starting angle": 180.0,
+                  "Visuals/Show tick mark ring": true,
+                  "Visuals/Counter clockwise": false
+                },
+                {
+                  "_type": "Motor Controller",
+                  "_source0": "network_table:///LiveWindow/Ungrouped/Talon FX [30]",
+                  "_title": "Talon FX [30]",
+                  "Visuals/Orientation": "HORIZONTAL"
+                },
+                {
+                  "_type": "Motor Controller",
+                  "_source0": "network_table:///LiveWindow/Ungrouped/Talon FX [32]",
+                  "_title": "Talon FX [32]",
+                  "Visuals/Orientation": "HORIZONTAL"
+                },
+                {
+                  "_type": "Motor Controller",
+                  "_source0": "network_table:///LiveWindow/Ungrouped/Talon FX [33]",
+                  "_title": "Talon FX [33]",
+                  "Visuals/Orientation": "HORIZONTAL"
+                }
+              ]
             }
           }
         }
@@ -988,8 +936,7 @@
               "Y-axis/Automatic bounds": true,
               "Y-axis/Upper bound": 1.0,
               "Y-axis/Lower bound": -1.0,
-              "Y-axis/Unit": "ul",
-              "Visible data/SmartDashboard/Actual Revwheel RPM": true
+              "Y-axis/Unit": "ul"
             }
           },
           "4,0": {
@@ -1021,12 +968,103 @@
           }
         }
       }
+    },
+    {
+      "title": "Pathing Lab",
+      "autoPopulate": false,
+      "autoPopulatePrefix": "",
+      "widgetPane": {
+        "gridSize": 128.0,
+        "showGrid": true,
+        "hgap": 16.0,
+        "vgap": 16.0,
+        "titleType": 0,
+        "tiles": {
+          "3,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Pose X",
+              "_title": "/SmartDashboard/Pose X"
+            }
+          },
+          "4,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Pose Y",
+              "_title": "/SmartDashboard/Pose Y"
+            }
+          },
+          "3,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Front Left Speed",
+              "_title": "SmartDashboard/Front Left Speed"
+            }
+          },
+          "4,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Front Right Speed",
+              "_title": "SmartDashboard/Front Right Speed"
+            }
+          },
+          "3,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Back Left Speed",
+              "_title": "SmartDashboard/Back Left Speed"
+            }
+          },
+          "4,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Back Right Speed",
+              "_title": "SmartDashboard/Back Right Speed"
+            }
+          },
+          "5,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Target Fonrt Left Speed",
+              "_title": "SmartDashboard/Target Fonrt Left Speed"
+            }
+          }
+        }
+      }
     }
   ],
   "windowGeometry": {
     "x": -8.0,
     "y": -8.0,
-    "width": 1382.0,
-    "height": 744.0
+    "width": 1616.0,
+    "height": 876.0
   }
 }
