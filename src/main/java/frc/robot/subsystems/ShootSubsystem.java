@@ -11,11 +11,6 @@ import com.ctre.phoenix.motorcontrol.VictorSPXControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 public class ShootSubsystem extends SubsystemBase {
-    private BetterSparkMaxBrushless turret = new BetterSparkMaxBrushless(17);
-    private static final PIDSettings turretPidSettings = new PIDSettings(0.2, 0, 0);
-    private static final double turretMaxPower = 0.2;
-    private static final double turretGearRatio = 215.0 / 16.0;
-
     private BetterTalonFX revwheel = new BetterTalonFX(15);
     private static final PIDSettings revwheelPidSettings = new PIDSettings(0.075, 0.00009, 0);
 
@@ -26,10 +21,6 @@ public class ShootSubsystem extends SubsystemBase {
 
 
     public ShootSubsystem() {
-        turret.configurePID(turretPidSettings);
-        turret.setMaxPIDOutput(turretMaxPower);
-        turret.setInverted(true);
-
         revwheel.configurePID(revwheelPidSettings);
         revwheel.configureRamp(0.5);
 
@@ -61,40 +52,21 @@ public class ShootSubsystem extends SubsystemBase {
         elevatorWheel.setPower(percent);
     }
 
-    public void setTurretPosition(double turns) {
-        turret.setPosition(turns);
-    }
-    public void setTurretPercent(double percent) {
-        System.out.println("Set turret percent: " + percent);
-        turret.set(percent);
-    }
-    public void zeroTurret() {
-        System.out.println("Zeroed turret");
-        turret.zero();
-    }
-
     public void stopRevwheel() {
         revwheel.stop();
     }
     public void stopElevator() {
         elevatorWheel.stop();
     }
-    public void stopTurret() {
-        turret.stop();
-    }
     public void stopEverything() {
         stopRevwheel();
         stopElevator();
-        stopTurret();
     }
 
     @Override
     public void periodic() {
         SmartDashboard.putNumber("Actual Revwheel RPM", revwheel.getRPM());
         SmartDashboard.putNumber("Actual Elevator RPM", elevatorWheel.getRPM());
-        SmartDashboard.putNumber("Actual Turret Position", turret.getPosition());
         SmartDashboard.putNumber("Traverse Volts", traverse.getBusVoltage());
-        SmartDashboard.putNumber("Turret Amps", turret.getCanSparkMax().getOutputCurrent());
-        SmartDashboard.putNumber("Turret Volts", turret.getCanSparkMax().getBusVoltage());
     }
 }

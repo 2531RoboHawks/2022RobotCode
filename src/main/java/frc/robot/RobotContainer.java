@@ -10,7 +10,6 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.SynchronizedClimbCommand;
-import frc.robot.commands.ZeroTurretCommand;
 import frc.robot.commands.auto.AutoDriveCommand;
 import frc.robot.commands.auto.AutoTurnAroundCommand;
 import frc.robot.commands.auto.ShootBallCommand;
@@ -54,7 +53,6 @@ public class RobotContainer {
   // public final DriveCommand driveCommand = new DriveCommand(driveSubsystem);
   // public final IntakeCommand intakeCommand = new IntakeCommand(intakeSubsystem);
   // public final ShootCommand shootCommand = new ShootCommand(shootSubsystem);
-  // public final ZeroTurretCommand zeroTurretCommand = new ZeroTurretCommand(shootSubsystem);
 
   // public final LimelightTrackCommand limelightTrackCommand = new LimelightTrackCommand(visionSubsystem, driveSubsystem);
 
@@ -77,7 +75,6 @@ public class RobotContainer {
     // SmartDashboard.putData("Intake command", intakeCommand);
     // SmartDashboard.putData("Shoot command", shootCommand);
     // SmartDashboard.putData("Limelight Track command", limelightTrackCommand);
-    // SmartDashboard.putData("Zero Turret Command", zeroTurretCommand);
 
     autoChooser.addOption("None", null);
 
