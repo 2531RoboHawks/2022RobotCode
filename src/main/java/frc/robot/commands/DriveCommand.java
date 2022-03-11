@@ -53,11 +53,11 @@ public class DriveCommand extends CommandBase {
     double y = -RobotContainer.gamepad.getLeftY();
     double z = RobotContainer.gamepad.getRightX();
 
-    driveSubsystem.drive(
+    driveSubsystem.drivePercent(driveSubsystem.calculateMecanumDrive(
       scale(y) * yMultiplier,
       scale(x) * xMultiplier,
       scale(z) * rotationMultiplier
-    );
+    ));
   }
 
   @Override

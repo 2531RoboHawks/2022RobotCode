@@ -9,10 +9,13 @@ import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.MecanumDriveKinematics;
+import edu.wpi.first.math.kinematics.MecanumDriveMotorVoltages;
 import edu.wpi.first.math.kinematics.MecanumDriveOdometry;
 import edu.wpi.first.math.kinematics.MecanumDriveWheelSpeeds;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -42,17 +45,26 @@ public class DriveSubsystem extends SubsystemBase {
   private static final double wheelCircumference = Math.PI * wheelDiameter;
   private static final double gearRatio = 8.45 / 1.0;
   private static final double rotationsToMeters = wheelCircumference / gearRatio;
-  private static final double metersToRotations = 1.0 / rotationsToMeters;
 
-  private final PIDSettings drivePid = new PIDSettings(0.1, 0.0005, 0);
+  // Numbers found with sysid
+  private final SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(0.61283, 1.4466, 0.28021);
+  private final PIDSettings pid = new PIDSettings(2.8783, 0, 0);
 
   public DriveSubsystem() {
-    setPID(new PIDSettings());
+    frontLeft.configurePID(pid);
+    frontRight.configurePID(pid);
+    backLeft.configurePID(pid);
+    backRight.configurePID(pid);
 
-    frontLeft.configurePID(drivePid);
-    frontRight.configurePID(drivePid);
-    backLeft.configurePID(drivePid);
-    backRight.configurePID(drivePid);
+    frontLeft.configureFeedforward(feedforward);
+    frontRight.configureFeedforward(feedforward);
+    backLeft.configureFeedforward(feedforward);
+    backRight.configureFeedforward(feedforward);
+
+    frontLeft.configureDistancePerRevolution(rotationsToMeters);
+    frontRight.configureDistancePerRevolution(rotationsToMeters);
+    backLeft.configureDistancePerRevolution(rotationsToMeters);
+    backRight.configureDistancePerRevolution(rotationsToMeters);
 
     frontRight.setInverted(true);
     backRight.setInverted(true);
@@ -61,45 +73,50 @@ public class DriveSubsystem extends SubsystemBase {
     reset();
   }
 
-  // TODO: unused
-  private PIDSettings lastPidSettings;
-  public void setPID(PIDSettings pid) {
-    // TODO: unused
-    lastPidSettings = pid;
-  }
-  public PIDSettings getPID() {
-    // TODO: unused
-    return lastPidSettings;
+  public MecanumDriveKinematics getKinematics() {
+    return kinematics;
   }
 
-  public void drive(double ySpeed, double xSpeed, double zRotation) {
-    double frontLeft = ySpeed + xSpeed + zRotation;
-    double frontRight = ySpeed - xSpeed - zRotation;
-    double backLeft = ySpeed - xSpeed + zRotation;
-    double backRight = ySpeed + xSpeed - zRotation;
-    driveWheelSpeeds(new MecanumDriveWheelSpeeds(
-      frontLeft,
-      frontRight,
-      backLeft,
-      backRight
-    ));
+  public SimpleMotorFeedforward getFeedforward() {
+    return feedforward;
   }
 
-  public void drivePercent(double ySpeed, double xSpeed, double zRotation) {
-    frontLeft.setPower(ySpeed + xSpeed + zRotation);
-    frontRight.setPower(ySpeed - xSpeed - zRotation);
-    backLeft.setPower(ySpeed - xSpeed + zRotation);
-    backRight.setPower(ySpeed + xSpeed - zRotation);
+  public PIDController getVelocityPID() {
+    return pid.toController();
+  }
+
+  public MecanumDriveInfo calculateMecanumDrive(double forward, double sideways, double rotation) {
+    return new MecanumDriveInfo(
+      forward + sideways + rotation,
+      forward - sideways - rotation,
+      forward - sideways + rotation,
+      forward + sideways - rotation
+    );
+  }
+
+  public void drivePercent(double forward, double sideways, double rotation) {
+    drivePercent(calculateMecanumDrive(forward, sideways, rotation));
+  }
+
+  public void drivePercent(MecanumDriveInfo info) {
+    frontLeft.setPower(info.frontLeft);
+    frontRight.setPower(info.frontRight);
+    backLeft.setPower(info.backLeft);
+    backRight.setPower(info.backRight);
   }
 
   public void driveWheelSpeeds(MecanumDriveWheelSpeeds mecanumDriveWheelSpeeds) {
-    // TODO: remove temporary
-    SmartDashboard.putNumber("Target Front Left Speed", mecanumDriveWheelSpeeds.frontLeftMetersPerSecond);
-    // meters/sec -> rotations/sec -> rotations/min
-    frontLeft.setRPM(mecanumDriveWheelSpeeds.frontLeftMetersPerSecond * metersToRotations * 60.0);
-    frontRight.setRPM(mecanumDriveWheelSpeeds.frontRightMetersPerSecond * metersToRotations * 60.0);
-    backLeft.setRPM(mecanumDriveWheelSpeeds.rearLeftMetersPerSecond * metersToRotations * 60.0);
-    backRight.setRPM(mecanumDriveWheelSpeeds.rearRightMetersPerSecond * metersToRotations * 60.0);
+    frontLeft.setLinearVelocity(mecanumDriveWheelSpeeds.frontLeftMetersPerSecond);
+    frontRight.setLinearVelocity(mecanumDriveWheelSpeeds.frontRightMetersPerSecond);
+    backLeft.setLinearVelocity(mecanumDriveWheelSpeeds.rearLeftMetersPerSecond);
+    backRight.setLinearVelocity(mecanumDriveWheelSpeeds.rearRightMetersPerSecond);
+  }
+
+  public void driveVoltages(MecanumDriveMotorVoltages mecanumDriveMotorVoltages) {
+    frontLeft.setVoltage(mecanumDriveMotorVoltages.frontLeftVoltage);
+    frontRight.setVoltage(mecanumDriveMotorVoltages.frontRightVoltage);
+    backLeft.setVoltage(mecanumDriveMotorVoltages.rearLeftVoltage);
+    backRight.setVoltage(mecanumDriveMotorVoltages.rearRightVoltage);
   }
 
   public void stop() {
@@ -146,12 +163,11 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public MecanumDriveWheelSpeeds getWheelSpeeds() {
-    // rotations/min -> meters/min -> meters/sec
     return new MecanumDriveWheelSpeeds(
-      frontLeft.getRPM() * rotationsToMeters / 60.0,
-      frontRight.getRPM() * rotationsToMeters / 60.0,
-      backLeft.getRPM() * rotationsToMeters / 60.0,
-      backRight.getRPM() * rotationsToMeters / 60.0
+      frontLeft.getLinearVelocity(),
+      frontRight.getLinearVelocity(),
+      backLeft.getLinearVelocity(),
+      backRight.getLinearVelocity()
     );
   }
 
