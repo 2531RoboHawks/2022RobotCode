@@ -16,7 +16,6 @@ public final class Constants {
     public static final class Controls {
         public static final int Slow = 2;
         public static final int Turbo = 3;
-        public static final int ToggleFieldOriented = 4;
 
         public static final int TurretRight = 2;
         public static final int TurretLeft = 3;

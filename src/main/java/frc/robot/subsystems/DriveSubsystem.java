@@ -54,16 +54,6 @@ public class DriveSubsystem extends SubsystemBase {
     backLeft.configurePID(drivePid);
     backRight.configurePID(drivePid);
 
-    // double secondsFromNeutralToFull = 0.5;
-    // frontLeft.configOpenloopRamp(secondsFromNeutralToFull);
-    // frontLeft.configClosedloopRamp(secondsFromNeutralToFull);
-    // frontRight.configOpenloopRamp(secondsFromNeutralToFull);
-    // frontRight.configClosedloopRamp(secondsFromNeutralToFull);
-    // backLeft.configOpenloopRamp(secondsFromNeutralToFull);
-    // backLeft.configClosedloopRamp(secondsFromNeutralToFull);
-    // backRight.configOpenloopRamp(secondsFromNeutralToFull);
-    // backRight.configClosedloopRamp(secondsFromNeutralToFull);
-
     frontRight.setInverted(true);
     backRight.setInverted(true);
 
@@ -131,13 +121,8 @@ public class DriveSubsystem extends SubsystemBase {
     gyro.reset();
   }
 
-  public void resetEncoders() {
-    // TODO
-  }
-
   public void reset() {
     resetGyro();
-    resetEncoders();
     stop();
   }
 
@@ -190,10 +175,5 @@ public class DriveSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Front Right Speed", getWheelSpeeds().frontRightMetersPerSecond);
     SmartDashboard.putNumber("Back Left Speed", getWheelSpeeds().rearLeftMetersPerSecond);
     SmartDashboard.putNumber("Back Right Speed", getWheelSpeeds().rearRightMetersPerSecond);
-
-    // SmartDashboard.putNumber("FL Amps", frontLeft.getSupplyCurrent());
-    // SmartDashboard.putNumber("FR Amps", frontRight.getSupplyCurrent());
-    // SmartDashboard.putNumber("BL Amps", backLeft.getSupplyCurrent());
-    // SmartDashboard.putNumber("BR Amps", backRight.getSupplyCurrent());
   }
 }
