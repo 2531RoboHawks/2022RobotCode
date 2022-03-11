@@ -40,7 +40,7 @@ public class MoveSetDistanceFromTarget extends CommandBase {
             double maxSpeed = 0.3;
             if (value > maxSpeed) value = maxSpeed;
             if (value < -maxSpeed) value = -maxSpeed;
-            driveSubsystem.drivePercent(-value, 0, 0, false);    
+            driveSubsystem.drivePercent(-value, 0, 0);    
         } else {
             driveSubsystem.stop();
         }

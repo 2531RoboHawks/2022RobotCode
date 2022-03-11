@@ -4,12 +4,10 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
-import com.ctre.phoenix.sensors.WPI_PigeonIMU;
+import com.kauailabs.navx.frc.AHRS;
 
-import edu.wpi.first.wpilibj.drive.MecanumDrive;
-import edu.wpi.first.wpilibj.drive.Vector2d;
+import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -18,19 +16,19 @@ import edu.wpi.first.math.kinematics.MecanumDriveKinematics;
 import edu.wpi.first.math.kinematics.MecanumDriveOdometry;
 import edu.wpi.first.math.kinematics.MecanumDriveWheelSpeeds;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.BetterTalonFX;
 import frc.robot.MecanumDriveInfo;
 import frc.robot.PIDSettings;
-import frc.robot.TalonUtils;
 
 public class DriveSubsystem extends SubsystemBase {
-  private WPI_PigeonIMU pigeon = new WPI_PigeonIMU(1);
+  private Gyro gyro = new AHRS(SPI.Port.kMXP);
 
-  private WPI_TalonFX frontLeft = new WPI_TalonFX(30);
-  private WPI_TalonFX frontRight = new WPI_TalonFX(31);
-  private WPI_TalonFX backLeft = new WPI_TalonFX(32);
-  private WPI_TalonFX backRight = new WPI_TalonFX(33);
+  private BetterTalonFX frontLeft = new BetterTalonFX(30);
+  private BetterTalonFX frontRight = new BetterTalonFX(31);
+  private BetterTalonFX backLeft = new BetterTalonFX(32);
+  private BetterTalonFX backRight = new BetterTalonFX(33);
 
-  public static final MecanumDriveKinematics kinematics = new MecanumDriveKinematics(
+  public final MecanumDriveKinematics kinematics = new MecanumDriveKinematics(
     // In meters from center of robot
     new Translation2d(0.26035, 0.2921),
     new Translation2d(0.26035, -0.2921),
@@ -38,53 +36,23 @@ public class DriveSubsystem extends SubsystemBase {
     new Translation2d(-0.26035, -0.2921)
   );
 
-  private MecanumDrive mecanumDrive;
   private MecanumDriveOdometry odometry;
 
   private static final double wheelDiameter = 0.2032; // meters
   private static final double wheelCircumference = Math.PI * wheelDiameter;
   private static final double gearRatio = 8.45 / 1.0;
-  private static final double unitsPerTurn = 2048.0;
-  private static final double unitsToMeters = wheelCircumference / (unitsPerTurn * gearRatio);
-  private static final double metersToUnits = 1.0 / unitsToMeters;
+  private static final double rotationsToMeters = wheelCircumference / gearRatio;
+  private static final double metersToRotations = 1.0 / rotationsToMeters;
 
-  private static class EncoderInfo {
-    private double targetValue = 0;
-    private double zero = 0;
-    double getTargetValueIncludingZero() {
-      return targetValue + zero;
-    }
-    void setTarget(double newTarget) {
-      targetValue = newTarget;
-    }
-    void changeTargetBy(double delta) {
-      targetValue += delta;
-    }
-    private void setZero(double newZero) {
-      zero = newZero;
-      targetValue = 0;
-    }
-  }
-
-  private EncoderInfo frontRightInfo = new EncoderInfo();
-  private EncoderInfo frontLeftInfo = new EncoderInfo();
-  private EncoderInfo backRightInfo = new EncoderInfo();
-  private EncoderInfo backLeftInfo = new EncoderInfo();
+  private final PIDSettings drivePid = new PIDSettings(0.1, 0.0005, 0);
 
   public DriveSubsystem() {
-    mecanumDrive = new MecanumDrive(frontLeft, backLeft, frontRight, backRight);
-
     setPID(new PIDSettings());
 
-    double secondsFromNeutralToFull = 0.5;
-    frontLeft.configOpenloopRamp(secondsFromNeutralToFull);
-    frontLeft.configClosedloopRamp(secondsFromNeutralToFull);
-    frontRight.configOpenloopRamp(secondsFromNeutralToFull);
-    frontRight.configClosedloopRamp(secondsFromNeutralToFull);
-    backLeft.configOpenloopRamp(secondsFromNeutralToFull);
-    backLeft.configClosedloopRamp(secondsFromNeutralToFull);
-    backRight.configOpenloopRamp(secondsFromNeutralToFull);
-    backRight.configClosedloopRamp(secondsFromNeutralToFull);
+    frontLeft.configurePID(drivePid);
+    frontRight.configurePID(drivePid);
+    backLeft.configurePID(drivePid);
+    backRight.configurePID(drivePid);
 
     frontRight.setInverted(true);
     backRight.setInverted(true);
@@ -93,135 +61,97 @@ public class DriveSubsystem extends SubsystemBase {
     reset();
   }
 
+  // TODO: unused
   private PIDSettings lastPidSettings;
   public void setPID(PIDSettings pid) {
+    // TODO: unused
     lastPidSettings = pid;
-    TalonUtils.configurePID(frontLeft, pid);
-    TalonUtils.configurePID(frontRight, pid);
-    TalonUtils.configurePID(backLeft, pid);
-    TalonUtils.configurePID(backRight, pid);
   }
   public PIDSettings getPID() {
+    // TODO: unused
     return lastPidSettings;
   }
 
-  public void drivePercent(double ySpeed, double xSpeed, double zRotation, boolean fieldOriented) {
-    mecanumDrive.driveCartesian(
-      ySpeed,
-      xSpeed,
-      zRotation,
-      fieldOriented ? getAngle() : 0
-    );
+  public void drive(double ySpeed, double xSpeed, double zRotation) {
+    double frontLeft = ySpeed + xSpeed + zRotation;
+    double frontRight = ySpeed - xSpeed - zRotation;
+    double backLeft = ySpeed - xSpeed + zRotation;
+    double backRight = ySpeed + xSpeed - zRotation;
+    driveWheelSpeeds(new MecanumDriveWheelSpeeds(
+      frontLeft,
+      frontRight,
+      backLeft,
+      backRight
+    ));
   }
 
-  public void drivePercent2(double ySpeed, double xSpeed, double zRotation) {
-    frontLeft.set(ControlMode.PercentOutput, ySpeed + xSpeed + zRotation);
-    frontRight.set(ControlMode.PercentOutput, ySpeed - xSpeed - zRotation);
-    backLeft.set(ControlMode.PercentOutput, ySpeed - xSpeed + zRotation);
-    backRight.set(ControlMode.PercentOutput, ySpeed + xSpeed - zRotation);
-    mecanumDrive.feed();
+  public void drivePercent(double ySpeed, double xSpeed, double zRotation) {
+    frontLeft.setPower(ySpeed + xSpeed + zRotation);
+    frontRight.setPower(ySpeed - xSpeed - zRotation);
+    backLeft.setPower(ySpeed - xSpeed + zRotation);
+    backRight.setPower(ySpeed + xSpeed - zRotation);
   }
 
-  private void updateMotorsToTargetValues() {
-    frontLeft.set(ControlMode.Position, frontLeftInfo.getTargetValueIncludingZero());
-    frontRight.set(ControlMode.Position, frontRightInfo.getTargetValueIncludingZero());
-    backLeft.set(ControlMode.Position, backLeftInfo.getTargetValueIncludingZero());
-    backRight.set(ControlMode.Position, backRightInfo.getTargetValueIncludingZero());
-    mecanumDrive.feed();
-  }
-
-  public void driveTeleop(double y, double x, double z, boolean fieldOriented) {
-    // scale [-1, 1] to raw sensor units
-    x *= 2048;
-    y *= 2048;
-    z *= 2048;
-
-    // Vector2d arguments are supposed to be backwards
-    Vector2d vector = new Vector2d(y, x);
-    if (fieldOriented) {
-      vector.rotate(getAngle());
-    }
-
-    frontLeftInfo.changeTargetBy(vector.x + vector.y + z);
-    frontRightInfo.changeTargetBy(vector.x - vector.y - z);
-    backLeftInfo.changeTargetBy(vector.x - vector.y + z);
-    backRightInfo.changeTargetBy(vector.x + vector.y - z);
-    updateMotorsToTargetValues();
-  }
-
-  public void driveAutoFixed(double x, double y) {
-    double calculatedX = x * metersToUnits;
-    double calculatedY = y * metersToUnits;
-    double calculatedZ = 0;
-    frontLeftInfo.setTarget(calculatedY + calculatedX + calculatedZ);
-    frontRightInfo.setTarget(calculatedY - calculatedX - calculatedZ);
-    backLeftInfo.setTarget(calculatedY - calculatedX + calculatedZ);
-    backRightInfo.setTarget(calculatedY + calculatedX - calculatedZ);
-    updateMotorsToTargetValues();
-  }
-
-  public void driveFixedSensorUnits(MecanumDriveInfo info) {
-    frontLeftInfo.setTarget(info.frontLeft);
-    frontRightInfo.setTarget(info.frontRight);
-    backLeftInfo.setTarget(info.backLeft);
-    backRightInfo.setTarget(info.backRight);
-    updateMotorsToTargetValues();
+  public void driveWheelSpeeds(MecanumDriveWheelSpeeds mecanumDriveWheelSpeeds) {
+    // TODO: remove temporary
+    SmartDashboard.putNumber("Target Front Left Speed", mecanumDriveWheelSpeeds.frontLeftMetersPerSecond);
+    // meters/sec -> rotations/sec -> rotations/min
+    frontLeft.setRPM(mecanumDriveWheelSpeeds.frontLeftMetersPerSecond * metersToRotations * 60.0);
+    frontRight.setRPM(mecanumDriveWheelSpeeds.frontRightMetersPerSecond * metersToRotations * 60.0);
+    backLeft.setRPM(mecanumDriveWheelSpeeds.rearLeftMetersPerSecond * metersToRotations * 60.0);
+    backRight.setRPM(mecanumDriveWheelSpeeds.rearRightMetersPerSecond * metersToRotations * 60.0);
   }
 
   public void stop() {
-    mecanumDrive.stopMotor();
+    frontLeft.stop();
+    frontRight.stop();
+    backLeft.stop();
+    backRight.stop();
   }
 
   public double getAngle() {
-    return pigeon.getAngle();
+    return gyro.getAngle();
   }
 
   public Rotation2d getRotation2d() {
-    return pigeon.getRotation2d();
+    return gyro.getRotation2d();
   }
 
   public void resetGyro() {
-    pigeon.reset();
-  }
-
-  public void resetEncoders() {
-    // setSelectedSensorPosition has proven unreliable
-    frontLeftInfo.setZero(frontLeft.getSelectedSensorPosition());
-    frontRightInfo.setZero(frontRight.getSelectedSensorPosition());
-    backLeftInfo.setZero(backLeft.getSelectedSensorPosition());
-    backRightInfo.setZero(backRight.getSelectedSensorPosition());
+    gyro.reset();
   }
 
   public void reset() {
     resetGyro();
-    resetEncoders();
     stop();
   }
 
   public MecanumDriveInfo getWheelPositions() {
+    // in raw sensor units
     return new MecanumDriveInfo(
-      frontLeft.getSelectedSensorPosition(),
-      frontRight.getSelectedSensorPosition(),
-      backLeft.getSelectedSensorPosition(),
-      backRight.getSelectedSensorPosition()
+      frontLeft.getPositionSensorUnits(),
+      frontRight.getPositionSensorUnits(),
+      backLeft.getPositionSensorUnits(),
+      backRight.getPositionSensorUnits()
     );
   }
 
-  public MecanumDriveInfo getWheelVelocities() {
+  public MecanumDriveInfo getWheelRPM() {
     return new MecanumDriveInfo(
-      frontLeft.getSelectedSensorVelocity(),
-      frontRight.getSelectedSensorVelocity(),
-      backLeft.getSelectedSensorVelocity(),
-      backRight.getSelectedSensorVelocity()
+      frontLeft.getRPM(),
+      frontRight.getRPM(),
+      backLeft.getRPM(),
+      backRight.getRPM()
     );
   }
 
-  public MecanumDriveInfo getTargetValues() {
-    return new MecanumDriveInfo(
-      frontLeftInfo.targetValue,
-      frontRightInfo.targetValue,
-      backLeftInfo.targetValue,
-      backRightInfo.targetValue
+  public MecanumDriveWheelSpeeds getWheelSpeeds() {
+    // rotations/min -> meters/min -> meters/sec
+    return new MecanumDriveWheelSpeeds(
+      frontLeft.getRPM() * rotationsToMeters / 60.0,
+      frontRight.getRPM() * rotationsToMeters / 60.0,
+      backLeft.getRPM() * rotationsToMeters / 60.0,
+      backRight.getRPM() * rotationsToMeters / 60.0
     );
   }
 
@@ -229,13 +159,8 @@ public class DriveSubsystem extends SubsystemBase {
     return odometry.getPoseMeters();
   }
 
-  public MecanumDriveWheelSpeeds getWheelSpeeds() {
-    return new MecanumDriveWheelSpeeds(
-      frontLeft.getSelectedSensorVelocity() * unitsToMeters * 10.0,
-      frontRight.getSelectedSensorVelocity() * unitsToMeters * 10.0,
-      backLeft.getSelectedSensorVelocity() * unitsToMeters * 10.0,
-      backRight.getSelectedSensorVelocity() * unitsToMeters * 10.0
-    );
+  public void resetOdometry(Pose2d pose) {
+    odometry.resetPosition(pose, getRotation2d());
   }
 
   @Override
@@ -246,9 +171,9 @@ public class DriveSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Pose Y", getPose().getY());
     SmartDashboard.putNumber("Gyro", getAngle());
 
-    SmartDashboard.putNumber("FL Amps", frontLeft.getSupplyCurrent());
-    SmartDashboard.putNumber("FR Amps", frontRight.getSupplyCurrent());
-    SmartDashboard.putNumber("BL Amps", backLeft.getSupplyCurrent());
-    SmartDashboard.putNumber("BR Amps", backRight.getSupplyCurrent());
+    SmartDashboard.putNumber("Front Left Speed", getWheelSpeeds().frontLeftMetersPerSecond);
+    SmartDashboard.putNumber("Front Right Speed", getWheelSpeeds().frontRightMetersPerSecond);
+    SmartDashboard.putNumber("Back Left Speed", getWheelSpeeds().rearLeftMetersPerSecond);
+    SmartDashboard.putNumber("Back Right Speed", getWheelSpeeds().rearRightMetersPerSecond);
   }
 }

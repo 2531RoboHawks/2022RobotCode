@@ -4,7 +4,6 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.InputUtils;
@@ -16,7 +15,6 @@ public class DriveCommand extends CommandBase {
   private static final PIDSettings pid = new PIDSettings(0.2, 0, 0);
 
   private DriveSubsystem driveSubsystem;
-  private boolean fieldOriented = false;
 
   public DriveCommand(DriveSubsystem driveSubsystem) {
     this.driveSubsystem = driveSubsystem;
@@ -27,7 +25,6 @@ public class DriveCommand extends CommandBase {
   public void initialize() {
     driveSubsystem.setPID(pid);
     driveSubsystem.reset();
-    SmartDashboard.putBoolean("Field Oriented", fieldOriented);
   }
 
   private double scale(double n) {
@@ -37,37 +34,30 @@ public class DriveCommand extends CommandBase {
 
   @Override
   public void execute() {
+    double xMultiplier;
+    double yMultiplier;
+    double rotationMultiplier;
+    boolean slow = RobotContainer.gamepad.getRawButton(Constants.Controls.Slow);
     boolean turbo = RobotContainer.gamepad.getRawButton(Constants.Controls.Turbo);
-    double xMultiplier = turbo ? 1 : 0.5;
-    double yMultiplier = turbo ? 1 : 0.3;
-    double rotationMultiplier = turbo ? 0.35 : 0.25;
-
-    if (RobotContainer.gamepad.getRawButtonPressed(Constants.Controls.ToggleFieldOriented)) {
-      fieldOriented = !fieldOriented;
-      System.out.println("Field oriented: " + fieldOriented);
-      SmartDashboard.putBoolean("Field Oriented", fieldOriented);
-    }
-
-    if (fieldOriented) {
-      if (RobotContainer.gamepad.getRawButtonPressed(Constants.Controls.ResetDrive)) {
-        driveSubsystem.resetGyro();
-        driveSubsystem.resetEncoders();
-      }
+    if (slow) {
+      xMultiplier = 0.5;
+      yMultiplier = 0.5;
+      rotationMultiplier = 0.5;
+    } else if (turbo) {
+      xMultiplier = 3;
+      yMultiplier = 3;
+      rotationMultiplier = 2;
     } else {
-      // TEMPORARY
-      if (RobotContainer.gamepad.getRawButton(Constants.Controls.ResetDrive)) {
-        xMultiplier *= 0.5;
-        yMultiplier *= 0.5;
-        rotationMultiplier *= 0.7;
-      }
+      xMultiplier = 1;
+      yMultiplier = 1;
+      rotationMultiplier = 1;
     }
 
-    double x = RobotContainer.gamepad.getX();
-    double y = -RobotContainer.gamepad.getY();
-    double z = RobotContainer.gamepad.getRawAxis(4);
-    if (Math.abs(x) < 0.2) x = 0;
+    double x = RobotContainer.gamepad.getLeftX();
+    double y = -RobotContainer.gamepad.getLeftY();
+    double z = RobotContainer.gamepad.getRightX();
 
-    driveSubsystem.drivePercent2(
+    driveSubsystem.drive(
       scale(y) * yMultiplier,
       scale(x) * xMultiplier,
       scale(z) * rotationMultiplier

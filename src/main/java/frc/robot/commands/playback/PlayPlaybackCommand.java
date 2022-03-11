@@ -34,12 +34,13 @@ public class PlayPlaybackCommand extends CommandBase {
         System.out.println("  FR: " + (step.targetFrontRight - initialStep.targetFrontRight));
         System.out.println("  BL: " + (step.targetBackLeft - initialStep.targetBackLeft));
         System.out.println("  BR: " + (step.targetBackRight - initialStep.targetBackRight));
-        driveSubsystem.driveFixedSensorUnits(new MecanumDriveInfo(
-            step.targetFrontLeft - initialStep.targetFrontLeft,
-            step.targetFrontRight - initialStep.targetFrontRight,
-            step.targetBackLeft - initialStep.targetBackLeft,
-            step.targetBackRight - initialStep.targetBackRight
-        ));
+        // TODO: broken, unused
+        // driveSubsystem.driveFixedSensorUnits(new MecanumDriveInfo(
+        //     step.targetFrontLeft - initialStep.targetFrontLeft,
+        //     step.targetFrontRight - initialStep.targetFrontRight,
+        //     step.targetBackLeft - initialStep.targetBackLeft,
+        //     step.targetBackRight - initialStep.targetBackRight
+        // ));
     }
 
     @Override

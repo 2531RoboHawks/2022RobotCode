@@ -34,7 +34,7 @@ public class LimelightTrackCommand extends CommandBase {
   public void execute() {
     double amount = pidController.calculate(visionSubsystem.getX());
     if(visionSubsystem.hasValidTarget()) {
-      this.driveSubsystem.drivePercent(0, 0, -amount, false);
+      this.driveSubsystem.drivePercent(0, 0, -amount);
     } else {
       this.driveSubsystem.stop();
     }
