@@ -20,14 +20,12 @@ public class TrajectoryCommand extends MecanumControllerCommand {
     private static final double maxAcceleration = 1;
 
     // in radians/sec
-    private static final double maxAngularVelocity = 1;
-    private static final double maxAngularAcceleration = 1;
+    private static final double maxAngularVelocity = 3;
+    private static final double maxAngularAcceleration = 3;
 
     private DriveSubsystem driveSubsystem;
     private Trajectory trajectory;
-
     private boolean shouldResetOdometry = false;
-    private boolean shouldStopMotors = false;
 
     public TrajectoryCommand(Trajectory trajectory, DriveSubsystem driveSubsystem) {
         super(
@@ -49,7 +47,7 @@ public class TrajectoryCommand extends MecanumControllerCommand {
     public static TrajectoryCommand fromWaypoints(DriveSubsystem driveSubsystem, Pose2d... waypointsArray) {
         List<Pose2d> waypoints = List.of(waypointsArray);
         if (waypoints.size() < 2) {
-            throw new RuntimeException("forWaypoints called with too few arguments");
+            throw new RuntimeException("forWaypoints called with too few waypoint arguments");
         }
 
         TrajectoryConfig trajectoryConfig = new TrajectoryConfig(maxVelocity, maxAcceleration)
@@ -74,13 +72,8 @@ public class TrajectoryCommand extends MecanumControllerCommand {
         return new TrajectoryCommand(trajectory, driveSubsystem);
     }
 
-    public TrajectoryCommand withResetOdometry() {
+    public TrajectoryCommand resetOdometry() {
         shouldResetOdometry = true;
-        return this;
-    }
-
-    public TrajectoryCommand withStopMotors() {
-        shouldStopMotors = true;
         return this;
     }
 
@@ -95,8 +88,6 @@ public class TrajectoryCommand extends MecanumControllerCommand {
     @Override
     public void end(boolean interrupted) {
         super.end(interrupted);
-        if (shouldStopMotors) {
-            driveSubsystem.stop();
-        }
+        driveSubsystem.stop();
     }
 }
