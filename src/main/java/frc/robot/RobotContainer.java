@@ -94,7 +94,8 @@ public class RobotContainer {
         Waypoint.UP,
         Waypoint.DOWN,
         Waypoint.LEFT,
-        Waypoint.RIGHT
+        Waypoint.RIGHT,
+        Waypoint.LEFT
       ).resetOdometry()
     );
 
