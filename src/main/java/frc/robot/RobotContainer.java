@@ -15,7 +15,7 @@ import frc.robot.commands.auto.AutoDriveCommand;
 import frc.robot.commands.auto.AutoTurnAroundCommand;
 import frc.robot.commands.auto.ShootBallCommand;
 import frc.robot.commands.auto.TrajectoryCommand;
-import frc.robot.commands.auto.Waypoints;
+import frc.robot.commands.auto.Waypoint;
 import frc.robot.commands.auto.MoveSetDistanceFromTarget;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.IntakeCommand;
@@ -90,11 +90,11 @@ public class RobotContainer {
       "8 Ball Auto",
       TrajectoryCommand.fromWaypoints(
         driveSubsystem,
-        Waypoints.LEFT,
-        Waypoints.UP,
-        Waypoints.DOWN,
-        Waypoints.LEFT,
-        Waypoints.RIGHT
+        Waypoint.LEFT,
+        Waypoint.UP,
+        Waypoint.DOWN,
+        Waypoint.LEFT,
+        Waypoint.RIGHT
       ).resetOdometry()
     );
 

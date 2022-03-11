@@ -44,8 +44,8 @@ public class TrajectoryCommand extends MecanumControllerCommand {
         this.trajectory = trajectory;
     }
 
-    public static TrajectoryCommand fromWaypoints(DriveSubsystem driveSubsystem, Pose2d... waypointsArray) {
-        List<Pose2d> waypoints = List.of(waypointsArray);
+    public static TrajectoryCommand fromWaypoints(DriveSubsystem driveSubsystem, Waypoint... waypointsArray) {
+        List<Waypoint> waypoints = List.of(waypointsArray);
         if (waypoints.size() < 2) {
             throw new RuntimeException("forWaypoints called with too few waypoint arguments");
         }
@@ -53,12 +53,12 @@ public class TrajectoryCommand extends MecanumControllerCommand {
         TrajectoryConfig trajectoryConfig = new TrajectoryConfig(maxVelocity, maxAcceleration)
             .setKinematics(driveSubsystem.kinematics);
 
-        Pose2d initial = waypoints.get(0);
-        Pose2d ending = waypoints.get(waypoints.size() - 1);
+        Pose2d initial = waypoints.get(0).getPose();
+        Pose2d ending = waypoints.get(waypoints.size() - 1).getPose();
         List<Translation2d> middlePoints = new ArrayList<>();
         if (waypoints.size() > 2) {
             for (int i = 1; i < waypoints.size() - 1; i++) {
-                middlePoints.add(waypoints.get(i).getTranslation());
+                middlePoints.add(waypoints.get(i).getPose().getTranslation());
             }
         }
 
