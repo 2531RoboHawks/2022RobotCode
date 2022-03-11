@@ -62,8 +62,8 @@ public class RobotContainer {
 
   // public final LimelightTrackCommand limelightTrackCommand = new LimelightTrackCommand(visionSubsystem, driveSubsystem);
 
-  public static Joystick gamepad = new Joystick(0);
-  public static Joystick helms = new Joystick(1);
+  public static XboxController gamepad = new XboxController(0);
+  public static XboxController helms = new XboxController(1);
 
   private SendableChooser<Command> autoChooser = new SendableChooser<>();
 

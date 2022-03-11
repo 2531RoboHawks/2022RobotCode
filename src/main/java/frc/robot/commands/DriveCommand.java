@@ -53,9 +53,9 @@ public class DriveCommand extends CommandBase {
       rotationMultiplier = 1;
     }
 
-    double x = RobotContainer.gamepad.getX();
-    double y = -RobotContainer.gamepad.getY();
-    double z = RobotContainer.gamepad.getRawAxis(4);
+    double x = RobotContainer.gamepad.getLeftX();
+    double y = -RobotContainer.gamepad.getLeftY();
+    double z = RobotContainer.gamepad.getRightX();
 
     driveSubsystem.drive(
       scale(y) * yMultiplier,
