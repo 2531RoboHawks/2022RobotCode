@@ -6,19 +6,6 @@ package frc.robot;
 
 import java.util.List;
 
-import com.pathplanner.lib.PathPlanner;
-import com.pathplanner.lib.PathPlannerTrajectory;
-import com.pathplanner.lib.commands.PPMecanumControllerCommand;
-
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.ProfiledPIDController;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.trajectory.Trajectory;
-import edu.wpi.first.math.trajectory.TrajectoryConfig;
-import edu.wpi.first.math.trajectory.TrajectoryGenerator;
-import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
@@ -30,6 +17,8 @@ import frc.robot.commands.ZeroTurretCommand;
 import frc.robot.commands.auto.AutoDriveCommand;
 import frc.robot.commands.auto.AutoTurnArounCommand;
 import frc.robot.commands.auto.ShootBallCommand;
+import frc.robot.commands.auto.TrajectoryCommand;
+import frc.robot.commands.auto.Waypoints;
 import frc.robot.commands.auto.MoveSetDistanceFromTarget;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.IntakeCommand;
@@ -47,7 +36,6 @@ import frc.robot.subsystems.ShootSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.MecanumControllerCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -99,43 +87,20 @@ public class RobotContainer {
     // SmartDashboard.putData("Limelight Track command", limelightTrackCommand);
     // SmartDashboard.putData("Zero Turret Command", zeroTurretCommand);
 
-    PathPlannerTrajectory ppTrajectory = PathPlanner.loadPath("New Path", 5, 5);
-
-    TrajectoryConfig trajectoryConfig = new TrajectoryConfig(5, 5).setKinematics(driveSubsystem.kinematics);
-    Trajectory wpiTrajectory = TrajectoryGenerator.generateTrajectory(
-      new Pose2d(0, 0, new Rotation2d(0)),
-      List.of(new Translation2d(1, 1), new Translation2d(2, -1), new Translation2d(1, -1)),
-      new Pose2d(0, 0, new Rotation2d(0)),
-      trajectoryConfig
-    );
-
     autoChooser.addOption("None", null);
+
     autoChooser.setDefaultOption(
-      "Path Planner",
-      new SequentialCommandGroup(
-        new InstantCommand(() -> {
-          // driveSubsystem.resetOdometry(new Pose2d(
-          //   ppTrajectory.getInitialPose().getTranslation(),
-          //   ppTrajectory.getInitialState().holonomicRotation
-          // ));
-          driveSubsystem.resetOdometry(wpiTrajectory.getInitialPose());
-        }),
-        new MecanumControllerCommand(
-          wpiTrajectory,
-          driveSubsystem::getPose,
-          driveSubsystem.kinematics,
-          new PIDController(1, 0, 0),
-          new PIDController(1, 0, 0),
-          new ProfiledPIDController(1, 0, 0, new TrapezoidProfile.Constraints(3, 3)),
-          1,
-          driveSubsystem::driveWheelSpeeds,
-          driveSubsystem
-        ),
-        new InstantCommand(() -> {
-          driveSubsystem.stop();
-        })
-      )
+      "8 Ball Auto",
+      TrajectoryCommand.fromWaypoints(
+        driveSubsystem,
+        Waypoints.LEFT,
+        Waypoints.UP,
+        Waypoints.DOWN,
+        Waypoints.LEFT,
+        Waypoints.RIGHT
+      ).withResetOdometry().withStopMotors()
     );
+
     // autoChooser.addOption(
     //   "Taxi",
     //   new AutoDriveCommand(driveSubsystem, 5, 0.2, 0, 0)
