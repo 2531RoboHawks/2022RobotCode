@@ -1,7 +1,6 @@
 package frc.robot;
 
 public class PIDSettings {
-    // NOTE: This class is JSON-serialized and deserialized!
     public final double kp;
     public final double ki;
     public final double kd;
