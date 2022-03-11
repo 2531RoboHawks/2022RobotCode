@@ -10,7 +10,6 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.SynchronizedClimbCommand;
-import frc.robot.commands.ZeroTurretCommand;
 import frc.robot.commands.auto.AutoDriveCommand;
 import frc.robot.commands.auto.AutoTurnAroundCommand;
 import frc.robot.commands.auto.ShootBallCommand;
@@ -22,9 +21,6 @@ import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.LimelightTrackCommand;
 import frc.robot.commands.ManualClimbCommand;
 import frc.robot.commands.ShootCommand;
-import frc.robot.commands.playback.PlayPlaybackCommand;
-import frc.robot.commands.playback.Playback;
-import frc.robot.commands.playback.RecordPlaybackCommand;
 import frc.robot.subsystems.ClimbSubsystem;
 import frc.robot.subsystems.CompressorSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
@@ -57,8 +53,6 @@ public class RobotContainer {
   // public final DriveCommand driveCommand = new DriveCommand(driveSubsystem);
   // public final IntakeCommand intakeCommand = new IntakeCommand(intakeSubsystem);
   // public final ShootCommand shootCommand = new ShootCommand(shootSubsystem);
-  // public final RecordPlaybackCommand recordPlaybackCommand = new RecordPlaybackCommand(driveSubsystem);
-  // public final ZeroTurretCommand zeroTurretCommand = new ZeroTurretCommand(shootSubsystem);
 
   // public final LimelightTrackCommand limelightTrackCommand = new LimelightTrackCommand(visionSubsystem, driveSubsystem);
 
@@ -80,9 +74,7 @@ public class RobotContainer {
     // SmartDashboard.putData("Drive command", driveCommand);
     // SmartDashboard.putData("Intake command", intakeCommand);
     // SmartDashboard.putData("Shoot command", shootCommand);
-    // SmartDashboard.putData("Record playback command", recordPlaybackCommand);
     // SmartDashboard.putData("Limelight Track command", limelightTrackCommand);
-    // SmartDashboard.putData("Zero Turret Command", zeroTurretCommand);
 
     autoChooser.addOption("None", null);
 
@@ -150,8 +142,6 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    // new JoystickButton(gamepad, 6).whenHeld(new RecordPlaybackCommand(driveSubsystem));
-    // new JoystickButton(gamepad, 6).whenHeld(new PlayPlaybackCommand(driveSubsystem, Playback.load("test")));
     // new JoystickButton(helms, 8).toggleWhenActive(synchronizedClimbCommand);
   }
 
