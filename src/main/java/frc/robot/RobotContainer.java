@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.SynchronizedClimbCommand;
 import frc.robot.commands.ZeroTurretCommand;
 import frc.robot.commands.auto.AutoDriveCommand;
-import frc.robot.commands.auto.AutoTurnArounCommand;
+import frc.robot.commands.auto.AutoTurnAroundCommand;
 import frc.robot.commands.auto.ShootBallCommand;
 import frc.robot.commands.auto.TrajectoryCommand;
 import frc.robot.commands.auto.Waypoints;
@@ -95,7 +95,7 @@ public class RobotContainer {
         Waypoints.DOWN,
         Waypoints.LEFT,
         Waypoints.RIGHT
-      ).withResetOdometry().withStopMotors()
+      ).resetOdometry()
     );
 
     // autoChooser.addOption(
