@@ -94,7 +94,7 @@ public class DriveSubsystem extends SubsystemBase {
 
   public void driveWheelSpeeds(MecanumDriveWheelSpeeds mecanumDriveWheelSpeeds) {
     // TODO: remove temporary
-    SmartDashboard.putNumber("Target Fonrt Left Speed", mecanumDriveWheelSpeeds.frontLeftMetersPerSecond);
+    SmartDashboard.putNumber("Target Front Left Speed", mecanumDriveWheelSpeeds.frontLeftMetersPerSecond);
     // meters/sec -> rotations/sec -> rotations/min
     frontLeft.setRPM(mecanumDriveWheelSpeeds.frontLeftMetersPerSecond * metersToRotations * 60.0);
     frontRight.setRPM(mecanumDriveWheelSpeeds.frontRightMetersPerSecond * metersToRotations * 60.0);
