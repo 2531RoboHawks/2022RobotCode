@@ -4,6 +4,9 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+
 public class BetterTalonFX {
     public static double rpmToSensorVelocity(double rpm) {
         double revolutionsPerSecond = rpm / 60.0;
@@ -20,6 +23,10 @@ public class BetterTalonFX {
     }
 
     private final WPI_TalonFX talon;
+
+    public SimpleMotorFeedforward feedforward = null;
+    public PIDController linearVelocityPID = null;
+    private double metersPerRevolution = -1;
 
     public BetterTalonFX(int port) {
         talon = new WPI_TalonFX(port);
@@ -51,6 +58,29 @@ public class BetterTalonFX {
         talon.set(ControlMode.Velocity, rpmToSensorVelocity(rpm));
     }
 
+    public double getLinearVelocity() {
+        if (metersPerRevolution == -1) {
+            throw new IllegalStateException("metersPerRevolution not configured");
+        }
+        return getRPM() / 60.0 * metersPerRevolution;
+    }
+    public void setLinearVelocity(double metersPerSecond) {
+        if (metersPerRevolution == -1) {
+            throw new IllegalStateException("metersPerRevolution not configured");
+        }
+        if (feedforward == null) {
+            throw new IllegalStateException("feedforward not configured");
+        }
+        if (linearVelocityPID == null) {
+            throw new IllegalStateException("PID not configured");
+        }
+        setVoltage(feedforward.calculate(metersPerSecond) + linearVelocityPID.calculate(getLinearVelocity(), metersPerSecond));
+    }
+
+    public void setVoltage(double volts) {
+        talon.setVoltage(volts);
+    }
+
     private double fixedEncoderTargetZero = 0;
     private double fixedEncoderTarget = 0;
     public double getFixedEncoderTarget() {
@@ -70,12 +100,21 @@ public class BetterTalonFX {
     }
 
     public void configurePID(double kp, double ki, double kd) {
+        linearVelocityPID = new PIDController(kp, ki, kd);
         talon.config_kP(0, kp);
         talon.config_kI(0, ki);
         talon.config_kD(0, kd);
     }
     public void configurePID(PIDSettings pid) {
         configurePID(pid.kp, pid.ki, pid.kd);
+    }
+
+    public void configureFeedforward(SimpleMotorFeedforward feedforward) {
+        this.feedforward = feedforward;
+    }
+
+    public void configureDistancePerRevolution(double meters) {
+        this.metersPerRevolution = meters;
     }
 
     public void configureRamp(double secondsFromNeutralToFull) {

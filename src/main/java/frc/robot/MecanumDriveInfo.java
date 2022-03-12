@@ -1,5 +1,7 @@
 package frc.robot;
 
+import edu.wpi.first.math.kinematics.MecanumDriveWheelSpeeds;
+
 /**
  * Generic mecanum drive information container.
  */
@@ -14,5 +16,14 @@ public class MecanumDriveInfo {
         this.frontRight = frontRight;
         this.backLeft = backLeft;
         this.backRight = backRight;
+    }
+
+    public MecanumDriveWheelSpeeds toWheelSpeeds() {
+        return new MecanumDriveWheelSpeeds(
+            frontLeft,
+            frontRight,
+            backLeft,
+            backRight
+        );
     }
 }

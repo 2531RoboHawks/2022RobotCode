@@ -31,12 +31,18 @@ public class TrajectoryCommand extends MecanumControllerCommand {
         super(
             trajectory,
             driveSubsystem::getPose,
+            driveSubsystem.getFeedforward(),
             driveSubsystem.kinematics,
             new PIDController(1, 0, 0),
             new PIDController(1, 0, 0),
             new ProfiledPIDController(1, 0, 0, new TrapezoidProfile.Constraints(maxAngularVelocity, maxAngularAcceleration)),
             maxVelocity,
-            driveSubsystem::driveWheelSpeeds,
+            driveSubsystem.getVelocityPID(),
+            driveSubsystem.getVelocityPID(),
+            driveSubsystem.getVelocityPID(),
+            driveSubsystem.getVelocityPID(),
+            driveSubsystem::getWheelSpeeds,
+            driveSubsystem::driveVoltages,
             driveSubsystem
         );
 
