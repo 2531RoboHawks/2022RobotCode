@@ -23,11 +23,6 @@ public class ShootCommand extends CommandBase {
 
   }
 
-  public double scale(double n) {
-    if (Math.abs(n) < 0.07) return 0;
-    return n * n * Math.signum(n);
-  }
-
   @Override
   public void execute() {
     if (RobotContainer.gamepad.getRawButton(Constants.Controls.Shoot)) {
