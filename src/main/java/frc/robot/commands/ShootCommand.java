@@ -15,7 +15,7 @@ public class ShootCommand extends CommandBase {
     addRequirements(shootSubsystem);
 
     SmartDashboard.putNumber("Elevator Target RPM", 2000);
-    SmartDashboard.putNumber("Revwheel Target RPM", 5000);
+    SmartDashboard.putNumber("Revwheel Target RPM", 5600);
   }
 
   @Override
@@ -30,24 +30,27 @@ public class ShootCommand extends CommandBase {
 
   @Override
   public void execute() {
-    // if (RobotContainer.gamepad.getRawButton(Constants.Controls.Shoot)) {
-    //   shootSubsystem.setRevwheelRPM(SmartDashboard.getNumber("Revwheel Target RPM", 0));
-    // } else {
-    //   shootSubsystem.stopRevwheel();
-    // }
-    if (RobotContainer.gamepad.getRawButton(Constants.Controls.Elevator)) {
-      shootSubsystem.setElevatorRPM(SmartDashboard.getNumber("Elevator Target RPM", 0));
+    if (RobotContainer.gamepad.getRawButton(Constants.Controls.Shoot)) {
+      shootSubsystem.setRevwheelRPM(SmartDashboard.getNumber("Revwheel Target RPM", 0));
+    } else if (RobotContainer.gamepad.getRightBumper()) {
+      shootSubsystem.setRevwheelRPM(0);
     } else {
-      shootSubsystem.stopElevator();
+      shootSubsystem.idleRevwheel();
     }
 
-    if (RobotContainer.gamepad.getRawButton(Constants.Controls.Traverse)) {
-      shootSubsystem.setTraversePercent(0.85);
-    } else if (RobotContainer.gamepad.getRawButton(Constants.Controls.TraverseReverse)) {
-      shootSubsystem.setTraversePercent(-0.85);
-    } else {
-      shootSubsystem.stopTraverse();
-    }
+    // if (RobotContainer.gamepad.getRawButton(Constants.Controls.Elevator)) {
+    //   shootSubsystem.setElevatorRPM(SmartDashboard.getNumber("Elevator Target RPM", 0));
+    // } else {
+    //   shootSubsystem.stopElevator();
+    // }
+
+    // if (RobotContainer.gamepad.getRawButton(Constants.Controls.Traverse)) {
+    //   shootSubsystem.setTraversePercent(0.85);
+    // } else if (RobotContainer.gamepad.getRawButton(Constants.Controls.TraverseReverse)) {
+    //   shootSubsystem.setTraversePercent(-0.85);
+    // } else {
+    //   shootSubsystem.stopTraverse();
+    // }
   }
 
   @Override

@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.BetterTalonFX;
@@ -10,17 +11,18 @@ import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 public class ShootSubsystem extends SubsystemBase {
     private BetterTalonFX revwheel = new BetterTalonFX(15);
-    private static final PIDSettings revwheelPidSettings = new PIDSettings(0.075, 0.00009, 0);
+    // Numbers found from sysid; uses "revolutions per second" as native unit
+    private static final SimpleMotorFeedforward revwheelFeedforward = new SimpleMotorFeedforward(0.52799, 0.10687, 0.0071385);
+    private static final PIDSettings revwheelFeedforwardPID = new PIDSettings(0.11555, 0, 0);
 
     private BetterTalonFX elevatorWheel = new BetterTalonFX(9);
     private static final PIDSettings elevatorPidSettings = new PIDSettings(0.1, 0.001, 5);
 
     private VictorSPX traverse = new VictorSPX(8);
 
-
     public ShootSubsystem() {
-        revwheel.configurePID(revwheelPidSettings);
-        revwheel.configureRamp(0.5);
+        revwheel.configureUnitsPerRevolution(1);
+        revwheel.configureFeedforward(revwheelFeedforward, revwheelFeedforwardPID);
 
         elevatorWheel.configureInverted(true);
         elevatorWheel.configurePID(elevatorPidSettings);
@@ -30,10 +32,8 @@ public class ShootSubsystem extends SubsystemBase {
 
     public void setRevwheelRPM(double rpm) {
         // Max RPM: ~5600 RPM
-        revwheel.setRPM(rpm);
-    }
-    public void setRevwheelPercent(double percent) {
-        revwheel.setPower(percent);
+        double revolutionsPerSecond = rpm / 60.0;
+        revwheel.setLinearVelocityFeedforwardPID(revolutionsPerSecond);
     }
 
     public void setTraversePercent(double percent) {
@@ -50,21 +50,21 @@ public class ShootSubsystem extends SubsystemBase {
         elevatorWheel.setPower(percent);
     }
 
-    public void stopRevwheel() {
+    public void idleRevwheel() {
         revwheel.stop();
     }
     public void stopElevator() {
         elevatorWheel.stop();
     }
     public void stopEverything() {
-        stopRevwheel();
+        idleRevwheel();
         stopElevator();
     }
 
     @Override
     public void periodic() {
         SmartDashboard.putNumber("Actual Revwheel RPM", revwheel.getRPM());
-        SmartDashboard.putNumber("Actual Elevator RPM", elevatorWheel.getRPM());
-        SmartDashboard.putNumber("Traverse Volts", traverse.getBusVoltage());
+        // SmartDashboard.putNumber("Revwheel Voltage", revwheel.getWPI().getBusVoltage());
+        // SmartDashboard.putNumber("Revwheel Current", revwheel.getWPI().getSupplyCurrent());
     }
 }
