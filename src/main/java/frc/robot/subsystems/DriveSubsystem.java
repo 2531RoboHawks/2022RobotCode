@@ -61,8 +61,8 @@ public class DriveSubsystem extends SubsystemBase {
     backLeft.configureUnitsPerRevolution(rotationsToMeters);
     backRight.configureUnitsPerRevolution(rotationsToMeters);
 
-    frontRight.setInverted(true);
-    backRight.setInverted(true);
+    frontRight.configureInverted(true);
+    backRight.configureInverted(true);
 
     odometry = new MecanumDriveOdometry(kinematics, getRotation2d());
     reset();

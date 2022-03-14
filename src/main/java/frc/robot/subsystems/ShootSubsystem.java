@@ -22,7 +22,7 @@ public class ShootSubsystem extends SubsystemBase {
         revwheel.configurePID(revwheelPidSettings);
         revwheel.configureRamp(0.5);
 
-        elevatorWheel.setInverted(true);
+        elevatorWheel.configureInverted(true);
         elevatorWheel.configurePID(elevatorPidSettings);
 
         traverse.setInverted(true);

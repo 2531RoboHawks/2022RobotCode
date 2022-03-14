@@ -38,10 +38,6 @@ public class BetterTalonFX {
         return talon;
     }
 
-    public void setInverted(boolean inverted) {
-        talon.setInverted(inverted);
-    }
-
     public void stop() {
         talon.stopMotor();
     }
@@ -96,6 +92,10 @@ public class BetterTalonFX {
 
     public double getPositionSensorUnits() {
         return talon.getSelectedSensorPosition() - fixedEncoderTargetZero;
+    }
+
+    public void configureInverted(boolean inverted) {
+        talon.setInverted(inverted);
     }
 
     public void configurePID(double kp, double ki, double kd) {
