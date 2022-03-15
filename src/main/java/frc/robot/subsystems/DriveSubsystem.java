@@ -48,26 +48,21 @@ public class DriveSubsystem extends SubsystemBase {
 
   // Numbers found with sysid
   private final SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(0.61283, 1.4466, 0.28021);
-  private final PIDSettings pid = new PIDSettings(2.8783, 0, 0);
+  private final PIDSettings feedforwardPID = new PIDSettings(2.8783, 0, 0);
 
   public DriveSubsystem() {
-    frontLeft.configurePID(pid);
-    frontRight.configurePID(pid);
-    backLeft.configurePID(pid);
-    backRight.configurePID(pid);
+    frontLeft.configureFeedforward(feedforward, feedforwardPID);
+    frontRight.configureFeedforward(feedforward, feedforwardPID);
+    backLeft.configureFeedforward(feedforward, feedforwardPID);
+    backRight.configureFeedforward(feedforward, feedforwardPID);
 
-    frontLeft.configureFeedforward(feedforward);
-    frontRight.configureFeedforward(feedforward);
-    backLeft.configureFeedforward(feedforward);
-    backRight.configureFeedforward(feedforward);
+    frontLeft.configureUnitsPerRevolution(rotationsToMeters);
+    frontRight.configureUnitsPerRevolution(rotationsToMeters);
+    backLeft.configureUnitsPerRevolution(rotationsToMeters);
+    backRight.configureUnitsPerRevolution(rotationsToMeters);
 
-    frontLeft.configureDistancePerRevolution(rotationsToMeters);
-    frontRight.configureDistancePerRevolution(rotationsToMeters);
-    backLeft.configureDistancePerRevolution(rotationsToMeters);
-    backRight.configureDistancePerRevolution(rotationsToMeters);
-
-    frontRight.setInverted(true);
-    backRight.setInverted(true);
+    frontRight.configureInverted(true);
+    backRight.configureInverted(true);
 
     odometry = new MecanumDriveOdometry(kinematics, getRotation2d());
     reset();
@@ -81,8 +76,8 @@ public class DriveSubsystem extends SubsystemBase {
     return feedforward;
   }
 
-  public PIDController getVelocityPID() {
-    return pid.toController();
+  public PIDController getFeedforwardPID() {
+    return feedforwardPID.toController();
   }
 
   public MecanumDriveInfo calculateMecanumDrive(double forward, double sideways, double rotation) {
@@ -106,10 +101,10 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public void driveWheelSpeeds(MecanumDriveWheelSpeeds mecanumDriveWheelSpeeds) {
-    frontLeft.setLinearVelocity(mecanumDriveWheelSpeeds.frontLeftMetersPerSecond);
-    frontRight.setLinearVelocity(mecanumDriveWheelSpeeds.frontRightMetersPerSecond);
-    backLeft.setLinearVelocity(mecanumDriveWheelSpeeds.rearLeftMetersPerSecond);
-    backRight.setLinearVelocity(mecanumDriveWheelSpeeds.rearRightMetersPerSecond);
+    frontLeft.setLinearVelocityFeedforwardPID(mecanumDriveWheelSpeeds.frontLeftMetersPerSecond);
+    frontRight.setLinearVelocityFeedforwardPID(mecanumDriveWheelSpeeds.frontRightMetersPerSecond);
+    backLeft.setLinearVelocityFeedforwardPID(mecanumDriveWheelSpeeds.rearLeftMetersPerSecond);
+    backRight.setLinearVelocityFeedforwardPID(mecanumDriveWheelSpeeds.rearRightMetersPerSecond);
   }
 
   public void driveVoltages(MecanumDriveMotorVoltages mecanumDriveMotorVoltages) {

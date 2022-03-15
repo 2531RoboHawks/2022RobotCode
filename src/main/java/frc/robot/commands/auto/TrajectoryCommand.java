@@ -1,7 +1,9 @@
 package frc.robot.commands.auto;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
@@ -37,10 +39,10 @@ public class TrajectoryCommand extends MecanumControllerCommand {
             new PIDController(1, 0, 0),
             new ProfiledPIDController(1, 0, 0, new TrapezoidProfile.Constraints(maxAngularVelocity, maxAngularAcceleration)),
             maxVelocity,
-            driveSubsystem.getVelocityPID(),
-            driveSubsystem.getVelocityPID(),
-            driveSubsystem.getVelocityPID(),
-            driveSubsystem.getVelocityPID(),
+            driveSubsystem.getFeedforwardPID(),
+            driveSubsystem.getFeedforwardPID(),
+            driveSubsystem.getFeedforwardPID(),
+            driveSubsystem.getFeedforwardPID(),
             driveSubsystem::getWheelSpeeds,
             driveSubsystem::driveVoltages,
             driveSubsystem
@@ -51,29 +53,19 @@ public class TrajectoryCommand extends MecanumControllerCommand {
     }
 
     public static TrajectoryCommand fromWaypoints(DriveSubsystem driveSubsystem, Waypoint... waypointsArray) {
-        List<Waypoint> waypoints = List.of(waypointsArray);
-        if (waypoints.size() < 2) {
+        if (waypointsArray.length < 2) {
             throw new RuntimeException("forWaypoints called with too few waypoint arguments");
         }
 
-        TrajectoryConfig trajectoryConfig = new TrajectoryConfig(maxVelocity, maxAcceleration)
-            .setKinematics(driveSubsystem.kinematics);
-
-        Pose2d initial = waypoints.get(0).getPose();
-        Pose2d ending = waypoints.get(waypoints.size() - 1).getPose();
-        List<Translation2d> middlePoints = new ArrayList<>();
-        if (waypoints.size() > 2) {
-            for (int i = 1; i < waypoints.size() - 1; i++) {
-                middlePoints.add(waypoints.get(i).getPose().getTranslation());
-            }
+        List<Pose2d> poses = new ArrayList<Pose2d>();
+        for (Waypoint waypoint : waypointsArray) {
+            poses.add(waypoint.getPose());
         }
 
-        Trajectory trajectory = TrajectoryGenerator.generateTrajectory(
-            initial,
-            middlePoints,
-            ending,
-            trajectoryConfig
-        );
+        TrajectoryConfig config = new TrajectoryConfig(maxVelocity, maxAcceleration)
+            .setKinematics(driveSubsystem.kinematics);
+
+        Trajectory trajectory = TrajectoryGenerator.generateTrajectory(poses, config);
 
         return new TrajectoryCommand(trajectory, driveSubsystem);
     }

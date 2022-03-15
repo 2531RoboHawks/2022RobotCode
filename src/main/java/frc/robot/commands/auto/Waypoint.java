@@ -5,6 +5,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 
 public class Waypoint {
     // All units are in meters or degrees
+    public static final Waypoint CENTER = new Waypoint(0, 0, 0);
     public static final Waypoint LEFT = new Waypoint(-1.5, 0, 0);
     public static final Waypoint UP = new Waypoint(0, 1.5, 0);
     public static final Waypoint RIGHT = new Waypoint(1.5, 0, 0);
