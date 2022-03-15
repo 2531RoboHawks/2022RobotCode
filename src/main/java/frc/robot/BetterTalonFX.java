@@ -94,30 +94,36 @@ public class BetterTalonFX {
         return talon.getSelectedSensorPosition() - fixedEncoderTargetZero;
     }
 
-    public void configureInverted(boolean inverted) {
+    public BetterTalonFX configureInverted(boolean inverted) {
         talon.setInverted(inverted);
+        return this;
     }
 
-    public void configurePID(double kp, double ki, double kd) {
+    public BetterTalonFX configurePID(double kp, double ki, double kd) {
         talon.config_kP(0, kp);
         talon.config_kI(0, ki);
         talon.config_kD(0, kd);
+        return this;
     }
-    public void configurePID(PIDSettings pid) {
+    public BetterTalonFX configurePID(PIDSettings pid) {
         configurePID(pid.kp, pid.ki, pid.kd);
+        return this;
     }
 
-    public void configureFeedforward(SimpleMotorFeedforward feedforward, PIDSettings pidSettings) {
+    public BetterTalonFX configureFeedforward(SimpleMotorFeedforward feedforward, PIDSettings pidSettings) {
         this.feedforward = feedforward;
         this.feedforwardPID = pidSettings.toController();
+        return this;
     }
 
-    public void configureUnitsPerRevolution(double units) {
+    public BetterTalonFX configureUnitsPerRevolution(double units) {
         this.unitsPerRevolution = units;
+        return this;
     }
 
-    public void configureRamp(double secondsFromNeutralToFull) {
+    public BetterTalonFX configureRamp(double secondsFromNeutralToFull) {
         talon.configOpenloopRamp(secondsFromNeutralToFull);
         talon.configClosedloopRamp(secondsFromNeutralToFull);
+        return this;
     }
 }

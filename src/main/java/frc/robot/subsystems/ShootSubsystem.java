@@ -10,23 +10,17 @@ import com.ctre.phoenix.motorcontrol.VictorSPXControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 public class ShootSubsystem extends SubsystemBase {
-    private BetterTalonFX revwheel = new BetterTalonFX(15);
-    // Numbers found from sysid; uses "revolutions per second" as native unit
-    private static final SimpleMotorFeedforward revwheelFeedforward = new SimpleMotorFeedforward(0.52799, 0.10687, 0.0071385);
-    private static final PIDSettings revwheelFeedforwardPID = new PIDSettings(0.11555, 0, 0);
+    private BetterTalonFX revwheel = new BetterTalonFX(15)
+        .configureUnitsPerRevolution(1)
+        .configureFeedforward(new SimpleMotorFeedforward(0.52799, 0.10687, 0.0071385), new PIDSettings(0.11555, 0, 0));
 
-    private BetterTalonFX elevatorWheel = new BetterTalonFX(9);
-    private static final PIDSettings elevatorPidSettings = new PIDSettings(0.1, 0.001, 5);
+    private BetterTalonFX elevatorWheel = new BetterTalonFX(9)
+        .configureInverted(true)
+        .configurePID(new PIDSettings(0.1, 0.001, 5));
 
     private VictorSPX traverse = new VictorSPX(8);
 
     public ShootSubsystem() {
-        revwheel.configureUnitsPerRevolution(1);
-        revwheel.configureFeedforward(revwheelFeedforward, revwheelFeedforwardPID);
-
-        elevatorWheel.configureInverted(true);
-        elevatorWheel.configurePID(elevatorPidSettings);
-
         traverse.setInverted(true);
     }
 
