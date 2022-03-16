@@ -93,11 +93,11 @@ public class DriveSubsystem extends SubsystemBase {
     drivePercent(calculateMecanumDrive(forward, sideways, rotation));
   }
 
-  public void drivePercent(MecanumDriveInfo info) {
-    frontLeft.setPower(info.frontLeft);
-    frontRight.setPower(info.frontRight);
-    backLeft.setPower(info.backLeft);
-    backRight.setPower(info.backRight);
+  public void drivePercent(MecanumDriveInfo powers) {
+    frontLeft.setPower(powers.frontLeft);
+    frontRight.setPower(powers.frontRight);
+    backLeft.setPower(powers.backLeft);
+    backRight.setPower(powers.backRight);
   }
 
   public void driveWheelSpeeds(MecanumDriveWheelSpeeds mecanumDriveWheelSpeeds) {
