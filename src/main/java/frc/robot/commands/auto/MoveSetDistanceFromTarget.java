@@ -1,5 +1,6 @@
 package frc.robot.commands.auto;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveSubsystem;
@@ -35,14 +36,8 @@ public class MoveSetDistanceFromTarget extends CommandBase {
       return;
     }
     if (visionSubsystem.hasValidTarget()) {
-      double value = pid.calculate(visionSubsystem.getDistance());
-      double maxSpeed = 0.3;
-      if (value > maxSpeed) {
-        value = maxSpeed;
-      }
-      if (value < -maxSpeed) {
-        value = -maxSpeed;
-      }
+      double maxPower = 0.3;
+      double value = MathUtil.clamp(pid.calculate(visionSubsystem.getDistance()), -maxPower, maxPower);
       driveSubsystem.drivePercent(-value, 0, 0);
     } else {
       driveSubsystem.stop();
