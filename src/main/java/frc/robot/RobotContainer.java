@@ -5,33 +5,16 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.commands.SynchronizedClimbCommand;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.commands.DriveCommand;
 import frc.robot.commands.auto.AutoDriveCommand;
-import frc.robot.commands.auto.AutoTurnAroundCommand;
-import frc.robot.commands.auto.ShootBallCommand;
 import frc.robot.commands.auto.TrajectoryCommand;
 import frc.robot.commands.auto.Waypoint;
-import frc.robot.commands.auto.MoveSetDistanceFromTarget;
-import frc.robot.commands.DriveCommand;
-import frc.robot.commands.IntakeCommand;
-import frc.robot.commands.LimelightTrackCommand;
-import frc.robot.commands.ManualClimbCommand;
-import frc.robot.commands.ShootCommand;
-import frc.robot.subsystems.ClimbSubsystem;
-import frc.robot.subsystems.CompressorSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.subsystems.ShootSubsystem;
-import frc.robot.subsystems.VisionSubsystem;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
