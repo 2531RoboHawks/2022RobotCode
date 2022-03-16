@@ -31,7 +31,7 @@ public class DriveSubsystem extends SubsystemBase {
   private BetterTalonFX backLeft = new BetterTalonFX(32);
   private BetterTalonFX backRight = new BetterTalonFX(33);
 
-  public final MecanumDriveKinematics kinematics = new MecanumDriveKinematics(
+  private final MecanumDriveKinematics kinematics = new MecanumDriveKinematics(
     // In meters from center of robot
     new Translation2d(0.26035, 0.2921),
     new Translation2d(0.26035, -0.2921),
