@@ -31,24 +31,37 @@ public class TrajectoryCommand extends MecanumControllerCommand {
 
   public TrajectoryCommand(Trajectory trajectory, DriveSubsystem driveSubsystem) {
     super(
-        trajectory,
-        driveSubsystem::getPose,
-        driveSubsystem.getFeedforward(),
-        driveSubsystem.kinematics,
-        new PIDController(1, 0, 0),
-        new PIDController(1, 0, 0),
-        new ProfiledPIDController(1, 0, 0, new TrapezoidProfile.Constraints(maxAngularVelocity, maxAngularAcceleration)),
-        maxVelocity,
-        driveSubsystem.getFeedforwardPID(),
-        driveSubsystem.getFeedforwardPID(),
-        driveSubsystem.getFeedforwardPID(),
-        driveSubsystem.getFeedforwardPID(),
-        driveSubsystem::getWheelSpeeds,
-        driveSubsystem::driveVoltages,
-        driveSubsystem);
+      trajectory,
+      driveSubsystem::getPose,
+      driveSubsystem.getFeedforward(),
+      driveSubsystem.getKinematics(),
+      getXController(),
+      getYController(),
+      getThetaController(),
+      maxVelocity,
+      driveSubsystem.getFeedforwardPID(),
+      driveSubsystem.getFeedforwardPID(),
+      driveSubsystem.getFeedforwardPID(),
+      driveSubsystem.getFeedforwardPID(),
+      driveSubsystem::getWheelSpeeds,
+      driveSubsystem::driveVoltages,
+      driveSubsystem
+    );
 
     this.driveSubsystem = driveSubsystem;
     this.trajectory = trajectory;
+  }
+
+  private static final PIDController getXController() {
+    return new PIDController(1, 0, 0);
+  }
+
+  private static final PIDController getYController() {
+    return getXController();
+  }
+
+  private static final ProfiledPIDController getThetaController() {
+    return new ProfiledPIDController(1, 0, 0, new TrapezoidProfile.Constraints(maxAngularVelocity, maxAngularAcceleration));
   }
 
   public static TrajectoryCommand fromWaypoints(DriveSubsystem driveSubsystem, Waypoint... waypointsArray) {
@@ -62,7 +75,7 @@ public class TrajectoryCommand extends MecanumControllerCommand {
     }
 
     TrajectoryConfig config = new TrajectoryConfig(maxVelocity, maxAcceleration)
-      .setKinematics(driveSubsystem.kinematics);
+      .setKinematics(driveSubsystem.getKinematics());
 
     Trajectory trajectory = TrajectoryGenerator.generateTrajectory(poses, config);
 
