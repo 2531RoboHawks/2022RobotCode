@@ -8,50 +8,50 @@ import frc.robot.BetterSparkMaxBrushless;
 import frc.robot.PIDSettings;
 
 public class IntakeSubsystem extends SubsystemBase {
-    private BetterSparkMaxBrushless intakeWheel = new BetterSparkMaxBrushless(20);
-    private Solenoid solenoid = new Solenoid(PneumaticsModuleType.CTREPCM, 3);
+  private BetterSparkMaxBrushless intakeWheel = new BetterSparkMaxBrushless(20);
+  private Solenoid solenoid = new Solenoid(PneumaticsModuleType.CTREPCM, 3);
 
-    public IntakeSubsystem() {
-        intakeWheel.configurePID(new PIDSettings(0.0005, 0, 0));
-        setDown(false);
-    }
+  public IntakeSubsystem() {
+    intakeWheel.configurePID(new PIDSettings(0.0005, 0, 0));
+    setDown(false);
+  }
 
-    private void setRPM(double rpm) {
-        // TODO Broken
-        System.out.println("Intake RPM: " + rpm);
-        intakeWheel.setRPM(rpm);
-    }
-    private void setPower(double power) {
-        System.out.println("Intake power: " + power);
-        intakeWheel.set(power);
-    }
+  private void setRPM(double rpm) {
+    // TODO Broken
+    System.out.println("Intake RPM: " + rpm);
+    intakeWheel.setRPM(rpm);
+  }
+  private void setPower(double power) {
+    System.out.println("Intake power: " + power);
+    intakeWheel.set(power);
+  }
 
-    public void setDown(boolean down, boolean canRunIntake) {
-        System.out.println("Intake down: " + down);
-        solenoid.set(down);
-        SmartDashboard.putBoolean("Intake Down", down);
-        if (down && canRunIntake) {
-            setPower(0.4);
-        } else {
-            stop();
-        }
+  public void setDown(boolean down, boolean canRunIntake) {
+    System.out.println("Intake down: " + down);
+    solenoid.set(down);
+    SmartDashboard.putBoolean("Intake Down", down);
+    if (down && canRunIntake) {
+      setPower(0.4);
+    } else {
+      stop();
     }
-    public void setDown(boolean down) {
-        setDown(down, true);
-    }
-    public void toggleDown() {
-      setDown(!isDown());
-    }
-    public boolean isDown() {
-        return solenoid.get();
-    }
+  }
+  public void setDown(boolean down) {
+    setDown(down, true);
+  }
+  public void toggleDown() {
+    setDown(!isDown());
+  }
+  public boolean isDown() {
+    return solenoid.get();
+  }
 
-    public void stop() {
-        intakeWheel.stop();
-    }
+  public void stop() {
+    intakeWheel.stop();
+  }
 
-    @Override
-    public void periodic() {
-        SmartDashboard.putNumber("Actual Intake RPM", intakeWheel.getRPM());
-    }
+  @Override
+  public void periodic() {
+    SmartDashboard.putNumber("Actual Intake RPM", intakeWheel.getRPM());
+  }
 }

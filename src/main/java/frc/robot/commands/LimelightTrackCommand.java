@@ -32,8 +32,11 @@ public class LimelightTrackCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    if (!visionSubsystem.isReady()) {
+      return;
+    }
     double amount = pidController.calculate(visionSubsystem.getX());
-    if(visionSubsystem.hasValidTarget()) {
+    if (visionSubsystem.hasValidTarget()) {
       this.driveSubsystem.drivePercent(0, 0, -amount);
     } else {
       this.driveSubsystem.stop();

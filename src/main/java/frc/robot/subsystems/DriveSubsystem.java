@@ -6,9 +6,6 @@ package frc.robot.subsystems;
 
 import com.kauailabs.navx.frc.AHRS;
 
-import edu.wpi.first.wpilibj.SPI;
-import edu.wpi.first.wpilibj.interfaces.Gyro;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -18,6 +15,9 @@ import edu.wpi.first.math.kinematics.MecanumDriveKinematics;
 import edu.wpi.first.math.kinematics.MecanumDriveMotorVoltages;
 import edu.wpi.first.math.kinematics.MecanumDriveOdometry;
 import edu.wpi.first.math.kinematics.MecanumDriveWheelSpeeds;
+import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.interfaces.Gyro;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.BetterTalonFX;
 import frc.robot.MecanumDriveInfo;
@@ -31,7 +31,7 @@ public class DriveSubsystem extends SubsystemBase {
   private BetterTalonFX backLeft = new BetterTalonFX(32);
   private BetterTalonFX backRight = new BetterTalonFX(33);
 
-  public final MecanumDriveKinematics kinematics = new MecanumDriveKinematics(
+  private final MecanumDriveKinematics kinematics = new MecanumDriveKinematics(
     // In meters from center of robot
     new Translation2d(0.26035, 0.2921),
     new Translation2d(0.26035, -0.2921),
@@ -93,11 +93,11 @@ public class DriveSubsystem extends SubsystemBase {
     drivePercent(calculateMecanumDrive(forward, sideways, rotation));
   }
 
-  public void drivePercent(MecanumDriveInfo info) {
-    frontLeft.setPower(info.frontLeft);
-    frontRight.setPower(info.frontRight);
-    backLeft.setPower(info.backLeft);
-    backRight.setPower(info.backRight);
+  public void drivePercent(MecanumDriveInfo powers) {
+    frontLeft.setPower(powers.frontLeft);
+    frontRight.setPower(powers.frontRight);
+    backLeft.setPower(powers.backLeft);
+    backRight.setPower(powers.backRight);
   }
 
   public void driveWheelSpeeds(MecanumDriveWheelSpeeds mecanumDriveWheelSpeeds) {
