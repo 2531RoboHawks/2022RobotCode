@@ -7,6 +7,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class VisionSubsystem extends SubsystemBase {
+    // Time value used internally to represent that the light will never be ready without further calls,
+    // probably because the lights are disabled.
+    private static final long NEVER = Long.MAX_VALUE;
+
     // https://docs.limelightvision.io/en/latest/networktables_api.html
     private NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
     private NetworkTableEntry tv = table.getEntry("tv");
@@ -14,6 +18,8 @@ public class VisionSubsystem extends SubsystemBase {
     private NetworkTableEntry ty = table.getEntry("ty");
     private NetworkTableEntry ta = table.getEntry("ta");
     private NetworkTableEntry ledMode = table.getEntry("ledMode");
+
+    private long lightsWillBeReadyAtMillis = NEVER;
 
     public VisionSubsystem() {
 
@@ -51,13 +57,29 @@ public class VisionSubsystem extends SubsystemBase {
         setLightsEnabled(false);
     }
 
+    public boolean isReady() {
+        // We've observed that it takes a little bit of time for the lights to actually turn on and start tracking.
+        // Commands should wait until the light is ready before using numbers.
+        // Commands can assume that once the limelight has become ready, it will always stay ready for the duration
+        // of the command.
+        return System.currentTimeMillis() >= lightsWillBeReadyAtMillis;
+    }
+
     private void setLightsEnabled(boolean enabled) {
-        System.out.println("Limelight enabled: " + enabled);
         // 0 - pipeline default
         // 1 - force off
         // 2 - force blink
         // 3 - force on
-        ledMode.setNumber(enabled ? 3 : 1);
+        int newMode = enabled ? 3 : 1;
+        if (newMode != ledMode.getNumber(0).intValue()) {
+            System.out.println("Limelight enabled: " + enabled);
+            if (enabled) {
+                lightsWillBeReadyAtMillis = System.currentTimeMillis() + 500;
+            } else {
+                lightsWillBeReadyAtMillis = NEVER;
+            }
+            ledMode.setNumber(newMode);
+        }
     }
 
     @Override

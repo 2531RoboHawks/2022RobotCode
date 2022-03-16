@@ -31,8 +31,7 @@ public class MoveSetDistanceFromTarget extends CommandBase {
 
     @Override
     public void execute() {
-        if (System.currentTimeMillis() < start + 1000) {
-            // wait for light to turn on
+        if (!visionSubsystem.isReady()) {
             return;
         }
         if (visionSubsystem.hasValidTarget()) {
