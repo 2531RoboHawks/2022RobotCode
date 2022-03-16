@@ -13,20 +13,20 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-    public static final class Controls {
-        public static final int Slow = 2;
-        public static final int Turbo = 3;
+  public static final class Controls {
+    public static final int Slow = 2;
+    public static final int Turbo = 3;
 
-        public static final int Shoot = 5;
-        public static final int Elevator = 6;
-        public static final int Traverse = 7;
-        public static final int TraverseReverse = 8;
+    public static final int Shoot = 5;
+    public static final int Elevator = 6;
+    public static final int Traverse = 7;
+    public static final int TraverseReverse = 8;
 
-        public static final int ToggleIntakeDown = 1;
+    public static final int ToggleIntakeDown = 1;
 
-        public static final int ToggleClimbArmManually = 2;
+    public static final int ToggleClimbArmManually = 2;
 
-        public static final int TurnShoot = 6;
-        public static final int TurretShoot = 5;
-    }
+    public static final int TurnShoot = 6;
+    public static final int TurretShoot = 5;
+  }
 }
