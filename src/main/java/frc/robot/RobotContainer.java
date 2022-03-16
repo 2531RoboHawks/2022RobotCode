@@ -90,11 +90,23 @@ public class RobotContainer {
         Waypoint.LEFT
       ).resetOdometry()
     );
-
-    // autoChooser.addOption(
-    //   "Taxi",
-    //   new AutoDriveCommand(driveSubsystem, 5, 0.2, 0, 0)
-    // );
+    autoChooser.addOption(
+      "Taxi",
+      new AutoDriveCommand(driveSubsystem, 0.2, 0, 0).withTimeout(5)
+    );
+    autoChooser.setDefaultOption(
+      "The Rumbling",
+      new SequentialCommandGroup(
+        TrajectoryCommand.fromWaypoints(
+          driveSubsystem,
+          Waypoint.RUMBLING_START,
+          Waypoint.RUMBLING_FIRST_BALL,
+          Waypoint.RUMBLING_SECOND_BALL,
+          Waypoint.RUMBLING_TERMINAL,
+          Waypoint.RUMBLING_FINAL_SHOT
+        ).resetOdometry()
+      )
+    );
     // autoChooser.setDefaultOption(
     //   "Primitive One Ball",
     //   new ShootBallCommand(driveSubsystem, shootSubsystem)

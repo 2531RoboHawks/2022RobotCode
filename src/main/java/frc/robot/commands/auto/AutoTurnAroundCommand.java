@@ -5,6 +5,6 @@ import frc.robot.subsystems.DriveSubsystem;
 
 public class AutoTurnAroundCommand extends SequentialCommandGroup {
     public AutoTurnAroundCommand(DriveSubsystem driveSubsystem) {
-        addCommands(new AutoDriveCommand(driveSubsystem, 1, 0, 0, 0.38));
+        addCommands(new AutoDriveCommand(driveSubsystem, 0, 0, 0.38));
     }
 }
