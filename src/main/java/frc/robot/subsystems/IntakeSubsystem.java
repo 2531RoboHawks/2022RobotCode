@@ -6,21 +6,17 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.BetterSparkMaxBrushless;
 import frc.robot.PIDSettings;
+import frc.robot.Constants.Solenoids;
 
 public class IntakeSubsystem extends SubsystemBase {
   private BetterSparkMaxBrushless intakeWheel = new BetterSparkMaxBrushless(20);
-  private Solenoid solenoid = new Solenoid(PneumaticsModuleType.CTREPCM, 3);
+  private Solenoid solenoid = new Solenoid(PneumaticsModuleType.CTREPCM, Solenoids.Intake);
 
   public IntakeSubsystem() {
     intakeWheel.configurePID(new PIDSettings(0.0005, 0, 0));
     setDown(false);
   }
 
-  private void setRPM(double rpm) {
-    // TODO Broken
-    System.out.println("Intake RPM: " + rpm);
-    intakeWheel.setRPM(rpm);
-  }
   private void setPower(double power) {
     System.out.println("Intake power: " + power);
     intakeWheel.set(power);

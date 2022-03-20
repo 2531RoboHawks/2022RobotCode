@@ -27,7 +27,7 @@ public class SynchronizedClimbCommand extends CommandBase {
   @Override
   public void execute() {
     if (RobotContainer.helms.getRawButtonPressed(Constants.Controls.ToggleClimbArmManually)) {
-      climbSubsystem.togglePistonExtended();
+      climbSubsystem.toggleArmsExtended();
     }
     if (RobotContainer.helms.getRawButtonPressed(Constants.Controls.ToggleIntakeDown)) {
       intakeSubsystem.toggleDown();
