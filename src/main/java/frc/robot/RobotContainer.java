@@ -27,21 +27,12 @@ import frc.robot.subsystems.ShootSubsystem;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-  // The robot's subsystems and commands are defined here...
   // public static final ClimbSubsystem climbSubsystem = new ClimbSubsystem();
   public static final DriveSubsystem driveSubsystem = new DriveSubsystem();
   public static final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
   public static final ShootSubsystem shootSubsystem = new ShootSubsystem();
   // public static final VisionSubsystem visionSubsystem = new VisionSubsystem();
   // public static final CompressorSubsystem compressorSubsystem = new CompressorSubsystem();
-
-  // public final SynchronizedClimbCommand synchronizedClimbCommand = new SynchronizedClimbCommand(climbSubsystem, intakeSubsystem);
-  // public final ManualClimbCommand manualClimbCommand = new ManualClimbCommand(climbSubsystem, intakeSubsystem);
-  // public final DriveCommand driveCommand = new DriveCommand(driveSubsystem);
-  // public final IntakeCommand intakeCommand = new IntakeCommand(intakeSubsystem);
-  // public final ShootCommand shootCommand = new ShootCommand(shootSubsystem);
-
-  // public final LimelightTrackCommand limelightTrackCommand = new LimelightTrackCommand(visionSubsystem, driveSubsystem);
 
   public static XboxController gamepad = new XboxController(0);
   public static XboxController helms = new XboxController(1);
@@ -52,16 +43,7 @@ public class RobotContainer {
   public RobotContainer() {
     configureButtonBindings();
 
-    // intakeSubsystem.setDefaultCommand(intakeCommand);
     driveSubsystem.setDefaultCommand(new DriveCommand(driveSubsystem));
-    // shootSubsystem.setDefaultCommand(shootCommand);
-
-    // SmartDashboard.putData("Synchronized climb command", synchronizedClimbCommand);
-    // SmartDashboard.putData("Manual climb command", manualClimbCommand);
-    // SmartDashboard.putData("Drive command", driveCommand);
-    // SmartDashboard.putData("Intake command", intakeCommand);
-    // SmartDashboard.putData("Shoot command", shootCommand);
-    // SmartDashboard.putData("Limelight Track command", limelightTrackCommand);
 
     autoChooser.addOption("None", null);
 
