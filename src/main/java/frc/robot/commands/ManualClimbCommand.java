@@ -24,13 +24,6 @@ public class ManualClimbCommand extends CommandBase {
 
   @Override
   public void execute() {
-    if (RobotContainer.helms.getRawButtonPressed(HelmsControls.ToggleClimbExtended)) {
-      climbSubsystem.toggleArmsExtended();
-    }
-    if (RobotContainer.helms.getRawButtonPressed(HelmsControls.ToggleIntakeDown)) {
-      intakeSubsystem.toggleDown();
-    }
-
     double left = -InputUtils.deadzone(RobotContainer.helms.getRawAxis(1)) * 0.25;
     double right = -InputUtils.deadzone(RobotContainer.helms.getRawAxis(5)) * 0.25;
     climbSubsystem.leftTalon.setPower(left);

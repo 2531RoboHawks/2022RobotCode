@@ -37,5 +37,6 @@ public final class Constants {
 
     public static final int ToggleIntakeDown = 1;
     public static final int ToggleClimbExtended = 2;
+    public static final int ToggleClimbGrab = 3;
   }
 }

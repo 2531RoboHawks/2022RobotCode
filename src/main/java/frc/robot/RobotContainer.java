@@ -9,15 +9,22 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.HelmsControls;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.IntakeCommand;
+import frc.robot.commands.ManualClimbCommand;
+import frc.robot.commands.SynchronizedClimbCommand;
+import frc.robot.commands.ToggleClimbExtendCommand;
+import frc.robot.commands.ToggleClimbGrabCommand;
+import frc.robot.commands.ToggleIntakeCommand;
 import frc.robot.commands.auto.PrimitiveOneBall;
 import frc.robot.commands.auto.Taxi;
 import frc.robot.commands.auto.TheRumbling;
 import frc.robot.commands.auto.TrajectoryCommand;
 import frc.robot.commands.auto.WallMaria;
 import frc.robot.commands.auto.Waypoint;
+import frc.robot.subsystems.ClimbSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShootSubsystem;
@@ -29,7 +36,7 @@ import frc.robot.subsystems.ShootSubsystem;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-  // public static final ClimbSubsystem climbSubsystem = new ClimbSubsystem();
+  public static final ClimbSubsystem climbSubsystem = new ClimbSubsystem();
   public static final DriveSubsystem driveSubsystem = new DriveSubsystem();
   public static final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
   public static final ShootSubsystem shootSubsystem = new ShootSubsystem();
@@ -47,6 +54,8 @@ public class RobotContainer {
 
     // driveSubsystem.setDefaultCommand(new DriveCommand(driveSubsystem));
     intakeSubsystem.setDefaultCommand(new IntakeCommand(intakeSubsystem));
+
+    SmartDashboard.putData("Manual Climb Command", new ManualClimbCommand(climbSubsystem, intakeSubsystem));
 
     autoChooser.addOption("None", null);
 
@@ -114,8 +123,11 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    // new JoystickButton(helms, HelmsControls.SynchronizedClimb).toggleWhenActive(new SynchronizedClimbCommand(climbSubsystem, intakeSubsystem));
-    // new JoystickButton(helms, HelmsControls.ManualClimb).toggleWhenActive(new ManualClimbCommand(climbSubsystem, intakeSubsystem));
+    new JoystickButton(helms, HelmsControls.SynchronizedClimb).toggleWhenActive(new SynchronizedClimbCommand(climbSubsystem, intakeSubsystem));
+    new JoystickButton(helms, HelmsControls.ManualClimb).toggleWhenActive(new ManualClimbCommand(climbSubsystem, intakeSubsystem));
+    new JoystickButton(helms, HelmsControls.ToggleIntakeDown).whenPressed(new ToggleIntakeCommand(intakeSubsystem));
+    new JoystickButton(helms, HelmsControls.ToggleClimbExtended).whenPressed(new ToggleClimbExtendCommand(climbSubsystem));
+    new JoystickButton(helms, HelmsControls.ToggleClimbGrab).whenPressed(new ToggleClimbGrabCommand(climbSubsystem));
   }
 
   /**
