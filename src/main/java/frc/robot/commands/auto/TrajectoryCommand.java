@@ -75,6 +75,9 @@ public class TrajectoryCommand extends MecanumControllerCommand {
       .setKinematics(driveSubsystem.getKinematics());
 
     Trajectory trajectory = TrajectoryGenerator.generateTrajectory(poses, config);
+    if (trajectory.getTotalTimeSeconds() == 0) {
+      throw new IllegalArgumentException("Invalid trajectory! See above logs probably.");
+    }
 
     return new TrajectoryCommand(trajectory, driveSubsystem);
   }
