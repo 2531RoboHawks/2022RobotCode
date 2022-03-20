@@ -5,9 +5,9 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants;
 import frc.robot.InputUtils;
 import frc.robot.RobotContainer;
+import frc.robot.Constants.Controls;
 import frc.robot.subsystems.DriveSubsystem;
 
 public class DriveCommand extends CommandBase {
@@ -33,8 +33,8 @@ public class DriveCommand extends CommandBase {
     double xMultiplier;
     double yMultiplier;
     double rotationMultiplier;
-    boolean slow = RobotContainer.gamepad.getRawButton(Constants.Controls.Slow);
-    boolean turbo = RobotContainer.gamepad.getRawButton(Constants.Controls.Turbo);
+    boolean slow = RobotContainer.gamepad.getRawButton(Controls.Slow);
+    boolean turbo = RobotContainer.gamepad.getRawButton(Controls.Turbo);
     if (slow) {
       xMultiplier = 0.5;
       yMultiplier = 0.5;

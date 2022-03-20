@@ -1,9 +1,9 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants;
 import frc.robot.InputUtils;
 import frc.robot.RobotContainer;
+import frc.robot.Constants.Controls;
 import frc.robot.subsystems.ClimbSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 
@@ -24,10 +24,10 @@ public class ManualClimbCommand extends CommandBase {
 
   @Override
   public void execute() {
-    if (RobotContainer.helms.getRawButtonPressed(Constants.Controls.ToggleClimbArmManually)) {
+    if (RobotContainer.helms.getRawButtonPressed(Controls.ToggleClimbArmManually)) {
       climbSubsystem.toggleArmsExtended();
     }
-    if (RobotContainer.helms.getRawButtonPressed(Constants.Controls.ToggleIntakeDown)) {
+    if (RobotContainer.helms.getRawButtonPressed(Controls.ToggleIntakeDown)) {
       intakeSubsystem.toggleDown();
     }
 

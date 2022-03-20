@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.DriveCommand;
+import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.auto.PrimitiveOneBall;
 import frc.robot.commands.auto.Taxi;
 import frc.robot.commands.auto.TheRumbling;
@@ -43,7 +44,8 @@ public class RobotContainer {
   public RobotContainer() {
     configureButtonBindings();
 
-    driveSubsystem.setDefaultCommand(new DriveCommand(driveSubsystem));
+    // driveSubsystem.setDefaultCommand(new DriveCommand(driveSubsystem));
+    intakeSubsystem.setDefaultCommand(new IntakeCommand(intakeSubsystem));
 
     autoChooser.addOption("None", null);
 
