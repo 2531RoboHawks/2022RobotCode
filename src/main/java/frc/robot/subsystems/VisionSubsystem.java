@@ -43,10 +43,10 @@ public class VisionSubsystem extends SubsystemBase {
 
   public double getDistance() {
     double targetHeight = 102.5; // inches
-    double mountHeight = 38.25; // inches
-    double mountAngle = 34; // degrees
+    double mountHeight = 21; // inches
+    double mountAngle = 36; // degrees
     double y = getY();
-    return (targetHeight - mountHeight) / Math.tan((mountAngle + y) * (Math.PI / 180.0)) + 8.0;
+    return (targetHeight - mountHeight) / Math.tan((mountAngle + y) * (Math.PI / 180.0));
   }
 
   public void ensureEnabled() {
@@ -83,6 +83,6 @@ public class VisionSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    // SmartDashboard.putNumber("Limelight Distance", getDistance());
+    SmartDashboard.putNumber("Limelight Distance", getDistance());
   }
 }

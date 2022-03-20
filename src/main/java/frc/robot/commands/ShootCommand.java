@@ -32,8 +32,7 @@ public class ShootCommand extends CommandBase {
       shootSubsystem.idleRevwheel();
     }
 
-    shootSubsystem.setStorageBeforeShootRunning(RobotContainer.gamepad.getRawButton(6));
-    shootSubsystem.setStorageAfterIntakeRunning(RobotContainer.gamepad.getRawButton(6));
+    shootSubsystem.setStorageBeforeShootRunning(RobotContainer.gamepad.getRawButton(8));
 
     // if (RobotContainer.gamepad.getRawButton(Controls.Elevator)) {
     //   shootSubsystem.setElevatorRPM(SmartDashboard.getNumber("Elevator Target RPM", 0));
