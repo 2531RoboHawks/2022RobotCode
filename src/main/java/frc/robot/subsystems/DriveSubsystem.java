@@ -178,13 +178,13 @@ public class DriveSubsystem extends SubsystemBase {
   public void periodic() {
     odometry.update(getRotation2d(), getWheelSpeeds());
 
-    SmartDashboard.putNumber("Pose X", getPose().getX());
-    SmartDashboard.putNumber("Pose Y", getPose().getY());
-    SmartDashboard.putNumber("Gyro", getAngle());
+    // SmartDashboard.putNumber("Pose X", getPose().getX());
+    // SmartDashboard.putNumber("Pose Y", getPose().getY());
+    // SmartDashboard.putNumber("Gyro", getAngle());
 
-    SmartDashboard.putNumber("Front Left Speed", getWheelSpeeds().frontLeftMetersPerSecond);
-    SmartDashboard.putNumber("Front Right Speed", getWheelSpeeds().frontRightMetersPerSecond);
-    SmartDashboard.putNumber("Back Left Speed", getWheelSpeeds().rearLeftMetersPerSecond);
-    SmartDashboard.putNumber("Back Right Speed", getWheelSpeeds().rearRightMetersPerSecond);
+    // SmartDashboard.putNumber("Front Left Speed", getWheelSpeeds().frontLeftMetersPerSecond);
+    // SmartDashboard.putNumber("Front Right Speed", getWheelSpeeds().frontRightMetersPerSecond);
+    // SmartDashboard.putNumber("Back Left Speed", getWheelSpeeds().rearLeftMetersPerSecond);
+    // SmartDashboard.putNumber("Back Right Speed", getWheelSpeeds().rearRightMetersPerSecond);
   }
 }

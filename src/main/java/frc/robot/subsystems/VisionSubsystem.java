@@ -83,6 +83,6 @@ public class VisionSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("Limelight Distance", getDistance());
+    // SmartDashboard.putNumber("Limelight Distance", getDistance());
   }
 }

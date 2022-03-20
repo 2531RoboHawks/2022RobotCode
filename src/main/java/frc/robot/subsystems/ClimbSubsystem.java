@@ -78,7 +78,7 @@ public class ClimbSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("Left Climb", leftTalon.getPositionSensorUnits());
-    SmartDashboard.putNumber("Right Climb", rightTalon.getPositionSensorUnits());
+    // SmartDashboard.putNumber("Left Climb", leftTalon.getPositionSensorUnits());
+    // SmartDashboard.putNumber("Right Climb", rightTalon.getPositionSensorUnits());
   }
 }
