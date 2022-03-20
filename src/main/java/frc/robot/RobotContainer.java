@@ -68,10 +68,7 @@ public class RobotContainer {
         driveSubsystem,
         Waypoint.LEFT,
         Waypoint.UP,
-        Waypoint.DOWN,
-        Waypoint.LEFT,
-        Waypoint.RIGHT,
-        Waypoint.LEFT
+        Waypoint.DOWN
       ).resetOdometry()
     );
     autoChooser.addOption("Taxi", new Taxi(driveSubsystem));
