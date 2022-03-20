@@ -19,8 +19,6 @@ public class ShootSubsystem extends SubsystemBase {
     .configureInverted(true)
     .configurePID(new PIDSettings(0.1, 0.001, 5));
 
-  private BetterTalonFX storageAfterIntake = new BetterTalonFX(28);
-
   private BetterSparkMaxBrushless storageBeforeShoot = new BetterSparkMaxBrushless(17)
     .configureInverted(true);
 
@@ -32,14 +30,6 @@ public class ShootSubsystem extends SubsystemBase {
     // Max RPM: ~6540 RPM
     double revolutionsPerSecond = rpm / 60.0;
     revwheel.setLinearVelocityFeedforwardPID(revolutionsPerSecond);
-  }
-
-  public void setStorageAfterIntakeRunning(boolean running) {
-    if (running) {
-      storageAfterIntake.setPower(0.25);
-    } else {
-      storageAfterIntake.stop();
-    }
   }
 
   public void setStorageBeforeShootRunning(boolean running) {
