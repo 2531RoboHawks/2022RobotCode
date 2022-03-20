@@ -111,7 +111,8 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    // new JoystickButton(helms, 8).toggleWhenActive(synchronizedClimbCommand);
+    // new JoystickButton(helms, 8).toggleWhenActive(new SynchronizedClimbCommand(climbSubsystem, intakeSubsystem));
+    // new JoystickButton(helms, 7).toggleWhenActive(new ManualClimbCommand(climbSubsystem, intakeSubsystem));
   }
 
   /**
