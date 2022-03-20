@@ -15,6 +15,7 @@ public class IntakeCommand extends CommandBase {
 
   @Override
   public void initialize() {
+    intakeSubsystem.enable();
     intakeSubsystem.setDown(false);
   }
 

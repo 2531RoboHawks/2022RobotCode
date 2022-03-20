@@ -9,6 +9,7 @@ import frc.robot.PIDSettings;
 import frc.robot.Constants.Solenoids;
 
 public class IntakeSubsystem extends SubsystemBase {
+  private boolean canRunIntake = false;
   private BetterSparkMaxBrushless intakeWheel = new BetterSparkMaxBrushless(20);
   private Solenoid solenoid = new Solenoid(PneumaticsModuleType.CTREPCM, Solenoids.Intake);
 
@@ -17,12 +18,21 @@ public class IntakeSubsystem extends SubsystemBase {
     setDown(false);
   }
 
+  public void disable() {
+    canRunIntake = false;
+    setDown(false);
+  }
+
+  public void enable() {
+    canRunIntake = true;
+  }
+
   private void setPower(double power) {
     System.out.println("Intake power: " + power);
     intakeWheel.set(power);
   }
 
-  public void setDown(boolean down, boolean canRunIntake) {
+  public void setDown(boolean down) {
     System.out.println("Intake down: " + down);
     solenoid.set(down);
     SmartDashboard.putBoolean("Intake Down", down);
@@ -32,14 +42,11 @@ public class IntakeSubsystem extends SubsystemBase {
       stop();
     }
   }
-  public void setDown(boolean down) {
-    setDown(down, true);
+  public boolean isDown() {
+    return solenoid.get();
   }
   public void toggleDown() {
     setDown(!isDown());
-  }
-  public boolean isDown() {
-    return solenoid.get();
   }
 
   public void stop() {
