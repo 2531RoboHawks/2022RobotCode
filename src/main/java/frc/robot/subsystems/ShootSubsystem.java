@@ -13,7 +13,7 @@ import frc.robot.PIDSettings;
 public class ShootSubsystem extends SubsystemBase {
   private BetterTalonFX revwheel = new BetterTalonFX(15)
     .configureUnitsPerRevolution(1)
-    .configureFeedforward(new SimpleMotorFeedforward(0.52799, 0.10687, 0.0071385), new PIDSettings(0.11555, 0, 0));
+    .configureFeedforward(new SimpleMotorFeedforward(0.52166, 0.10843, 0.0062646), new PIDSettings(0.10962, 0, 0));
 
   private BetterTalonFX elevatorWheel = new BetterTalonFX(9)
     .configureInverted(true)
@@ -36,7 +36,7 @@ public class ShootSubsystem extends SubsystemBase {
 
   public void setStorageAfterIntakeRunning(boolean running) {
     if (running) {
-      storageAfterIntake.setPower(0.5);
+      storageAfterIntake.setPower(0.25);
     } else {
       storageAfterIntake.stop();
     }
@@ -44,7 +44,7 @@ public class ShootSubsystem extends SubsystemBase {
 
   public void setStorageBeforeShootRunning(boolean running) {
     if (running) {
-      storageBeforeShoot.setPower(0.5);
+      storageBeforeShoot.setPower(0.25);
     } else {
       storageBeforeShoot.stop();
     }
