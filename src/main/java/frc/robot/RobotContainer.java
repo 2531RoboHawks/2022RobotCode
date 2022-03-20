@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants.HelmsControls;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.auto.PrimitiveOneBall;
@@ -113,8 +114,8 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    // new JoystickButton(helms, 8).toggleWhenActive(new SynchronizedClimbCommand(climbSubsystem, intakeSubsystem));
-    // new JoystickButton(helms, 7).toggleWhenActive(new ManualClimbCommand(climbSubsystem, intakeSubsystem));
+    // new JoystickButton(helms, HelmsControls.SynchronizedClimb).toggleWhenActive(new SynchronizedClimbCommand(climbSubsystem, intakeSubsystem));
+    // new JoystickButton(helms, HelmsControls.ManualClimb).toggleWhenActive(new ManualClimbCommand(climbSubsystem, intakeSubsystem));
   }
 
   /**

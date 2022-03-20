@@ -35,4 +35,9 @@ public final class Constants {
     public static final int TurnShoot = 6;
     public static final int TurretShoot = 5;
   }
+
+  public static final class HelmsControls {
+    public static final int SynchronizedClimb = 8;
+    public static final int ManualClimb = 7;
+  }
 }
