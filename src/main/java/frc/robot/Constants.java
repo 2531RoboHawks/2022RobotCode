@@ -24,13 +24,8 @@ public final class Constants {
     public static final int Turbo = 3;
 
     public static final int Shoot = 5;
-    public static final int Elevator = 6;
-    public static final int Traverse = 7;
-    public static final int TraverseReverse = 8;
 
     public static final int ToggleIntakeDown = 1;
-
-    public static final int ToggleClimbArmManually = 2;
 
     public static final int TurnShoot = 6;
     public static final int TurretShoot = 5;
@@ -39,5 +34,8 @@ public final class Constants {
   public static final class HelmsControls {
     public static final int SynchronizedClimb = 8;
     public static final int ManualClimb = 7;
+
+    public static final int ToggleIntakeDown = 1;
+    public static final int ToggleClimbExtended = 2;
   }
 }

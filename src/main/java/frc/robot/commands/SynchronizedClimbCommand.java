@@ -3,7 +3,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.InputUtils;
 import frc.robot.RobotContainer;
-import frc.robot.Constants.Controls;
+import frc.robot.Constants.HelmsControls;
 import frc.robot.subsystems.ClimbSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 
@@ -26,10 +26,10 @@ public class SynchronizedClimbCommand extends CommandBase {
 
   @Override
   public void execute() {
-    if (RobotContainer.helms.getRawButtonPressed(Controls.ToggleClimbArmManually)) {
+    if (RobotContainer.helms.getRawButtonPressed(HelmsControls.ToggleClimbExtended)) {
       climbSubsystem.toggleArmsExtended();
     }
-    if (RobotContainer.helms.getRawButtonPressed(Controls.ToggleIntakeDown)) {
+    if (RobotContainer.helms.getRawButtonPressed(HelmsControls.ToggleIntakeDown)) {
       intakeSubsystem.toggleDown();
     }
 
