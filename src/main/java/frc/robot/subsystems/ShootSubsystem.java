@@ -57,7 +57,7 @@ public class ShootSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("Actual Revwheel RPM", revwheel.getRPM());
+    // SmartDashboard.putNumber("Actual Revwheel RPM", revwheel.getRPM());
     // SmartDashboard.putNumber("Revwheel Voltage", revwheel.getWPI().getBusVoltage());
     // SmartDashboard.putNumber("Revwheel Current", revwheel.getWPI().getSupplyCurrent());
   }

@@ -9,12 +9,16 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.DriveCommand;
-import frc.robot.commands.auto.AutoDriveCommand;
+import frc.robot.commands.auto.PrimitiveOneBall;
+import frc.robot.commands.auto.Taxi;
+import frc.robot.commands.auto.TheRumbling;
 import frc.robot.commands.auto.TrajectoryCommand;
+import frc.robot.commands.auto.WallMaria;
 import frc.robot.commands.auto.Waypoint;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.ShootSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -26,8 +30,8 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   // public static final ClimbSubsystem climbSubsystem = new ClimbSubsystem();
   public static final DriveSubsystem driveSubsystem = new DriveSubsystem();
-  // public static final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
-  // public static final ShootSubsystem shootSubsystem = new ShootSubsystem();
+  public static final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
+  public static final ShootSubsystem shootSubsystem = new ShootSubsystem();
   // public static final VisionSubsystem visionSubsystem = new VisionSubsystem();
   // public static final CompressorSubsystem compressorSubsystem = new CompressorSubsystem();
 
@@ -62,6 +66,7 @@ public class RobotContainer {
     autoChooser.addOption("None", null);
 
     autoChooser.setDefaultOption(
+      // TODO: remove; was for testing only
       "8 Ball Auto",
       TrajectoryCommand.fromWaypoints(
         driveSubsystem,
@@ -73,23 +78,10 @@ public class RobotContainer {
         Waypoint.LEFT
       ).resetOdometry()
     );
-    autoChooser.addOption(
-      "Taxi",
-      new AutoDriveCommand(driveSubsystem, 0.2, 0, 0).withTimeout(5)
-    );
-    autoChooser.setDefaultOption(
-      "The Rumbling",
-      new SequentialCommandGroup(
-        TrajectoryCommand.fromWaypoints(
-          driveSubsystem,
-          Waypoint.RUMBLING_START,
-          Waypoint.RUMBLING_FIRST_BALL,
-          Waypoint.RUMBLING_SECOND_BALL,
-          Waypoint.RUMBLING_TERMINAL,
-          Waypoint.RUMBLING_FINAL_SHOT
-        ).resetOdometry()
-      )
-    );
+    autoChooser.addOption("Taxi", new Taxi(driveSubsystem));
+    autoChooser.addOption("Primitive One Ball", new PrimitiveOneBall(driveSubsystem, shootSubsystem));
+    autoChooser.addOption("Wall Maria", new WallMaria(driveSubsystem, intakeSubsystem, shootSubsystem));
+    autoChooser.setDefaultOption("The Rumbling", new TheRumbling(driveSubsystem, intakeSubsystem, shootSubsystem));
     // autoChooser.setDefaultOption(
     //   "Primitive One Ball",
     //   new ShootBallCommand(driveSubsystem, shootSubsystem)

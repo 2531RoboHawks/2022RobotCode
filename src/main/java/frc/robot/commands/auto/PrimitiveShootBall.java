@@ -6,11 +6,12 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ShootSubsystem;
 
-public class ShootBallCommand extends SequentialCommandGroup {
+@Deprecated
+public class PrimitiveShootBall extends SequentialCommandGroup {
   private DriveSubsystem driveSubsystem;
   private ShootSubsystem shootSubsystem;
 
-  public ShootBallCommand(DriveSubsystem driveSubsystem, ShootSubsystem shootSubsystem) {
+  public PrimitiveShootBall(DriveSubsystem driveSubsystem, ShootSubsystem shootSubsystem) {
     this.driveSubsystem = driveSubsystem;
     this.shootSubsystem = shootSubsystem;
     addRequirements(driveSubsystem, shootSubsystem);

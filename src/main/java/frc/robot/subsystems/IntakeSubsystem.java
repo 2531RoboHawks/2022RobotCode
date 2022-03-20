@@ -52,6 +52,6 @@ public class IntakeSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("Actual Intake RPM", intakeWheel.getRPM());
+    // SmartDashboard.putNumber("Actual Intake RPM", intakeWheel.getRPM());
   }
 }
