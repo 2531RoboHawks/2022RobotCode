@@ -4,10 +4,11 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants;
 import frc.robot.InputUtils;
 import frc.robot.RobotContainer;
+import frc.robot.Constants.Controls;
 import frc.robot.subsystems.DriveSubsystem;
 
 public class DriveCommand extends CommandBase {
@@ -21,6 +22,9 @@ public class DriveCommand extends CommandBase {
   @Override
   public void initialize() {
     driveSubsystem.reset();
+
+    // For testing pose accuracy
+    driveSubsystem.resetOdometry(new Pose2d());
   }
 
   private double scale(double n) {
@@ -33,27 +37,27 @@ public class DriveCommand extends CommandBase {
     double xMultiplier;
     double yMultiplier;
     double rotationMultiplier;
-    boolean slow = RobotContainer.gamepad.getRawButton(Constants.Controls.Slow);
-    boolean turbo = RobotContainer.gamepad.getRawButton(Constants.Controls.Turbo);
+    boolean slow = RobotContainer.gamepad.getRawButton(Controls.Slow);
+    boolean turbo = RobotContainer.gamepad.getRawButton(Controls.Turbo);
     if (slow) {
-      xMultiplier = 0.5;
-      yMultiplier = 0.5;
-      rotationMultiplier = 0.5;
-    } else if (turbo) {
-      xMultiplier = 3;
-      yMultiplier = 3;
-      rotationMultiplier = 2;
-    } else {
       xMultiplier = 1;
       yMultiplier = 1;
       rotationMultiplier = 1;
+    } else if (turbo) {
+      xMultiplier = 5;
+      yMultiplier = 5;
+      rotationMultiplier = 3;
+    } else {
+      xMultiplier = 3;
+      yMultiplier = 3;
+      rotationMultiplier = 2;
     }
 
     double x = RobotContainer.gamepad.getLeftX();
     double y = -RobotContainer.gamepad.getLeftY();
-    double z = RobotContainer.gamepad.getRawAxis(2);
+    double z = RobotContainer.gamepad.getRawAxis(4);
 
-    driveSubsystem.drivePercent(driveSubsystem.calculateMecanumDrive(
+    driveSubsystem.driveWheelSpeeds(driveSubsystem.calculateMecanumDrive(
       scale(y) * yMultiplier,
       scale(x) * xMultiplier,
       scale(z) * rotationMultiplier

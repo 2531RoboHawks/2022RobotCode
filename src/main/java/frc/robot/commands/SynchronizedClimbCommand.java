@@ -1,7 +1,6 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants;
 import frc.robot.InputUtils;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.ClimbSubsystem;
@@ -19,20 +18,14 @@ public class SynchronizedClimbCommand extends CommandBase {
 
   @Override
   public void initialize() {
-    intakeSubsystem.setDown(true, false);
+    intakeSubsystem.disable();
+    intakeSubsystem.setDown(false);
     intakeSubsystem.stop();
     climbSubsystem.zero();
   }
 
   @Override
   public void execute() {
-    if (RobotContainer.helms.getRawButtonPressed(Constants.Controls.ToggleClimbArmManually)) {
-      climbSubsystem.togglePistonExtended();
-    }
-    if (RobotContainer.helms.getRawButtonPressed(Constants.Controls.ToggleIntakeDown)) {
-      intakeSubsystem.toggleDown();
-    }
-
     double power = -InputUtils.deadzone(RobotContainer.helms.getRawAxis(1));
     double delta = power * 3000;
     double newTarget = climbSubsystem.getArmExtensionTarget() + delta;

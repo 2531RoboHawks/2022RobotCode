@@ -6,6 +6,7 @@ import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.BetterSparkMaxBrushless;
 import frc.robot.BetterTalonFX;
 import frc.robot.PIDSettings;
 
@@ -18,23 +19,35 @@ public class ShootSubsystem extends SubsystemBase {
     .configureInverted(true)
     .configurePID(new PIDSettings(0.1, 0.001, 5));
 
-  private VictorSPX traverse = new VictorSPX(8);
+  private BetterTalonFX storageAfterIntake = new BetterTalonFX(28);
+
+  private BetterSparkMaxBrushless storageBeforeShoot = new BetterSparkMaxBrushless(17)
+    .configureInverted(true);
 
   public ShootSubsystem() {
-    traverse.setInverted(true);
+
   }
 
   public void setRevwheelRPM(double rpm) {
-    // Max RPM: ~5600 RPM
+    // Max RPM: ~6540 RPM
     double revolutionsPerSecond = rpm / 60.0;
     revwheel.setLinearVelocityFeedforwardPID(revolutionsPerSecond);
   }
 
-  public void setTraversePercent(double percent) {
-    traverse.set(VictorSPXControlMode.PercentOutput, percent);
+  public void setStorageAfterIntakeRunning(boolean running) {
+    if (running) {
+      storageAfterIntake.setPower(0.5);
+    } else {
+      storageAfterIntake.stop();
+    }
   }
-  public void stopTraverse() {
-    traverse.set(VictorSPXControlMode.PercentOutput, 0);
+
+  public void setStorageBeforeShootRunning(boolean running) {
+    if (running) {
+      storageBeforeShoot.setPower(0.5);
+    } else {
+      storageBeforeShoot.stop();
+    }
   }
 
   public void setElevatorRPM(double rpm) {

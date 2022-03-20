@@ -9,12 +9,28 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.Constants.HelmsControls;
 import frc.robot.commands.DriveCommand;
-import frc.robot.commands.auto.AutoDriveCommand;
+import frc.robot.commands.IntakeCommand;
+import frc.robot.commands.ManualClimbCommand;
+import frc.robot.commands.ShootCommand;
+import frc.robot.commands.SynchronizedClimbCommand;
+import frc.robot.commands.ToggleClimbExtendCommand;
+import frc.robot.commands.ToggleClimbGrabCommand;
+import frc.robot.commands.ToggleIntakeCommand;
+import frc.robot.commands.auto.PrimitiveOneBall;
+import frc.robot.commands.auto.Taxi;
+import frc.robot.commands.auto.TheRumbling;
 import frc.robot.commands.auto.TrajectoryCommand;
+import frc.robot.commands.auto.WallMaria;
 import frc.robot.commands.auto.Waypoint;
+import frc.robot.subsystems.ClimbSubsystem;
+import frc.robot.subsystems.CompressorSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.ShootSubsystem;
+import frc.robot.subsystems.VisionSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -23,21 +39,12 @@ import frc.robot.subsystems.DriveSubsystem;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-  // The robot's subsystems and commands are defined here...
-  // public static final ClimbSubsystem climbSubsystem = new ClimbSubsystem();
+  public static final ClimbSubsystem climbSubsystem = new ClimbSubsystem();
   public static final DriveSubsystem driveSubsystem = new DriveSubsystem();
-  // public static final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
-  // public static final ShootSubsystem shootSubsystem = new ShootSubsystem();
-  // public static final VisionSubsystem visionSubsystem = new VisionSubsystem();
-  // public static final CompressorSubsystem compressorSubsystem = new CompressorSubsystem();
-
-  // public final SynchronizedClimbCommand synchronizedClimbCommand = new SynchronizedClimbCommand(climbSubsystem, intakeSubsystem);
-  // public final ManualClimbCommand manualClimbCommand = new ManualClimbCommand(climbSubsystem, intakeSubsystem);
-  // public final DriveCommand driveCommand = new DriveCommand(driveSubsystem);
-  // public final IntakeCommand intakeCommand = new IntakeCommand(intakeSubsystem);
-  // public final ShootCommand shootCommand = new ShootCommand(shootSubsystem);
-
-  // public final LimelightTrackCommand limelightTrackCommand = new LimelightTrackCommand(visionSubsystem, driveSubsystem);
+  public static final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
+  public static final ShootSubsystem shootSubsystem = new ShootSubsystem();
+  public static final VisionSubsystem visionSubsystem = new VisionSubsystem();
+  public static final CompressorSubsystem compressorSubsystem = new CompressorSubsystem();
 
   public static XboxController gamepad = new XboxController(0);
   public static XboxController helms = new XboxController(1);
@@ -48,48 +55,28 @@ public class RobotContainer {
   public RobotContainer() {
     configureButtonBindings();
 
-    // intakeSubsystem.setDefaultCommand(intakeCommand);
     driveSubsystem.setDefaultCommand(new DriveCommand(driveSubsystem));
-    // shootSubsystem.setDefaultCommand(shootCommand);
+    intakeSubsystem.setDefaultCommand(new IntakeCommand(intakeSubsystem));
+    shootSubsystem.setDefaultCommand(new ShootCommand(shootSubsystem));
 
-    // SmartDashboard.putData("Synchronized climb command", synchronizedClimbCommand);
-    // SmartDashboard.putData("Manual climb command", manualClimbCommand);
-    // SmartDashboard.putData("Drive command", driveCommand);
-    // SmartDashboard.putData("Intake command", intakeCommand);
-    // SmartDashboard.putData("Shoot command", shootCommand);
-    // SmartDashboard.putData("Limelight Track command", limelightTrackCommand);
+    SmartDashboard.putData("Manual Climb Command", new ManualClimbCommand(climbSubsystem, intakeSubsystem));
 
     autoChooser.addOption("None", null);
 
     autoChooser.setDefaultOption(
+      // TODO: remove; was for testing only
       "8 Ball Auto",
       TrajectoryCommand.fromWaypoints(
         driveSubsystem,
         Waypoint.LEFT,
         Waypoint.UP,
-        Waypoint.DOWN,
-        Waypoint.LEFT,
-        Waypoint.RIGHT,
-        Waypoint.LEFT
+        Waypoint.DOWN
       ).resetOdometry()
     );
-    autoChooser.addOption(
-      "Taxi",
-      new AutoDriveCommand(driveSubsystem, 0.2, 0, 0).withTimeout(5)
-    );
-    autoChooser.setDefaultOption(
-      "The Rumbling",
-      new SequentialCommandGroup(
-        TrajectoryCommand.fromWaypoints(
-          driveSubsystem,
-          Waypoint.RUMBLING_START,
-          Waypoint.RUMBLING_FIRST_BALL,
-          Waypoint.RUMBLING_SECOND_BALL,
-          Waypoint.RUMBLING_TERMINAL,
-          Waypoint.RUMBLING_FINAL_SHOT
-        ).resetOdometry()
-      )
-    );
+    autoChooser.addOption("Taxi", new Taxi(driveSubsystem));
+    autoChooser.addOption("Primitive One Ball", new PrimitiveOneBall(driveSubsystem, shootSubsystem));
+    autoChooser.addOption("Wall Maria", new WallMaria(driveSubsystem, intakeSubsystem, shootSubsystem));
+    autoChooser.setDefaultOption("The Rumbling", new TheRumbling(driveSubsystem, intakeSubsystem, shootSubsystem));
     // autoChooser.setDefaultOption(
     //   "Primitive One Ball",
     //   new ShootBallCommand(driveSubsystem, shootSubsystem)
@@ -137,7 +124,11 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    // new JoystickButton(helms, 8).toggleWhenActive(synchronizedClimbCommand);
+    new JoystickButton(helms, HelmsControls.SynchronizedClimb).toggleWhenActive(new SynchronizedClimbCommand(climbSubsystem, intakeSubsystem));
+    new JoystickButton(helms, HelmsControls.ManualClimb).toggleWhenActive(new ManualClimbCommand(climbSubsystem, intakeSubsystem));
+    new JoystickButton(helms, HelmsControls.ToggleIntakeDown).whenPressed(new ToggleIntakeCommand(intakeSubsystem));
+    new JoystickButton(helms, HelmsControls.ToggleClimbExtended).whenPressed(new ToggleClimbExtendCommand(climbSubsystem));
+    new JoystickButton(helms, HelmsControls.ToggleClimbGrab).whenPressed(new ToggleClimbGrabCommand(climbSubsystem));
   }
 
   /**

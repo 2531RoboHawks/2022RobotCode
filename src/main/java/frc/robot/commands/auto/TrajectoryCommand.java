@@ -16,11 +16,11 @@ import frc.robot.subsystems.DriveSubsystem;
 public class TrajectoryCommand extends MecanumControllerCommand {
   // in meters/sec
   private static final double maxVelocity = 2;
-  private static final double maxAcceleration = 1;
+  private static final double maxAcceleration = 2;
 
   // in radians/sec
-  private static final double maxAngularVelocity = 3;
-  private static final double maxAngularAcceleration = 3;
+  private static final double maxAngularVelocity = 1.5;
+  private static final double maxAngularAcceleration = 1.5;
 
   private DriveSubsystem driveSubsystem;
   private Trajectory trajectory;
@@ -63,7 +63,7 @@ public class TrajectoryCommand extends MecanumControllerCommand {
 
   public static TrajectoryCommand fromWaypoints(DriveSubsystem driveSubsystem, Waypoint... waypointsArray) {
     if (waypointsArray.length < 2) {
-      throw new RuntimeException("forWaypoints called with too few waypoint arguments");
+      throw new IllegalArgumentException("forWaypoints called with too few waypoint arguments");
     }
 
     List<Pose2d> poses = new ArrayList<Pose2d>();
@@ -75,6 +75,9 @@ public class TrajectoryCommand extends MecanumControllerCommand {
       .setKinematics(driveSubsystem.getKinematics());
 
     Trajectory trajectory = TrajectoryGenerator.generateTrajectory(poses, config);
+    if (trajectory.getTotalTimeSeconds() == 0) {
+      throw new IllegalArgumentException("Trajectory is invalid: it is zero seconds long. There may be a more detailed message above.");
+    }
 
     return new TrajectoryCommand(trajectory, driveSubsystem);
   }

@@ -2,8 +2,8 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants;
 import frc.robot.RobotContainer;
+import frc.robot.Constants.Controls;
 import frc.robot.subsystems.ShootSubsystem;
 
 public class ShootCommand extends CommandBase {
@@ -24,7 +24,7 @@ public class ShootCommand extends CommandBase {
 
   @Override
   public void execute() {
-    if (RobotContainer.gamepad.getRawButton(Constants.Controls.Shoot)) {
+    if (RobotContainer.gamepad.getRawButton(Controls.Shoot)) {
       shootSubsystem.setRevwheelRPM(SmartDashboard.getNumber("Revwheel Target RPM", 0));
     } else if (RobotContainer.gamepad.getRightBumper()) {
       shootSubsystem.setRevwheelRPM(0);
@@ -32,15 +32,18 @@ public class ShootCommand extends CommandBase {
       shootSubsystem.idleRevwheel();
     }
 
-    // if (RobotContainer.gamepad.getRawButton(Constants.Controls.Elevator)) {
+    shootSubsystem.setStorageBeforeShootRunning(RobotContainer.gamepad.getRawButton(6));
+    shootSubsystem.setStorageAfterIntakeRunning(RobotContainer.gamepad.getRawButton(6));
+
+    // if (RobotContainer.gamepad.getRawButton(Controls.Elevator)) {
     //   shootSubsystem.setElevatorRPM(SmartDashboard.getNumber("Elevator Target RPM", 0));
     // } else {
     //   shootSubsystem.stopElevator();
     // }
 
-    // if (RobotContainer.gamepad.getRawButton(Constants.Controls.Traverse)) {
+    // if (RobotContainer.gamepad.getRawButton(Controls.Traverse)) {
     //   shootSubsystem.setTraversePercent(0.85);
-    // } else if (RobotContainer.gamepad.getRawButton(Constants.Controls.TraverseReverse)) {
+    // } else if (RobotContainer.gamepad.getRawButton(Controls.TraverseReverse)) {
     //   shootSubsystem.setTraversePercent(-0.85);
     // } else {
     //   shootSubsystem.stopTraverse();
