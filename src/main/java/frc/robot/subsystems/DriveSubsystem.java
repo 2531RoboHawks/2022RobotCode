@@ -46,8 +46,8 @@ public class DriveSubsystem extends SubsystemBase {
   private static final double rotationsToMeters = wheelCircumference / gearRatio;
 
   // Numbers found with sysid
-  private final SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(0.77587, 0.84205, 0.63784);
-  private final PIDSettings feedforwardPID = new PIDSettings(1.3712, 0, 0);
+  private final SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(0.67281, 1.651, 0.20761);
+  private final PIDSettings feedforwardPID = new PIDSettings(2.2101, 0, 0);
 
   public DriveSubsystem() {
     frontLeft.configureFeedforward(feedforward, feedforwardPID);
@@ -100,10 +100,19 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public void driveWheelSpeeds(MecanumDriveWheelSpeeds mecanumDriveWheelSpeeds) {
+    SmartDashboard.putNumber("Target Front Left Speed", mecanumDriveWheelSpeeds.frontLeftMetersPerSecond);
+    SmartDashboard.putNumber("Target Front Right Speed", mecanumDriveWheelSpeeds.frontRightMetersPerSecond);
+    SmartDashboard.putNumber("Target Back Left Speed", mecanumDriveWheelSpeeds.rearLeftMetersPerSecond);
+    SmartDashboard.putNumber("Target Back Right Speed", mecanumDriveWheelSpeeds.rearRightMetersPerSecond);
+
     frontLeft.setLinearVelocityFeedforwardPID(mecanumDriveWheelSpeeds.frontLeftMetersPerSecond);
     frontRight.setLinearVelocityFeedforwardPID(mecanumDriveWheelSpeeds.frontRightMetersPerSecond);
     backLeft.setLinearVelocityFeedforwardPID(mecanumDriveWheelSpeeds.rearLeftMetersPerSecond);
     backRight.setLinearVelocityFeedforwardPID(mecanumDriveWheelSpeeds.rearRightMetersPerSecond);
+  }
+
+  public void driveWheelSpeeds(MecanumDriveInfo info) {
+    driveWheelSpeeds(info.toWheelSpeeds());
   }
 
   public void driveVoltages(MecanumDriveMotorVoltages mecanumDriveMotorVoltages) {
@@ -177,13 +186,14 @@ public class DriveSubsystem extends SubsystemBase {
   public void periodic() {
     odometry.update(getRotation2d(), getWheelSpeeds());
 
-    // SmartDashboard.putNumber("Pose X", getPose().getX());
-    // SmartDashboard.putNumber("Pose Y", getPose().getY());
-    // SmartDashboard.putNumber("Gyro", getAngle());
+    SmartDashboard.putNumber("Pose X", getPose().getX());
+    SmartDashboard.putNumber("Pose Y", getPose().getY());
+    SmartDashboard.putNumber("Gyro", getAngle());
 
-    // SmartDashboard.putNumber("Front Left Speed", getWheelSpeeds().frontLeftMetersPerSecond);
-    // SmartDashboard.putNumber("Front Right Speed", getWheelSpeeds().frontRightMetersPerSecond);
-    // SmartDashboard.putNumber("Back Left Speed", getWheelSpeeds().rearLeftMetersPerSecond);
-    // SmartDashboard.putNumber("Back Right Speed", getWheelSpeeds().rearRightMetersPerSecond);
+    MecanumDriveWheelSpeeds wheelSpeeds = getWheelSpeeds();
+    SmartDashboard.putNumber("Front Left Speed", wheelSpeeds.frontLeftMetersPerSecond);
+    SmartDashboard.putNumber("Front Right Speed", wheelSpeeds.frontRightMetersPerSecond);
+    SmartDashboard.putNumber("Back Left Speed", wheelSpeeds.rearLeftMetersPerSecond);
+    SmartDashboard.putNumber("Back Right Speed", wheelSpeeds.rearRightMetersPerSecond);
   }
 }
