@@ -25,9 +25,11 @@ import frc.robot.commands.auto.TrajectoryCommand;
 import frc.robot.commands.auto.WallMaria;
 import frc.robot.commands.auto.Waypoint;
 import frc.robot.subsystems.ClimbSubsystem;
+import frc.robot.subsystems.CompressorSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShootSubsystem;
+import frc.robot.subsystems.VisionSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -40,8 +42,8 @@ public class RobotContainer {
   public static final DriveSubsystem driveSubsystem = new DriveSubsystem();
   public static final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
   public static final ShootSubsystem shootSubsystem = new ShootSubsystem();
-  // public static final VisionSubsystem visionSubsystem = new VisionSubsystem();
-  // public static final CompressorSubsystem compressorSubsystem = new CompressorSubsystem();
+  public static final VisionSubsystem visionSubsystem = new VisionSubsystem();
+  public static final CompressorSubsystem compressorSubsystem = new CompressorSubsystem();
 
   public static XboxController gamepad = new XboxController(0);
   public static XboxController helms = new XboxController(1);
