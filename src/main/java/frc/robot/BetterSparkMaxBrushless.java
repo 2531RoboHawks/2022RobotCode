@@ -18,11 +18,12 @@ public class BetterSparkMaxBrushless {
     zero();
   }
 
-  public void setInverted(boolean inverted) {
+  public BetterSparkMaxBrushless configureInverted(boolean inverted) {
     canSparkMax.setInverted(true);
+    return this;
   }
 
-  public void set(double power) {
+  public void setPower(double power) {
     canSparkMax.set(power);
   }
 

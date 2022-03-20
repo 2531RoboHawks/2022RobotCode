@@ -29,7 +29,7 @@ public class IntakeSubsystem extends SubsystemBase {
 
   private void setPower(double power) {
     System.out.println("Intake power: " + power);
-    intakeWheel.set(power);
+    intakeWheel.setPower(power);
   }
 
   public void setDown(boolean down) {

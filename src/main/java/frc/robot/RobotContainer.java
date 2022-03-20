@@ -14,6 +14,7 @@ import frc.robot.Constants.HelmsControls;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.ManualClimbCommand;
+import frc.robot.commands.ShootCommand;
 import frc.robot.commands.SynchronizedClimbCommand;
 import frc.robot.commands.ToggleClimbExtendCommand;
 import frc.robot.commands.ToggleClimbGrabCommand;
@@ -54,8 +55,9 @@ public class RobotContainer {
   public RobotContainer() {
     configureButtonBindings();
 
-    // driveSubsystem.setDefaultCommand(new DriveCommand(driveSubsystem));
+    driveSubsystem.setDefaultCommand(new DriveCommand(driveSubsystem));
     intakeSubsystem.setDefaultCommand(new IntakeCommand(intakeSubsystem));
+    shootSubsystem.setDefaultCommand(new ShootCommand(shootSubsystem));
 
     SmartDashboard.putData("Manual Climb Command", new ManualClimbCommand(climbSubsystem, intakeSubsystem));
 
