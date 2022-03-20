@@ -16,11 +16,11 @@ import frc.robot.subsystems.DriveSubsystem;
 public class TrajectoryCommand extends MecanumControllerCommand {
   // in meters/sec
   private static final double maxVelocity = 2;
-  private static final double maxAcceleration = 1;
+  private static final double maxAcceleration = 2;
 
   // in radians/sec
-  private static final double maxAngularVelocity = 3;
-  private static final double maxAngularAcceleration = 3;
+  private static final double maxAngularVelocity = 1.5;
+  private static final double maxAngularAcceleration = 1.5;
 
   private DriveSubsystem driveSubsystem;
   private Trajectory trajectory;

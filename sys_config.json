@@ -4,8 +4,8 @@
   "encoding": false,
   "gearing denominator": 1.0,
   "gearing numerator": 8.45,
-  "gyro": "NavX",
-  "gyro ctor": "SPI (MXP)",
+  "gyro": "Pigeon",
+  "gyro ctor": "1",
   "is drivetrain": true,
   "motor controllers": [
     "TalonFX",

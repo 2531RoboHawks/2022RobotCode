@@ -4,7 +4,7 @@
 
 package frc.robot.subsystems;
 
-import com.kauailabs.navx.frc.AHRS;
+import com.ctre.phoenix.sensors.WPI_PigeonIMU;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
@@ -15,7 +15,6 @@ import edu.wpi.first.math.kinematics.MecanumDriveKinematics;
 import edu.wpi.first.math.kinematics.MecanumDriveMotorVoltages;
 import edu.wpi.first.math.kinematics.MecanumDriveOdometry;
 import edu.wpi.first.math.kinematics.MecanumDriveWheelSpeeds;
-import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -24,7 +23,7 @@ import frc.robot.MecanumDriveInfo;
 import frc.robot.PIDSettings;
 
 public class DriveSubsystem extends SubsystemBase {
-  private Gyro gyro = new AHRS(SPI.Port.kMXP);
+  private Gyro gyro = new WPI_PigeonIMU(1);
 
   private BetterTalonFX frontLeft = new BetterTalonFX(30);
   private BetterTalonFX frontRight = new BetterTalonFX(31);
@@ -47,8 +46,8 @@ public class DriveSubsystem extends SubsystemBase {
   private static final double rotationsToMeters = wheelCircumference / gearRatio;
 
   // Numbers found with sysid
-  private final SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(0.61283, 1.4466, 0.28021);
-  private final PIDSettings feedforwardPID = new PIDSettings(2.8783, 0, 0);
+  private final SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(0.77587, 0.84205, 0.63784);
+  private final PIDSettings feedforwardPID = new PIDSettings(1.3712, 0, 0);
 
   public DriveSubsystem() {
     frontLeft.configureFeedforward(feedforward, feedforwardPID);
