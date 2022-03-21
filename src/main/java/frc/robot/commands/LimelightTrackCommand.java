@@ -53,6 +53,6 @@ public class LimelightTrackCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return pidController.atSetpoint();
+    return pidController.atSetpoint() && visionSubsystem.isReady();
   }
 }
