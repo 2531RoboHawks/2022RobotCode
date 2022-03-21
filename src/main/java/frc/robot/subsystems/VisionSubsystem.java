@@ -69,7 +69,7 @@ public class VisionSubsystem extends SubsystemBase {
     // 1 - force off
     // 2 - force blink
     // 3 - force on
-    int newMode = enabled ? 3 : 1;
+    int newMode = enabled ? 3 : 0;
     if (newMode != ledMode.getNumber(0).intValue()) {
       System.out.println("Limelight enabled: " + enabled);
       if (enabled) {
