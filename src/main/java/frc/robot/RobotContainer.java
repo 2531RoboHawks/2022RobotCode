@@ -132,7 +132,7 @@ public class RobotContainer {
     new JoystickButton(helms, HelmsControls.ToggleIntakeDown).whenPressed(new ToggleIntakeCommand(intakeSubsystem));
     new JoystickButton(helms, HelmsControls.ToggleClimbExtended).whenPressed(new ToggleClimbExtendCommand(climbSubsystem));
     new JoystickButton(helms, HelmsControls.ToggleClimbGrab).whenPressed(new ToggleClimbGrabCommand(climbSubsystem));
-    // new JoystickButton(gamepad, Controls.LimelightTrack).whenHeld(new LimelightTrackCommand(visionSubsystem, driveSubsystem));
+    new JoystickButton(gamepad, Controls.LimelightTrack).whenHeld(new LimelightTrackCommand(visionSubsystem, driveSubsystem));
     new JoystickButton(gamepad, Controls.AutoShoot).whenHeld(new AutoShootCommand(shootSubsystem, visionSubsystem));
   }
 

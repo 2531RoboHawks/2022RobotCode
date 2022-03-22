@@ -12,7 +12,7 @@ import frc.robot.subsystems.VisionSubsystem;
 public class LimelightTrackCommand extends CommandBase {
   private DriveSubsystem driveSubsystem;
   private VisionSubsystem visionSubsystem;
-  private PIDController pidController = new PIDController(0.05, 0, 0);
+  private PIDController pidController = new PIDController(0.015, 0.02, 0);
 
   /** Creates a new LimelightTrackCommand. */
   public LimelightTrackCommand(VisionSubsystem visionSubsystem, DriveSubsystem driveSubsystem) {
