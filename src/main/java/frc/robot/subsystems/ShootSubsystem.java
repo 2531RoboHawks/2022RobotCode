@@ -16,7 +16,7 @@ public class ShootSubsystem extends SubsystemBase {
     .configureInverted(true);
 
   public ShootSubsystem() {
-
+    stopEverything();
   }
 
   public void setRevwheelRPM(double rpm) {
@@ -38,6 +38,7 @@ public class ShootSubsystem extends SubsystemBase {
   }
   public void stopEverything() {
     idleRevwheel();
+    setStorageBeforeShootRunning(false);
   }
 
   @Override

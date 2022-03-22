@@ -14,7 +14,6 @@ import frc.robot.Constants.Controls;
 import frc.robot.Constants.HelmsControls;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.IntakeCommand;
-import frc.robot.commands.LimelightTrackCommand;
 import frc.robot.commands.ManualClimbCommand;
 import frc.robot.commands.ShootCommand;
 import frc.robot.commands.SynchronizedClimbCommand;
@@ -23,7 +22,6 @@ import frc.robot.commands.ToggleClimbGrabCommand;
 import frc.robot.commands.ToggleIntakeCommand;
 import frc.robot.commands.auto.AutoAimShootCommand;
 import frc.robot.commands.auto.CooksleyStraight;
-import frc.robot.commands.auto.AutoShootCommand;
 import frc.robot.commands.auto.PrimitiveOneBall;
 import frc.robot.commands.auto.Taxi;
 import frc.robot.commands.auto.TheRumbling;
@@ -55,8 +53,6 @@ public class RobotContainer {
   public static XboxController helms = new XboxController(1);
 
   private SendableChooser<Command> autoChooser = new SendableChooser<>();
-
-  public static AutoAimShootCommand autoAimShootCommand = new AutoAimShootCommand(visionSubsystem, driveSubsystem, shootSubsystem);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -137,7 +133,7 @@ public class RobotContainer {
     new JoystickButton(helms, HelmsControls.ToggleIntakeDown).whenPressed(new ToggleIntakeCommand(intakeSubsystem));
     new JoystickButton(helms, HelmsControls.ToggleClimbExtended).whenPressed(new ToggleClimbExtendCommand(climbSubsystem));
     new JoystickButton(helms, HelmsControls.ToggleClimbGrab).whenPressed(new ToggleClimbGrabCommand(climbSubsystem));
-    new JoystickButton(gamepad, Controls.AutoAimShoot).whenHeld(new AutoAimShootCommand(visionSubsystem, driveSubsystem, shootSubsystem));
+    new JoystickAxis(gamepad, Controls.AutoAimShoot).whenAboveThreshold(0.5, new AutoAimShootCommand(visionSubsystem, driveSubsystem, shootSubsystem, intakeSubsystem));
   }
 
   /**

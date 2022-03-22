@@ -22,11 +22,6 @@ public class ShootCommand extends CommandBase {
 
   @Override
   public void execute() {
-    if (RobotContainer.gamepad.getLeftTriggerAxis() > .5) {
-      RobotContainer.autoAimShootCommand.schedule();
-    } else {
-      RobotContainer.autoAimShootCommand.cancel();
-    }
   }
 
   @Override

@@ -5,24 +5,27 @@
 package frc.robot.commands.auto;
 
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShootSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 
 public class AutoShootCommand extends CommandBase {
   private VisionSubsystem visionSubsystem;
   private ShootSubsystem shootSubsystem;
+  private IntakeSubsystem intakeSubsystem;
   private Timer timer = new Timer();
 
-  public AutoShootCommand(ShootSubsystem shootSubsystem, VisionSubsystem visionSubsystem) {
-    addRequirements(shootSubsystem);
+  public AutoShootCommand(ShootSubsystem shootSubsystem, VisionSubsystem visionSubsystem, IntakeSubsystem intakeSubsystem) {
+    addRequirements(shootSubsystem, intakeSubsystem);
     this.visionSubsystem = visionSubsystem;
     this.shootSubsystem = shootSubsystem;
+    this.intakeSubsystem = intakeSubsystem;
   }
 
   @Override
   public void initialize() {
+    intakeSubsystem.disable();
     visionSubsystem.ensureEnabled();
     timer.reset();
     timer.stop();
@@ -53,10 +56,12 @@ public class AutoShootCommand extends CommandBase {
         cancel();
       } else if (timer.hasElapsed(startShootingAt)) {
         shootSubsystem.setStorageBeforeShootRunning(true);
+        intakeSubsystem.setStorageAfterIntakeRunning(true);
       }
     } else {
       timer.reset();
       shootSubsystem.setStorageBeforeShootRunning(false);
+      intakeSubsystem.setStorageAfterIntakeRunning(false);
     }
   }
 
@@ -64,6 +69,7 @@ public class AutoShootCommand extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     shootSubsystem.stopEverything();
+    intakeSubsystem.setStorageAfterIntakeRunning(false);
     visionSubsystem.noLongerNeeded();
   }
 
