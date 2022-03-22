@@ -8,9 +8,9 @@ import frc.robot.subsystems.ShootSubsystem;
 
 public class TheRumbling extends SequentialCommandGroup {
   private static final Waypoint START = new Waypoint(7.71, 2.75, -90.00);
-  private static final Waypoint FIRST_BALL = new Waypoint(7.66, 0.72, -90.00);
-  private static final Waypoint SECOND_BALL = new Waypoint(5.11, 1.98, 180.00);
-  private static final Waypoint TERMINAL = new Waypoint(1.56, 1.60, -131.99);
+  private static final Waypoint FIRST_BALL = new Waypoint(7.71, 0.5, -90.00);
+  private static final Waypoint SECOND_BALL = new Waypoint(5.0, 1.98, -90.00);
+  private static final Waypoint TERMINAL = new Waypoint(1.56, 1.60, -90.00);
   private static final Waypoint FINAL_SHOT = SECOND_BALL;
 
   public TheRumbling(DriveSubsystem drive, IntakeSubsystem intake, ShootSubsystem shoot) {

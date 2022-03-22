@@ -15,7 +15,9 @@ import edu.wpi.first.math.kinematics.MecanumDriveKinematics;
 import edu.wpi.first.math.kinematics.MecanumDriveMotorVoltages;
 import edu.wpi.first.math.kinematics.MecanumDriveOdometry;
 import edu.wpi.first.math.kinematics.MecanumDriveWheelSpeeds;
+import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.BetterTalonFX;
@@ -38,6 +40,8 @@ public class DriveSubsystem extends SubsystemBase {
     new Translation2d(-0.26035, -0.2921)
   );
 
+  private Field2d fieldImage = new Field2d();
+
   private MecanumDriveOdometry odometry;
 
   private static final double wheelDiameter = 0.2032; // meters
@@ -46,8 +50,8 @@ public class DriveSubsystem extends SubsystemBase {
   private static final double rotationsToMeters = wheelCircumference / gearRatio;
 
   // Numbers found with sysid
-  private final SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(0.67281, 1.651, 0.20761);
-  private final PIDSettings feedforwardPID = new PIDSettings(2.2101, 0, 0);
+  private final SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(0.60445, 1.5368, 0.37043);
+  private final PIDSettings feedforwardPID = new PIDSettings(2.2706, 0, 0);
 
   public DriveSubsystem() {
     frontLeft.configureFeedforward(feedforward, feedforwardPID);
@@ -65,6 +69,8 @@ public class DriveSubsystem extends SubsystemBase {
 
     odometry = new MecanumDriveOdometry(kinematics, getRotation2d());
     reset();
+
+    SmartDashboard.putData("Field", fieldImage);
   }
 
   public MecanumDriveKinematics getKinematics() {
@@ -97,6 +103,13 @@ public class DriveSubsystem extends SubsystemBase {
     frontRight.setPower(powers.frontRight);
     backLeft.setPower(powers.backLeft);
     backRight.setPower(powers.backRight);
+  }
+
+  public void driveWestCoastTank(double left, double right) {
+    frontLeft.setPower(left);
+    frontRight.setPower(right);
+    backLeft.setPower(left);
+    backRight.setPower(right);
   }
 
   public void driveWheelSpeeds(MecanumDriveWheelSpeeds mecanumDriveWheelSpeeds) {
@@ -180,15 +193,29 @@ public class DriveSubsystem extends SubsystemBase {
 
   public void resetOdometry(Pose2d pose) {
     odometry.resetPosition(pose, getRotation2d());
+    fieldImage.setRobotPose(odometry.getPoseMeters());
+  }
+
+  // private int trajectoryCount = 0;
+  public void addTrajectory(Trajectory trajectory) {
+    // trajectoryCount++;
+    // fieldImage.getObject("trajectory" + trajectoryCount).setTrajectory(trajectory);
   }
 
   @Override
   public void periodic() {
     odometry.update(getRotation2d(), getWheelSpeeds());
 
+    fieldImage.setRobotPose(getPose());
+
     SmartDashboard.putNumber("Pose X", getPose().getX());
     SmartDashboard.putNumber("Pose Y", getPose().getY());
     SmartDashboard.putNumber("Gyro", getAngle());
+
+    SmartDashboard.putNumber("FL Current", frontLeft.getWPI().getSupplyCurrent());
+    SmartDashboard.putNumber("FR Current", frontRight.getWPI().getSupplyCurrent());
+    SmartDashboard.putNumber("BL Current", backLeft.getWPI().getSupplyCurrent());
+    SmartDashboard.putNumber("BR Current", backRight.getWPI().getSupplyCurrent());
 
     MecanumDriveWheelSpeeds wheelSpeeds = getWheelSpeeds();
     SmartDashboard.putNumber("Front Left Speed", wheelSpeeds.frontLeftMetersPerSecond);
