@@ -23,7 +23,6 @@ import frc.robot.commands.ToggleClimbGrabCommand;
 import frc.robot.commands.ToggleIntakeCommand;
 import frc.robot.commands.auto.AutoAimShootCommand;
 import frc.robot.commands.auto.CooksleyStraight;
-import frc.robot.commands.auto.PrimitiveOneBall;
 import frc.robot.commands.auto.Taxi;
 import frc.robot.commands.auto.TheRumbling;
 import frc.robot.commands.auto.TrajectoryCommand;
@@ -77,7 +76,6 @@ public class RobotContainer {
       ).resetOdometry()
     );
     autoChooser.addOption("Taxi", new Taxi(driveSubsystem));
-    autoChooser.addOption("Primitive One Ball", new PrimitiveOneBall(driveSubsystem, shootSubsystem));
     autoChooser.addOption("Wall Maria", new WallMaria(driveSubsystem, intakeSubsystem, shootSubsystem));
     autoChooser.addOption("Cooksley Straight", new CooksleyStraight(driveSubsystem, intakeSubsystem, shootSubsystem));
     autoChooser.setDefaultOption("The Rumbling", new TheRumbling(driveSubsystem, intakeSubsystem, shootSubsystem, visionSubsystem));
