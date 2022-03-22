@@ -65,8 +65,7 @@ public class RobotContainer {
     SmartDashboard.putData("Manual Climb Command", new ManualClimbCommand(climbSubsystem, intakeSubsystem));
 
     autoChooser.addOption("None", null);
-
-    autoChooser.setDefaultOption(
+    autoChooser.addOption(
       // TODO: remove; was for testing only
       "8 Ball Auto",
       TrajectoryCommand.fromWaypoints(
