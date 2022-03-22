@@ -5,6 +5,7 @@
 package frc.robot.commands.auto;
 
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ShootSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
@@ -28,9 +29,8 @@ public class AutoShootCommand extends CommandBase {
   }
 
   private double calculateRPMForDistance(double inches) {
-    // TODO :)
-    // return 3000 + inches * 50;
-    return 5000;
+    return inches * 12 + 3440;
+    // return SmartDashboard.getNumber("Revwheel Target RPM", 0);
   }
 
   @Override
@@ -47,15 +47,16 @@ public class AutoShootCommand extends CommandBase {
       double rpm = calculateRPMForDistance(distance);
       shootSubsystem.setRevwheelRPM(rpm);
 
-      double startShootingAt = 5;
+      double startShootingAt = 2;
       double shootDuration = 1;
       if (timer.hasElapsed(startShootingAt + shootDuration)) {
         cancel();
       } else if (timer.hasElapsed(startShootingAt)) {
-        shootSubsystem.setElevatorPercent(0.5);
+        shootSubsystem.setStorageBeforeShootRunning(true);
       }
     } else {
       timer.reset();
+      shootSubsystem.setStorageBeforeShootRunning(false);
     }
   }
 
