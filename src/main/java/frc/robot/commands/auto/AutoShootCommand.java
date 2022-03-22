@@ -16,7 +16,7 @@ public class AutoShootCommand extends CommandBase {
   private Timer timer = new Timer();
 
   public AutoShootCommand(ShootSubsystem shootSubsystem, VisionSubsystem visionSubsystem) {
-    addRequirements(shootSubsystem, visionSubsystem);
+    addRequirements(shootSubsystem);
     this.visionSubsystem = visionSubsystem;
     this.shootSubsystem = shootSubsystem;
   }
