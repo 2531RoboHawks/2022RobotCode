@@ -6,6 +6,7 @@ import java.util.List;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
@@ -15,8 +16,8 @@ import frc.robot.subsystems.DriveSubsystem;
 
 public class TrajectoryCommand extends MecanumControllerCommand {
   // in meters/sec
-  private static final double maxVelocity = 2;
-  private static final double maxAcceleration = 2;
+  private static final double maxVelocity = 1;
+  private static final double maxAcceleration = 1;
 
   // in radians/sec
   private static final double maxAngularVelocity = 1.5;
@@ -30,18 +31,12 @@ public class TrajectoryCommand extends MecanumControllerCommand {
     super(
       trajectory,
       driveSubsystem::getPose,
-      driveSubsystem.getFeedforward(),
       driveSubsystem.getKinematics(),
       getXController(),
       getYController(),
       getThetaController(),
       maxVelocity,
-      driveSubsystem.getFeedforwardPID(),
-      driveSubsystem.getFeedforwardPID(),
-      driveSubsystem.getFeedforwardPID(),
-      driveSubsystem.getFeedforwardPID(),
-      driveSubsystem::getWheelSpeeds,
-      driveSubsystem::driveVoltages,
+      driveSubsystem::driveWheelSpeeds,
       driveSubsystem
     );
 
@@ -54,7 +49,7 @@ public class TrajectoryCommand extends MecanumControllerCommand {
   }
 
   private static final PIDController getYController() {
-    return getXController();
+    return new PIDController(1, 0, 0);
   }
 
   private static final ProfiledPIDController getThetaController() {
@@ -71,13 +66,24 @@ public class TrajectoryCommand extends MecanumControllerCommand {
       poses.add(waypoint.getPose());
     }
 
+    Pose2d start = poses.get(0);
+    List<Translation2d> interior = new ArrayList<>();
+    if (poses.size() > 2) {
+      for (int i = 1; i < poses.size() - 1; i++) {
+        interior.add(poses.get(i).getTranslation());
+      }
+    }
+    Pose2d end = poses.get(poses.size() - 1);
+
     TrajectoryConfig config = new TrajectoryConfig(maxVelocity, maxAcceleration)
       .setKinematics(driveSubsystem.getKinematics());
 
-    Trajectory trajectory = TrajectoryGenerator.generateTrajectory(poses, config);
-    if (trajectory.getTotalTimeSeconds() == 0) {
-      throw new IllegalArgumentException("Trajectory is invalid: it is zero seconds long. There may be a more detailed message above.");
-    }
+    Trajectory trajectory = TrajectoryGenerator.generateTrajectory(start, interior, end, config);
+
+    // Warning may be preferable to robot failing to start.
+    // if (trajectory.getTotalTimeSeconds() == 0) {
+    //   throw new IllegalArgumentException("Trajectory is invalid: it is zero seconds long. There may be a more detailed message above.");
+    // }
 
     return new TrajectoryCommand(trajectory, driveSubsystem);
   }
@@ -90,6 +96,10 @@ public class TrajectoryCommand extends MecanumControllerCommand {
   @Override
   public void initialize() {
     super.initialize();
+    startupResetOdometry();
+  }
+
+  public void startupResetOdometry() {
     if (shouldResetOdometry) {
       driveSubsystem.resetOdometry(trajectory.getInitialPose());
     }

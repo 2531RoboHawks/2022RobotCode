@@ -19,6 +19,8 @@ public class VisionSubsystem extends SubsystemBase {
   private NetworkTableEntry ta = table.getEntry("ta");
   private NetworkTableEntry ledMode = table.getEntry("ledMode");
 
+  private double subsystemUsedBy = 0;
+
   private long lightsWillBeReadyAtMillis = NEVER;
 
   public VisionSubsystem() {
@@ -50,11 +52,13 @@ public class VisionSubsystem extends SubsystemBase {
   }
 
   public void ensureEnabled() {
-    setLightsEnabled(true);
+    subsystemUsedBy++;
+    setLightsEnabled(subsystemUsedBy > 0);
   }
 
   public void noLongerNeeded() {
-    setLightsEnabled(false);
+    subsystemUsedBy--;
+    setLightsEnabled(subsystemUsedBy > 0);
   }
 
   public boolean isReady() {
