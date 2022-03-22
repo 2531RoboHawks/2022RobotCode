@@ -27,7 +27,7 @@ public final class Constants {
 
     public static final int ToggleIntakeDown = 1;
 
-    public static final int LimelightTrack = 9;
+    public static final int AutoAimShoot = 9;
     public static final int AutoShoot = 10;
   }
 

@@ -56,6 +56,8 @@ public class RobotContainer {
 
   private SendableChooser<Command> autoChooser = new SendableChooser<>();
 
+  public static AutoAimShootCommand autoAimShootCommand = new AutoAimShootCommand(visionSubsystem, driveSubsystem, shootSubsystem);
+
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     configureButtonBindings();
@@ -135,7 +137,7 @@ public class RobotContainer {
     new JoystickButton(helms, HelmsControls.ToggleIntakeDown).whenPressed(new ToggleIntakeCommand(intakeSubsystem));
     new JoystickButton(helms, HelmsControls.ToggleClimbExtended).whenPressed(new ToggleClimbExtendCommand(climbSubsystem));
     new JoystickButton(helms, HelmsControls.ToggleClimbGrab).whenPressed(new ToggleClimbGrabCommand(climbSubsystem));
-    new JoystickButton(gamepad, Controls.LimelightTrack).whenHeld(new AutoAimShootCommand(visionSubsystem, driveSubsystem, shootSubsystem));
+    new JoystickButton(gamepad, Controls.AutoAimShoot).whenHeld(new AutoAimShootCommand(visionSubsystem, driveSubsystem, shootSubsystem));
   }
 
   /**
