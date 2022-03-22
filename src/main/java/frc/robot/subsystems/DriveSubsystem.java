@@ -113,10 +113,10 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public void driveWheelSpeeds(MecanumDriveWheelSpeeds mecanumDriveWheelSpeeds) {
-    SmartDashboard.putNumber("Target Front Left Speed", mecanumDriveWheelSpeeds.frontLeftMetersPerSecond);
-    SmartDashboard.putNumber("Target Front Right Speed", mecanumDriveWheelSpeeds.frontRightMetersPerSecond);
-    SmartDashboard.putNumber("Target Back Left Speed", mecanumDriveWheelSpeeds.rearLeftMetersPerSecond);
-    SmartDashboard.putNumber("Target Back Right Speed", mecanumDriveWheelSpeeds.rearRightMetersPerSecond);
+    // SmartDashboard.putNumber("Target Front Left Speed", mecanumDriveWheelSpeeds.frontLeftMetersPerSecond);
+    // SmartDashboard.putNumber("Target Front Right Speed", mecanumDriveWheelSpeeds.frontRightMetersPerSecond);
+    // SmartDashboard.putNumber("Target Back Left Speed", mecanumDriveWheelSpeeds.rearLeftMetersPerSecond);
+    // SmartDashboard.putNumber("Target Back Right Speed", mecanumDriveWheelSpeeds.rearRightMetersPerSecond);
 
     frontLeft.setLinearVelocityFeedforwardPID(mecanumDriveWheelSpeeds.frontLeftMetersPerSecond);
     frontRight.setLinearVelocityFeedforwardPID(mecanumDriveWheelSpeeds.frontRightMetersPerSecond);
@@ -212,15 +212,15 @@ public class DriveSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Pose Y", getPose().getY());
     SmartDashboard.putNumber("Gyro", getAngle());
 
-    SmartDashboard.putNumber("FL Current", frontLeft.getWPI().getSupplyCurrent());
-    SmartDashboard.putNumber("FR Current", frontRight.getWPI().getSupplyCurrent());
-    SmartDashboard.putNumber("BL Current", backLeft.getWPI().getSupplyCurrent());
-    SmartDashboard.putNumber("BR Current", backRight.getWPI().getSupplyCurrent());
+    // SmartDashboard.putNumber("FL Current", frontLeft.getWPI().getSupplyCurrent());
+    // SmartDashboard.putNumber("FR Current", frontRight.getWPI().getSupplyCurrent());
+    // SmartDashboard.putNumber("BL Current", backLeft.getWPI().getSupplyCurrent());
+    // SmartDashboard.putNumber("BR Current", backRight.getWPI().getSupplyCurrent());
 
-    MecanumDriveWheelSpeeds wheelSpeeds = getWheelSpeeds();
-    SmartDashboard.putNumber("Front Left Speed", wheelSpeeds.frontLeftMetersPerSecond);
-    SmartDashboard.putNumber("Front Right Speed", wheelSpeeds.frontRightMetersPerSecond);
-    SmartDashboard.putNumber("Back Left Speed", wheelSpeeds.rearLeftMetersPerSecond);
-    SmartDashboard.putNumber("Back Right Speed", wheelSpeeds.rearRightMetersPerSecond);
+    // MecanumDriveWheelSpeeds wheelSpeeds = getWheelSpeeds();
+    // SmartDashboard.putNumber("Front Left Speed", wheelSpeeds.frontLeftMetersPerSecond);
+    // SmartDashboard.putNumber("Front Right Speed", wheelSpeeds.frontRightMetersPerSecond);
+    // SmartDashboard.putNumber("Back Left Speed", wheelSpeeds.rearLeftMetersPerSecond);
+    // SmartDashboard.putNumber("Back Right Speed", wheelSpeeds.rearRightMetersPerSecond);
   }
 }
