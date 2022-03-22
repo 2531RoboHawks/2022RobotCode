@@ -26,6 +26,7 @@ public class ShootSubsystem extends SubsystemBase {
   }
 
   public void setStorageBeforeShootRunning(boolean running) {
+    System.out.println("Storage before intake: " + running);
     if (running) {
       storageBeforeShoot.setPower(0.25);
     } else {

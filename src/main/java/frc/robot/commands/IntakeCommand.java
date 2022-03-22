@@ -15,15 +15,14 @@ public class IntakeCommand extends CommandBase {
 
   @Override
   public void initialize() {
-    intakeSubsystem.enable();
     intakeSubsystem.setDown(false);
   }
 
   @Override
   public void execute() {
-    if (RobotContainer.gamepad.getRawButtonPressed(Controls.ToggleIntakeDown)) {
-      intakeSubsystem.toggleDown();
-    }
+    // if (RobotContainer.gamepad.getRawButtonPressed(Controls.ToggleIntakeDown)) {
+    //   intakeSubsystem.toggleDown();
+    // }
 
     // if(RobotContainer.gamepad.getRawButton(6)) {
     //   intakeSubsystem.setStorageAfterIntakeRunning(true);
@@ -35,7 +34,6 @@ public class IntakeCommand extends CommandBase {
 
   @Override
   public void end(boolean interrupted) {
-    intakeSubsystem.stop();
   }
 
   @Override

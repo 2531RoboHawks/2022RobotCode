@@ -25,7 +25,6 @@ public class AutoShootCommand extends CommandBase {
 
   @Override
   public void initialize() {
-    intakeSubsystem.disable();
     visionSubsystem.ensureEnabled();
     timer.reset();
     timer.stop();
