@@ -21,7 +21,7 @@ public class PrimitiveShootBall extends SequentialCommandGroup {
     }));
     addCommands(new WaitCommand(2));
     addCommands(new InstantCommand(() -> {
-      shootSubsystem.setElevatorRPM(2000);
+      // shootSubsystem.setElevatorRPM(2000);
     }));
     addCommands(new WaitCommand(1));
     addCommands(new InstantCommand(() -> {

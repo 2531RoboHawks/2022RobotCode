@@ -10,9 +10,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.Constants.Controls;
 import frc.robot.Constants.HelmsControls;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.IntakeCommand;
+import frc.robot.commands.LimelightTrackCommand;
 import frc.robot.commands.ManualClimbCommand;
 import frc.robot.commands.ShootCommand;
 import frc.robot.commands.SynchronizedClimbCommand;
@@ -20,6 +22,7 @@ import frc.robot.commands.ToggleClimbExtendCommand;
 import frc.robot.commands.ToggleClimbGrabCommand;
 import frc.robot.commands.ToggleIntakeCommand;
 import frc.robot.commands.auto.CooksleyStraight;
+import frc.robot.commands.auto.AutoShootCommand;
 import frc.robot.commands.auto.PrimitiveOneBall;
 import frc.robot.commands.auto.Taxi;
 import frc.robot.commands.auto.TheRumbling;
@@ -131,6 +134,8 @@ public class RobotContainer {
     new JoystickButton(helms, HelmsControls.ToggleIntakeDown).whenPressed(new ToggleIntakeCommand(intakeSubsystem));
     new JoystickButton(helms, HelmsControls.ToggleClimbExtended).whenPressed(new ToggleClimbExtendCommand(climbSubsystem));
     new JoystickButton(helms, HelmsControls.ToggleClimbGrab).whenPressed(new ToggleClimbGrabCommand(climbSubsystem));
+    new JoystickButton(gamepad, Controls.LimelightTrack).whenHeld(new LimelightTrackCommand(visionSubsystem, driveSubsystem));
+    new JoystickButton(gamepad, Controls.AutoShoot).whenHeld(new AutoShootCommand(shootSubsystem, visionSubsystem));
   }
 
   /**
