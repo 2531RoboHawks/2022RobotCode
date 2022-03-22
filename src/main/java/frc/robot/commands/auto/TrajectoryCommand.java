@@ -14,7 +14,7 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj2.command.MecanumControllerCommand;
 import frc.robot.subsystems.DriveSubsystem;
 
-public class TrajectoryCommand extends MecanumControllerCommand implements ResetsStartupOdometry {
+public class TrajectoryCommand extends MecanumControllerCommand {
   // in meters/sec
   private static final double maxVelocity = 1;
   private static final double maxAcceleration = 1;
@@ -99,7 +99,6 @@ public class TrajectoryCommand extends MecanumControllerCommand implements Reset
     startupResetOdometry();
   }
 
-  @Override
   public void startupResetOdometry() {
     if (shouldResetOdometry) {
       driveSubsystem.resetOdometry(trajectory.getInitialPose());

@@ -81,7 +81,7 @@ public class RobotContainer {
     autoChooser.addOption("Primitive One Ball", new PrimitiveOneBall(driveSubsystem, shootSubsystem));
     autoChooser.addOption("Wall Maria", new WallMaria(driveSubsystem, intakeSubsystem, shootSubsystem));
     autoChooser.addOption("Cooksley Straight", new CooksleyStraight(driveSubsystem, intakeSubsystem, shootSubsystem));
-    autoChooser.setDefaultOption("The Rumbling", new TheRumbling(driveSubsystem, intakeSubsystem, shootSubsystem));
+    autoChooser.setDefaultOption("The Rumbling", new TheRumbling(driveSubsystem, intakeSubsystem, shootSubsystem, visionSubsystem));
     // autoChooser.setDefaultOption(
     //   "Primitive One Ball",
     //   new ShootBallCommand(driveSubsystem, shootSubsystem)
