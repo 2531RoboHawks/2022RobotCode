@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.Controls;
 import frc.robot.Constants.HelmsControls;
 import frc.robot.commands.DriveCommand;
-import frc.robot.commands.IntakeCommand;
+import frc.robot.commands.ResetIntakeCommand;
 import frc.robot.commands.IntakeDownCommand;
 import frc.robot.commands.ManualClimbCommand;
 import frc.robot.commands.ShootCommand;
@@ -59,7 +59,7 @@ public class RobotContainer {
     configureButtonBindings();
 
     driveSubsystem.setDefaultCommand(new DriveCommand(driveSubsystem));
-    intakeSubsystem.setDefaultCommand(new IntakeCommand(intakeSubsystem));
+    intakeSubsystem.setDefaultCommand(new ResetIntakeCommand(intakeSubsystem));
     shootSubsystem.setDefaultCommand(new ShootCommand(shootSubsystem));
 
     SmartDashboard.putData("Manual Climb Command", new ManualClimbCommand(climbSubsystem, intakeSubsystem));
