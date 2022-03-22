@@ -21,6 +21,13 @@ public final class Constants {
     public static final int ClimbGrab = 2;
   }
 
+  public static final class RotatePID {
+    // (in degrees)
+    public static final double kP = 0.013;
+    public static final double kI = 0.025;
+    public static final double kD = 0;
+  }
+
   public static final class Controls {
     public static final int Slow = 2;
     public static final int Turbo = 3;
@@ -29,6 +36,7 @@ public final class Constants {
 
     public static final int ToggleIntakeDown = 1;
 
+    public static final int PrepareToShootBall = 3;
     public static final int AutoAimShoot = Axis.kLeftTrigger.value;
     public static final int AutoShoot = 10;
   }

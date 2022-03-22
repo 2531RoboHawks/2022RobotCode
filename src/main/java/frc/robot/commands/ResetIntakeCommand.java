@@ -13,9 +13,7 @@ public class ResetIntakeCommand extends CommandBase {
 
   @Override
   public void initialize() {
-    intakeSubsystem.setDown(false);
-    intakeSubsystem.setStorageAfterIntakeRunning(false);
-    intakeSubsystem.setSpinning(false);
+    intakeSubsystem.setEverything(false);
   }
 
   @Override

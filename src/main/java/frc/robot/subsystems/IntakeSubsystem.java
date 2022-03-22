@@ -48,6 +48,12 @@ public class IntakeSubsystem extends SubsystemBase {
     }
   }
 
+  public void setEverything(boolean running) {
+    setDown(running);
+    setSpinning(running);
+    setStorageAfterIntakeRunning(running);
+  }
+
   @Override
   public void periodic() {
     // SmartDashboard.putNumber("Actual Intake RPM", intakeWheel.getRPM());

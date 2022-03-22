@@ -13,15 +13,6 @@ public class IntakeDownCommand extends CommandBase {
 
   @Override
   public void initialize() {
-    intakeSubsystem.setStorageAfterIntakeRunning(true);
-    intakeSubsystem.setSpinning(true);
-    intakeSubsystem.setDown(true);
-  }
-
-  @Override
-  public void end(boolean interrupted) {
-    intakeSubsystem.setStorageAfterIntakeRunning(false);
-    intakeSubsystem.setSpinning(false);
-    intakeSubsystem.setDown(false);
+    intakeSubsystem.setEverything(true);
   }
 }

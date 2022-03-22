@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.Controls;
 import frc.robot.Constants.HelmsControls;
@@ -16,6 +17,7 @@ import frc.robot.commands.DriveCommand;
 import frc.robot.commands.ResetIntakeCommand;
 import frc.robot.commands.IntakeDownCommand;
 import frc.robot.commands.ManualClimbCommand;
+import frc.robot.commands.PrepareToShootBallCommand;
 import frc.robot.commands.ShootCommand;
 import frc.robot.commands.SynchronizedClimbCommand;
 import frc.robot.commands.ToggleClimbExtendCommand;
@@ -23,6 +25,8 @@ import frc.robot.commands.ToggleClimbGrabCommand;
 import frc.robot.commands.ToggleIntakeCommand;
 import frc.robot.commands.auto.AutoAimShootCommand;
 import frc.robot.commands.auto.CooksleyStraight;
+import frc.robot.commands.auto.OneBallAuto;
+import frc.robot.commands.auto.TwoBallAuto;
 import frc.robot.commands.auto.Taxi;
 import frc.robot.commands.auto.TheRumbling;
 import frc.robot.commands.auto.TrajectoryCommand;
@@ -75,10 +79,24 @@ public class RobotContainer {
         Waypoint.DOWN
       ).resetOdometry()
     );
-    autoChooser.addOption("Taxi", new Taxi(driveSubsystem));
+    autoChooser.addOption(
+      "Taxi",
+      new Taxi(driveSubsystem)
+    );
+    autoChooser.addOption(
+      "One Ball",
+      new SequentialCommandGroup(
+        new OneBallAuto(shootSubsystem, intakeSubsystem, visionSubsystem),
+        new Taxi(driveSubsystem)
+      )
+    );
+    autoChooser.setDefaultOption(
+      "Two Ball",
+      new TwoBallAuto(driveSubsystem, shootSubsystem, intakeSubsystem, visionSubsystem)
+    );
     autoChooser.addOption("Wall Maria", new WallMaria(driveSubsystem, intakeSubsystem, shootSubsystem));
     autoChooser.addOption("Cooksley Straight", new CooksleyStraight(driveSubsystem, intakeSubsystem, shootSubsystem));
-    autoChooser.setDefaultOption("The Rumbling", new TheRumbling(driveSubsystem, intakeSubsystem, shootSubsystem, visionSubsystem));
+    autoChooser.addOption("The Rumbling", new TheRumbling(driveSubsystem, intakeSubsystem, shootSubsystem, visionSubsystem));
     // autoChooser.setDefaultOption(
     //   "Primitive One Ball",
     //   new ShootBallCommand(driveSubsystem, shootSubsystem)
@@ -133,6 +151,7 @@ public class RobotContainer {
     new JoystickButton(helms, HelmsControls.ToggleClimbGrab).whenPressed(new ToggleClimbGrabCommand(climbSubsystem));
     new JoystickButton(gamepad, Controls.ToggleIntakeDown).toggleWhenActive(new IntakeDownCommand(intakeSubsystem));
     new JoystickAxis(gamepad, Controls.AutoAimShoot).whenAboveThreshold(0.5, new AutoAimShootCommand(visionSubsystem, driveSubsystem, shootSubsystem, intakeSubsystem));
+    new JoystickButton(gamepad, Controls.PrepareToShootBall).whenPressed(new PrepareToShootBallCommand(shootSubsystem).withTimeout(0.1));
   }
 
   /**

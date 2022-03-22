@@ -32,7 +32,6 @@ public class AutoShootCommand extends CommandBase {
 
   private double calculateRPMForDistance(double inches) {
     return inches * 12 + 3440;
-    // return SmartDashboard.getNumber("Revwheel Target RPM", 0);
   }
 
   @Override
@@ -50,8 +49,8 @@ public class AutoShootCommand extends CommandBase {
       shootSubsystem.setRevwheelRPM(rpm);
 
       double startShootingAt = 2;
-      double shootDuration = 1;
-      if (timer.hasElapsed(startShootingAt + shootDuration)) {
+      double stopShootingAt = startShootingAt + 0.25;
+      if (timer.hasElapsed(stopShootingAt)) {
         cancel();
       } else if (timer.hasElapsed(startShootingAt)) {
         shootSubsystem.setStorageBeforeShootRunning(true);

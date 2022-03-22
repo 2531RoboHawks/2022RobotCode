@@ -15,5 +15,6 @@ public class AutoAimShootCommand extends SequentialCommandGroup {
   public AutoAimShootCommand(VisionSubsystem visionSubsystem, DriveSubsystem driveSubsystem, ShootSubsystem shootSubsystem, IntakeSubsystem intakeSubsystem) {
     addCommands(new LimelightTrackCommand(visionSubsystem, driveSubsystem).withTimeout(2.5));
     addCommands(new AutoShootCommand(shootSubsystem, visionSubsystem, intakeSubsystem));
+    addCommands(new AutoShootCommand(shootSubsystem, visionSubsystem, intakeSubsystem));
   }
 }
