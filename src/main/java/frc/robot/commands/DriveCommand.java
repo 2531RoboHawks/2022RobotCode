@@ -40,24 +40,24 @@ public class DriveCommand extends CommandBase {
     boolean slow = RobotContainer.gamepad.getRawButton(Controls.Slow);
     boolean turbo = RobotContainer.gamepad.getRawButton(Controls.Turbo);
     if (slow) {
-      xMultiplier = 1;
-      yMultiplier = 1;
-      rotationMultiplier = 1;
+      xMultiplier = .25;
+      yMultiplier = .25;
+      rotationMultiplier = .25;
     } else if (turbo) {
-      xMultiplier = 5;
-      yMultiplier = 5;
-      rotationMultiplier = 3;
+      xMultiplier = .75;
+      yMultiplier = .75;
+      rotationMultiplier = .75;
     } else {
-      xMultiplier = 3;
-      yMultiplier = 3;
-      rotationMultiplier = 2;
+      xMultiplier = .5;
+      yMultiplier = .5;
+      rotationMultiplier = .5;
     }
 
     double x = RobotContainer.gamepad.getLeftX();
     double y = -RobotContainer.gamepad.getLeftY();
     double z = RobotContainer.gamepad.getRawAxis(4);
 
-    driveSubsystem.driveWheelSpeeds(driveSubsystem.calculateMecanumDrive(
+    driveSubsystem.drivePercent(driveSubsystem.calculateMecanumDrive(
       scale(y) * yMultiplier,
       scale(x) * xMultiplier,
       scale(z) * rotationMultiplier

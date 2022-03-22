@@ -63,17 +63,23 @@ public class ClimbSubsystem extends SubsystemBase {
     System.out.println("Climb arms extended: " + extended);
     extendArmsSolenoid.set(extended);
   }
+  public boolean areArmsExtended() {
+    return extendArmsSolenoid.get();
+  }
   public void toggleArmsExtended() {
     // don't use .toggle() here so that we get log messages from setArmsExtended
-    setArmsExtended(!extendArmsSolenoid.get());
+    setArmsExtended(!areArmsExtended());
   }
 
   public void setGrabbing(boolean grabbing) {
     System.out.println("Climb grabbing: " + grabbing);
     grabSolenoid.set(grabbing);
   }
+  public boolean isGrabbing() {
+    return grabSolenoid.get();
+  }
   public void toggleGrabbing() {
-    setGrabbing(!grabSolenoid.get());
+    setGrabbing(!isGrabbing());
   }
 
   @Override
