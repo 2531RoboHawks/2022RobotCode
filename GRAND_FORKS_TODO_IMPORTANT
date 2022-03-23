@@ -1,6 +1,5 @@
  - Prepare ball for shoot needs lower power, should use limit switch
  - Manual overrides for EVERYTHING
- - Check climbing still works, make grab automatic for common cases
  - Lower delays everywhere
  - Tune auto aim & shoot
  - Intake requirements hell

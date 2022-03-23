@@ -7,7 +7,13 @@ public class ToggleClimbExtendCommand extends InstantCommand {
   public ToggleClimbExtendCommand(ClimbSubsystem climbSubsystem) {
     // do not use requirements to not interrupt other climbing commands
     super(() -> {
-      climbSubsystem.toggleArmsExtended();
+      if (climbSubsystem.areArmsExtended()) {
+        climbSubsystem.setArmsExtended(false);
+        climbSubsystem.setGrabbing(false);
+      } else {
+        climbSubsystem.setArmsExtended(true);
+        climbSubsystem.setGrabbing(true);
+      }
     });
   }
 }
