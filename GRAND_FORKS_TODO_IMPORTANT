@@ -1,7 +1,7 @@
- - Put rumbling back to trajectory, will fix numbers in practice
  - Give up on the Straight
  - Prepare ball for shoot needs lower power, should use limit switch
  - Manual overrides for EVERYTHING
- - Check climbing still works, make grips automatic for common cases
+ - Check climbing still works, make grab automatic for common cases
  - Lower delays everywhere
  - Tune auto aim & shoot
+ - Intake requirements hell

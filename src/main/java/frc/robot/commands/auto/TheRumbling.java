@@ -1,7 +1,5 @@
 package frc.robot.commands.auto;
 
-import edu.wpi.first.math.geometry.Transform2d;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
@@ -11,26 +9,39 @@ import frc.robot.subsystems.ShootSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 
 public class TheRumbling extends SequentialCommandGroup {
-  private static final Waypoint START = new Waypoint(0, 0, 0);
-  private static final Waypoint FIRST_BALL = new Waypoint(Units.inchesToMeters(42), 0, 0);
-  private static final Waypoint SECOND_BALL = new Waypoint(Units.inchesToMeters(12), -Units.inchesToMeters(60), -90);
-  private static final Waypoint TERMINAL = new Waypoint(Units.inchesToMeters(60), -Units.inchesToMeters(60), 0);
+  private IntakeSubsystem intakeSubsystem;
+
+  private static final Waypoint START = new Waypoint(7.71, 2.75, -90.00);
+  private static final Waypoint FIRST_BALL = new Waypoint(7.71, 0.5, -90.00);
+  private static final Waypoint SECOND_BALL = new Waypoint(5.0, 1.98, -90.00);
+  private static final Waypoint TERMINAL = new Waypoint(1.56, 1.60, -90.00);
   private static final Waypoint FINAL_SHOT = SECOND_BALL;
 
   public TheRumbling(DriveSubsystem driveSubsystem, IntakeSubsystem intakeSubsystem, ShootSubsystem shootSubsystem, VisionSubsystem visionSubsystem) {
+    this.intakeSubsystem = intakeSubsystem;
+    addRequirements(driveSubsystem, intakeSubsystem, shootSubsystem);
     addCommands(new ResetOdometryCommand(driveSubsystem, START));
-    // addCommands(new ShootOneBall(shootSubsystem, intakeSubsystem, visionSubsystem));
+    addCommands(new AutoShootCommand(shootSubsystem, visionSubsystem, intakeSubsystem));
     addCommands(new InstantCommand(() -> {
-      intakeSubsystem.setEverything(true);
-    }, intakeSubsystem));
-    addCommands(new DriveToWaypoint(driveSubsystem, FIRST_BALL));
-    addCommands(new WaitCommand(1)); // TODO Shoot here
-    addCommands(new DriveToWaypoint(driveSubsystem, FIRST_BALL.withRotationFrom(SECOND_BALL)));
-    addCommands(new WaitCommand(1)); // TODO Shoot here
-    addCommands(new DriveToWaypoint(driveSubsystem, SECOND_BALL.getPoseWithoutRotation()).resetOdometry());
-    // addCommands(new WaitCommand(1)); // TODO: shoot
-    // addCommands(new DriveToWaypoint(driveSubsystem, TERMINAL));
-    // addCommands(new DriveToWaypoint(driveSubsystem, FINAL_SHOT));
-    // addCommands(new WaitCommand(1)); // TODO: shoot
+      intakeSubsystem.setDown(true);
+      intakeSubsystem.setSpinning(true);
+    }));
+    addCommands(TrajectoryCommand.fromWaypoints(driveSubsystem, START, FIRST_BALL));
+    addCommands(new WaitCommand(1));
+    addCommands(TrajectoryCommand.fromWaypoints(driveSubsystem, FIRST_BALL, SECOND_BALL));
+    // TODO: shoot two balls from here
+    addCommands(new WaitCommand(1));
+    addCommands(TrajectoryCommand.fromWaypoints(driveSubsystem, SECOND_BALL, TERMINAL));
+    addCommands(new WaitCommand(1));
+    addCommands(TrajectoryCommand.fromWaypoints(driveSubsystem, TERMINAL, FINAL_SHOT));
+    // TODO: shoot two balls from here
+    addCommands(new WaitCommand(1));
+  }
+
+  @Override
+  public void end(boolean interrupted) {
+    super.end(interrupted);
+    intakeSubsystem.setSpinning(false);
+    intakeSubsystem.setDown(false);
   }
 }
