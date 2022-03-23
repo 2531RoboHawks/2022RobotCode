@@ -14,12 +14,13 @@ public class ManualClimbCommand extends CommandBase {
   public ManualClimbCommand(ClimbSubsystem climbSubsystem, IntakeSubsystem intakeSubsystem) {
     this.climbSubsystem = climbSubsystem;
     this.intakeSubsystem = intakeSubsystem;
+    // intake subsystem is used as a requirement to interrupt intake down command
     addRequirements(climbSubsystem, intakeSubsystem);
   }
 
   @Override
   public void initialize() {
-    intakeSubsystem.stop();
+
   }
 
   @Override

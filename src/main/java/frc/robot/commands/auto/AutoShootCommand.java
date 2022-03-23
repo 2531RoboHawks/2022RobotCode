@@ -5,20 +5,26 @@
 package frc.robot.commands.auto;
 
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShootSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 
 public class AutoShootCommand extends CommandBase {
   private VisionSubsystem visionSubsystem;
   private ShootSubsystem shootSubsystem;
+  private IntakeSubsystem intakeSubsystem;
   private Timer timer = new Timer();
+  private Timer finalTimer = new Timer();
 
-  public AutoShootCommand(ShootSubsystem shootSubsystem, VisionSubsystem visionSubsystem) {
-    addRequirements(shootSubsystem);
+  private static final double startShootingAfter = 1.5;
+  private static final double stopShootingAfter = 1;
+
+  public AutoShootCommand(ShootSubsystem shootSubsystem, VisionSubsystem visionSubsystem, IntakeSubsystem intakeSubsystem) {
+    addRequirements(shootSubsystem, intakeSubsystem);
     this.visionSubsystem = visionSubsystem;
     this.shootSubsystem = shootSubsystem;
+    this.intakeSubsystem = intakeSubsystem;
   }
 
   @Override
@@ -26,11 +32,12 @@ public class AutoShootCommand extends CommandBase {
     visionSubsystem.ensureEnabled();
     timer.reset();
     timer.stop();
+    finalTimer.reset();
+    finalTimer.stop();
   }
 
   private double calculateRPMForDistance(double inches) {
     return inches * 12 + 3440;
-    // return SmartDashboard.getNumber("Revwheel Target RPM", 0);
   }
 
   @Override
@@ -47,29 +54,27 @@ public class AutoShootCommand extends CommandBase {
       double rpm = calculateRPMForDistance(distance);
       shootSubsystem.setRevwheelRPM(rpm);
 
-      double startShootingAt = 2;
-      double shootDuration = 1;
-      if (timer.hasElapsed(startShootingAt + shootDuration)) {
-        cancel();
-      } else if (timer.hasElapsed(startShootingAt)) {
+      if (timer.hasElapsed(startShootingAfter)) {
+        finalTimer.start();
         shootSubsystem.setStorageBeforeShootRunning(true);
+        intakeSubsystem.setStorageAfterIntakeRunning(true);
       }
     } else {
       timer.reset();
       shootSubsystem.setStorageBeforeShootRunning(false);
+      intakeSubsystem.setStorageAfterIntakeRunning(false);
     }
   }
 
-  // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     shootSubsystem.stopEverything();
+    intakeSubsystem.setStorageAfterIntakeRunning(false);
     visionSubsystem.noLongerNeeded();
   }
 
-  // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return finalTimer.hasElapsed(stopShootingAfter);
   }
 }

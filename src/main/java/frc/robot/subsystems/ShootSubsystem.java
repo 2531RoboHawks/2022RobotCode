@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.BetterSparkMaxBrushless;
@@ -15,8 +16,10 @@ public class ShootSubsystem extends SubsystemBase {
   private BetterSparkMaxBrushless storageBeforeShoot = new BetterSparkMaxBrushless(17)
     .configureInverted(true);
 
-  public ShootSubsystem() {
+  private DigitalInput limitSwitch = new DigitalInput(0);
 
+  public ShootSubsystem() {
+    stopEverything();
   }
 
   public void setRevwheelRPM(double rpm) {
@@ -26,8 +29,9 @@ public class ShootSubsystem extends SubsystemBase {
   }
 
   public void setStorageBeforeShootRunning(boolean running) {
+    System.out.println("Storage before shoot: " + running);
     if (running) {
-      storageBeforeShoot.setPower(0.25);
+      storageBeforeShoot.setPower(0.4);
     } else {
       storageBeforeShoot.stop();
     }
@@ -38,11 +42,13 @@ public class ShootSubsystem extends SubsystemBase {
   }
   public void stopEverything() {
     idleRevwheel();
+    setStorageBeforeShootRunning(false);
   }
 
   @Override
   public void periodic() {
     SmartDashboard.putNumber("Actual Revwheel RPM", revwheel.getRPM());
+    SmartDashboard.putBoolean("Limit Switch", limitSwitch.get());
     // SmartDashboard.putNumber("Revwheel Voltage", revwheel.getWPI().getBusVoltage());
     // SmartDashboard.putNumber("Revwheel Current", revwheel.getWPI().getSupplyCurrent());
   }

@@ -67,7 +67,7 @@ public class BetterTalonFX {
       throw new IllegalStateException("feedforward not configured");
     }
     if (feedforwardPID == null) {
-      throw new IllegalStateException("PID not configured");
+      throw new IllegalStateException("feedforward PID not configured");
     }
     setVoltage(feedforward.calculate(unitsPerSecond) + feedforwardPID.calculate(getLinearVelocity(), unitsPerSecond));
   }

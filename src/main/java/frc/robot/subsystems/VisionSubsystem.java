@@ -77,7 +77,7 @@ public class VisionSubsystem extends SubsystemBase {
     if (newMode != ledMode.getNumber(0).intValue()) {
       System.out.println("Limelight enabled: " + enabled);
       if (enabled) {
-        lightsWillBeReadyAtMillis = System.currentTimeMillis() + 500;
+        lightsWillBeReadyAtMillis = System.currentTimeMillis() + 250;
       } else {
         lightsWillBeReadyAtMillis = NEVER;
       }

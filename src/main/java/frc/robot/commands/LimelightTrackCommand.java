@@ -6,13 +6,14 @@ package frc.robot.commands;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants.RotatePID;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 
 public class LimelightTrackCommand extends CommandBase {
   private DriveSubsystem driveSubsystem;
   private VisionSubsystem visionSubsystem;
-  private PIDController pidController = new PIDController(0.015, 0.02, 0);
+  private PIDController pidController = new PIDController(RotatePID.kP, RotatePID.kI, RotatePID.kD);
 
   /** Creates a new LimelightTrackCommand. */
   public LimelightTrackCommand(VisionSubsystem visionSubsystem, DriveSubsystem driveSubsystem) {
@@ -20,12 +21,14 @@ public class LimelightTrackCommand extends CommandBase {
     this.driveSubsystem = driveSubsystem;
     addRequirements(this.visionSubsystem);
     addRequirements(this.driveSubsystem);
+    pidController.setTolerance(0.5);
+    pidController.setSetpoint(0);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    pidController.setSetpoint(0);
+    pidController.reset();
     visionSubsystem.ensureEnabled();
   }
 

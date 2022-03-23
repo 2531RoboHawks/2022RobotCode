@@ -8,10 +8,14 @@ public class ResetOdometryCommand extends InstantCommand {
   public ResetOdometryCommand(DriveSubsystem driveSubsystem, Pose2d initialPose) {
     super(() -> {
       driveSubsystem.resetOdometry(initialPose);
-    });
+    }, driveSubsystem);
   }
 
   public ResetOdometryCommand(DriveSubsystem driveSubsystem, Waypoint waypoint) {
     this(driveSubsystem, waypoint.getPose());
+  }
+
+  public ResetOdometryCommand(DriveSubsystem driveSubsystem) {
+    this(driveSubsystem, new Pose2d());
   }
 }

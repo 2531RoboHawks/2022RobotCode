@@ -204,13 +204,15 @@ public class DriveSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    odometry.update(getRotation2d(), getWheelSpeeds());
+    Rotation2d rotation = getRotation2d();
+    MecanumDriveWheelSpeeds wheelSpeeds = getWheelSpeeds();
+    odometry.update(rotation, wheelSpeeds);
 
     fieldImage.setRobotPose(getPose());
 
     SmartDashboard.putNumber("Pose X", getPose().getX());
     SmartDashboard.putNumber("Pose Y", getPose().getY());
-    SmartDashboard.putNumber("Gyro", getAngle());
+    SmartDashboard.putNumber("Gyro", rotation.getDegrees());
 
     // SmartDashboard.putNumber("FL Current", frontLeft.getWPI().getSupplyCurrent());
     // SmartDashboard.putNumber("FR Current", frontRight.getWPI().getSupplyCurrent());

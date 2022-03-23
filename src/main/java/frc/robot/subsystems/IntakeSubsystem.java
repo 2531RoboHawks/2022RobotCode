@@ -10,7 +10,6 @@ import frc.robot.PIDSettings;
 import frc.robot.Constants.Solenoids;
 
 public class IntakeSubsystem extends SubsystemBase {
-  private boolean canRunIntake = false;
   private BetterSparkMaxBrushless intakeWheel = new BetterSparkMaxBrushless(20);
   private BetterTalonFX storageAfterIntake = new BetterTalonFX(28);
   private Solenoid solenoid = new Solenoid(PneumaticsModuleType.CTREPCM, Solenoids.Intake);
@@ -20,30 +19,19 @@ public class IntakeSubsystem extends SubsystemBase {
     setDown(false);
   }
 
-  public void disable() {
-    canRunIntake = false;
-    setDown(false);
-  }
-
-  public void enable() {
-    canRunIntake = true;
-  }
-
-  private void setPower(double power) {
+  public void setSpinning(boolean spinning) {
+    double power = spinning ? 0.4 : 0;
     System.out.println("Intake power: " + power);
     intakeWheel.setPower(power);
+  }
+  public void stopSpinning() {
+    intakeWheel.stop();
   }
 
   public void setDown(boolean down) {
     System.out.println("Intake down: " + down);
     solenoid.set(down);
     SmartDashboard.putBoolean("Intake Down", down);
-    if (down && canRunIntake) {
-      setPower(0.4);
-      setStorageAfterIntakeRunning(true);
-    } else {
-      stop();
-    }
   }
   public boolean isDown() {
     return solenoid.get();
@@ -53,6 +41,7 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   public void setStorageAfterIntakeRunning(boolean running) {
+    System.out.println("Storage after intake: " + running);
     if (running) {
       storageAfterIntake.setPower(0.25);
     } else {
@@ -60,9 +49,10 @@ public class IntakeSubsystem extends SubsystemBase {
     }
   }
 
-  public void stop() {
-    intakeWheel.stop();
-    setStorageAfterIntakeRunning(false);
+  public void setEverything(boolean running) {
+    setDown(running);
+    setSpinning(running);
+    setStorageAfterIntakeRunning(running);
   }
 
   @Override

@@ -9,13 +9,15 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.Controls;
 import frc.robot.Constants.HelmsControls;
 import frc.robot.commands.DriveCommand;
-import frc.robot.commands.IntakeCommand;
-import frc.robot.commands.LimelightTrackCommand;
+import frc.robot.commands.ResetIntakeCommand;
+import frc.robot.commands.IntakeDownCommand;
 import frc.robot.commands.ManualClimbCommand;
+import frc.robot.commands.PrepareToShootBallCommand;
 import frc.robot.commands.ShootCommand;
 import frc.robot.commands.SynchronizedClimbCommand;
 import frc.robot.commands.ToggleClimbExtendCommand;
@@ -23,8 +25,8 @@ import frc.robot.commands.ToggleClimbGrabCommand;
 import frc.robot.commands.ToggleIntakeCommand;
 import frc.robot.commands.auto.AutoAimShootCommand;
 import frc.robot.commands.auto.CooksleyStraight;
-import frc.robot.commands.auto.AutoShootCommand;
-import frc.robot.commands.auto.PrimitiveOneBall;
+import frc.robot.commands.auto.ShootOneBall;
+import frc.robot.commands.auto.TwoBallAuto;
 import frc.robot.commands.auto.Taxi;
 import frc.robot.commands.auto.TheRumbling;
 import frc.robot.commands.auto.TrajectoryCommand;
@@ -61,14 +63,13 @@ public class RobotContainer {
     configureButtonBindings();
 
     driveSubsystem.setDefaultCommand(new DriveCommand(driveSubsystem));
-    intakeSubsystem.setDefaultCommand(new IntakeCommand(intakeSubsystem));
+    intakeSubsystem.setDefaultCommand(new ResetIntakeCommand(intakeSubsystem));
     shootSubsystem.setDefaultCommand(new ShootCommand(shootSubsystem));
 
     SmartDashboard.putData("Manual Climb Command", new ManualClimbCommand(climbSubsystem, intakeSubsystem));
 
     autoChooser.addOption("None", null);
-
-    autoChooser.setDefaultOption(
+    autoChooser.addOption(
       // TODO: remove; was for testing only
       "8 Ball Auto",
       TrajectoryCommand.fromWaypoints(
@@ -78,48 +79,24 @@ public class RobotContainer {
         Waypoint.DOWN
       ).resetOdometry()
     );
-    autoChooser.addOption("Taxi", new Taxi(driveSubsystem));
-    autoChooser.addOption("Primitive One Ball", new PrimitiveOneBall(driveSubsystem, shootSubsystem));
+    autoChooser.addOption(
+      "Taxi",
+      new Taxi(driveSubsystem)
+    );
+    autoChooser.addOption(
+      "One Ball",
+      new SequentialCommandGroup(
+        new ShootOneBall(shootSubsystem, intakeSubsystem, visionSubsystem),
+        new Taxi(driveSubsystem)
+      )
+    );
+    autoChooser.setDefaultOption(
+      "Two Ball",
+      new TwoBallAuto(driveSubsystem, shootSubsystem, intakeSubsystem, visionSubsystem)
+    );
     autoChooser.addOption("Wall Maria", new WallMaria(driveSubsystem, intakeSubsystem, shootSubsystem));
-    autoChooser.addOption("Cooksley Straight", new CooksleyStraight(driveSubsystem, intakeSubsystem, shootSubsystem));
-    autoChooser.setDefaultOption("The Rumbling", new TheRumbling(driveSubsystem, intakeSubsystem, shootSubsystem, visionSubsystem));
-    // autoChooser.setDefaultOption(
-    //   "Primitive One Ball",
-    //   new ShootBallCommand(driveSubsystem, shootSubsystem)
-    //     .andThen(new AutoDriveCommand(driveSubsystem, 5, -0.2, 0, 0))
-    // );
-    // autoChooser.addOption(
-    //   "One Ball",
-    //   new MoveSetDistanceFromTarget(driveSubsystem, visionSubsystem, 65)
-    //     .andThen(new ShootBallCommand(driveSubsystem, shootSubsystem))
-    //     .andThen(new AutoDriveCommand(driveSubsystem, 5, -0.2, 0, 0))
-    // );
-    // autoChooser.setDefaultOption(
-    //   "One Ball Delayed",
-    //   new WaitCommand(5)
-    //     .andThen(new MoveSetDistanceFromTarget(driveSubsystem, visionSubsystem, 65))
-    //     .andThen(new ShootBallCommand(driveSubsystem, shootSubsystem))
-    //     .andThen(new AutoDriveCommand(driveSubsystem, 5, -0.2, 0, 0))
-    // );
-    // autoChooser.addOption(
-    //   "Two Ball",
-    //   new MoveSetDistanceFromTarget(driveSubsystem, visionSubsystem, 65)
-    //     .withTimeout(1)
-    //     .andThen(new ShootBallCommand(driveSubsystem, shootSubsystem))
-    //     .andThen(new AutoTurnArounCommand(driveSubsystem))
-    //     .andThen(new InstantCommand(() -> {
-    //       intakeSubsystem.setDown(true);
-    //       shootSubsystem.setTraversePercent(0.6);
-    //     }, intakeSubsystem, shootSubsystem))
-    //     .andThen(new AutoDriveCommand(driveSubsystem, 3, 0.2, 0, 0))
-    //     .andThen(new InstantCommand(() -> {
-    //       intakeSubsystem.setDown(false);
-    //     }, intakeSubsystem))
-    //     .andThen(new AutoTurnArounCommand(driveSubsystem))
-    //     .andThen(new LimelightTrackCommand(visionSubsystem, driveSubsystem).withTimeout(1))
-    //     .andThen(new MoveSetDistanceFromTarget(driveSubsystem, visionSubsystem, 65).withTimeout(2.5))
-    //     .andThen(new ShootBallCommand(driveSubsystem, shootSubsystem))
-    // );
+    autoChooser.addOption("Cooksley Straight", new CooksleyStraight(driveSubsystem, intakeSubsystem, shootSubsystem, visionSubsystem));
+    autoChooser.addOption("The Rumbling", new TheRumbling(driveSubsystem, intakeSubsystem, shootSubsystem, visionSubsystem));
     SmartDashboard.putData(autoChooser);
   }
 
@@ -135,7 +112,9 @@ public class RobotContainer {
     new JoystickButton(helms, HelmsControls.ToggleIntakeDown).whenPressed(new ToggleIntakeCommand(intakeSubsystem));
     new JoystickButton(helms, HelmsControls.ToggleClimbExtended).whenPressed(new ToggleClimbExtendCommand(climbSubsystem));
     new JoystickButton(helms, HelmsControls.ToggleClimbGrab).whenPressed(new ToggleClimbGrabCommand(climbSubsystem));
-    new JoystickButton(gamepad, Controls.LimelightTrack).whenHeld(new AutoAimShootCommand(visionSubsystem, driveSubsystem, shootSubsystem));
+    new JoystickButton(gamepad, Controls.ToggleIntakeDown).toggleWhenActive(new IntakeDownCommand(intakeSubsystem));
+    new JoystickAxis(gamepad, Controls.AutoAimShoot).whenAboveThreshold(0.5, new AutoAimShootCommand(visionSubsystem, driveSubsystem, shootSubsystem, intakeSubsystem));
+    new JoystickButton(gamepad, Controls.PrepareToShootBall).whenPressed(new PrepareToShootBallCommand(shootSubsystem).withTimeout(0.1));
   }
 
   /**
