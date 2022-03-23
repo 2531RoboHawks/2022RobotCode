@@ -27,7 +27,9 @@ public class DriveToWaypoint extends CommandBase {
     forwardController.setSetpoint(desiredPose.getX());
     sidewaysController.setSetpoint(desiredPose.getY());
     rotationController.setSetpoint(desiredPose.getRotation().getDegrees());
-    rotationController.setTolerance(0.5);
+    rotationController.setTolerance(1);
+    forwardController.setTolerance(0.1);
+    sidewaysController.setTolerance(0.1);
   }
 
   public DriveToWaypoint(DriveSubsystem driveSubsystem, double forward, double sideways, double rotationDegrees) {
@@ -56,12 +58,12 @@ public class DriveToWaypoint extends CommandBase {
     double sideways = MathUtil.clamp(sidewaysController.calculate(currentPose.getY()), -maxVelocity, maxVelocity);
     double rotation = MathUtil.clamp(rotationController.calculate(currentPose.getRotation().getDegrees()), -maxRotation, maxRotation);
 
-    driveSubsystem.drivePercent(forwards, sideways, rotation);
+    driveSubsystem.drivePercent(forwards, -sideways, -rotation);
   }
 
   @Override
   public boolean isFinished() {
-    return sidewaysController.atSetpoint() && forwardController.atSetpoint() && rotationController.atSetpoint();
+    return forwardController.atSetpoint() && sidewaysController.atSetpoint() && rotationController.atSetpoint();
   }
 
   @Override

@@ -30,4 +30,12 @@ public class Waypoint {
   public Pose2d getPoseWithoutRotation() {
     return new Pose2d(pose.getX(), pose.getY(), Rotation2d.fromDegrees(0));
   }
+
+  public Waypoint transform(double dx, double dy, double degrees) {
+    return new Waypoint(getPose().getX() + dx, getPose().getY() + dy, degrees);
+  }
+
+  public Waypoint withRotationFrom(Waypoint other) {
+    return new Waypoint(pose.getX(), pose.getY(), other.getPose().getRotation().getDegrees());
+  }
 }

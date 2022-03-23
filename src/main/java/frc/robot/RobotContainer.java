@@ -25,7 +25,7 @@ import frc.robot.commands.ToggleClimbGrabCommand;
 import frc.robot.commands.ToggleIntakeCommand;
 import frc.robot.commands.auto.AutoAimShootCommand;
 import frc.robot.commands.auto.CooksleyStraight;
-import frc.robot.commands.auto.OneBallAuto;
+import frc.robot.commands.auto.ShootOneBall;
 import frc.robot.commands.auto.TwoBallAuto;
 import frc.robot.commands.auto.Taxi;
 import frc.robot.commands.auto.TheRumbling;
@@ -86,7 +86,7 @@ public class RobotContainer {
     autoChooser.addOption(
       "One Ball",
       new SequentialCommandGroup(
-        new OneBallAuto(shootSubsystem, intakeSubsystem, visionSubsystem),
+        new ShootOneBall(shootSubsystem, intakeSubsystem, visionSubsystem),
         new Taxi(driveSubsystem)
       )
     );
@@ -95,45 +95,8 @@ public class RobotContainer {
       new TwoBallAuto(driveSubsystem, shootSubsystem, intakeSubsystem, visionSubsystem)
     );
     autoChooser.addOption("Wall Maria", new WallMaria(driveSubsystem, intakeSubsystem, shootSubsystem));
-    // autoChooser.addOption("Cooksley Straight", new CooksleyStraight(driveSubsystem, intakeSubsystem, shootSubsystem));
+    autoChooser.addOption("Cooksley Straight", new CooksleyStraight(driveSubsystem, intakeSubsystem, shootSubsystem, visionSubsystem));
     autoChooser.addOption("The Rumbling", new TheRumbling(driveSubsystem, intakeSubsystem, shootSubsystem, visionSubsystem));
-    // autoChooser.setDefaultOption(
-    //   "Primitive One Ball",
-    //   new ShootBallCommand(driveSubsystem, shootSubsystem)
-    //     .andThen(new AutoDriveCommand(driveSubsystem, 5, -0.2, 0, 0))
-    // );
-    // autoChooser.addOption(
-    //   "One Ball",
-    //   new MoveSetDistanceFromTarget(driveSubsystem, visionSubsystem, 65)
-    //     .andThen(new ShootBallCommand(driveSubsystem, shootSubsystem))
-    //     .andThen(new AutoDriveCommand(driveSubsystem, 5, -0.2, 0, 0))
-    // );
-    // autoChooser.setDefaultOption(
-    //   "One Ball Delayed",
-    //   new WaitCommand(5)
-    //     .andThen(new MoveSetDistanceFromTarget(driveSubsystem, visionSubsystem, 65))
-    //     .andThen(new ShootBallCommand(driveSubsystem, shootSubsystem))
-    //     .andThen(new AutoDriveCommand(driveSubsystem, 5, -0.2, 0, 0))
-    // );
-    // autoChooser.addOption(
-    //   "Two Ball",
-    //   new MoveSetDistanceFromTarget(driveSubsystem, visionSubsystem, 65)
-    //     .withTimeout(1)
-    //     .andThen(new ShootBallCommand(driveSubsystem, shootSubsystem))
-    //     .andThen(new AutoTurnArounCommand(driveSubsystem))
-    //     .andThen(new InstantCommand(() -> {
-    //       intakeSubsystem.setDown(true);
-    //       shootSubsystem.setTraversePercent(0.6);
-    //     }, intakeSubsystem, shootSubsystem))
-    //     .andThen(new AutoDriveCommand(driveSubsystem, 3, 0.2, 0, 0))
-    //     .andThen(new InstantCommand(() -> {
-    //       intakeSubsystem.setDown(false);
-    //     }, intakeSubsystem))
-    //     .andThen(new AutoTurnArounCommand(driveSubsystem))
-    //     .andThen(new LimelightTrackCommand(visionSubsystem, driveSubsystem).withTimeout(1))
-    //     .andThen(new MoveSetDistanceFromTarget(driveSubsystem, visionSubsystem, 65).withTimeout(2.5))
-    //     .andThen(new ShootBallCommand(driveSubsystem, shootSubsystem))
-    // );
     SmartDashboard.putData(autoChooser);
   }
 

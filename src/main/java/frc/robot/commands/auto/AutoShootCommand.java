@@ -15,6 +15,10 @@ public class AutoShootCommand extends CommandBase {
   private ShootSubsystem shootSubsystem;
   private IntakeSubsystem intakeSubsystem;
   private Timer timer = new Timer();
+  private Timer finalTimer = new Timer();
+
+  private static final double startShootingAfter = 1.5;
+  private static final double stopShootingAfter = 1;
 
   public AutoShootCommand(ShootSubsystem shootSubsystem, VisionSubsystem visionSubsystem, IntakeSubsystem intakeSubsystem) {
     addRequirements(shootSubsystem, intakeSubsystem);
@@ -28,6 +32,8 @@ public class AutoShootCommand extends CommandBase {
     visionSubsystem.ensureEnabled();
     timer.reset();
     timer.stop();
+    finalTimer.reset();
+    finalTimer.stop();
   }
 
   private double calculateRPMForDistance(double inches) {
@@ -48,11 +54,8 @@ public class AutoShootCommand extends CommandBase {
       double rpm = calculateRPMForDistance(distance);
       shootSubsystem.setRevwheelRPM(rpm);
 
-      double startShootingAt = 2;
-      double stopShootingAt = startShootingAt + 0.25;
-      if (timer.hasElapsed(stopShootingAt)) {
-        cancel();
-      } else if (timer.hasElapsed(startShootingAt)) {
+      if (timer.hasElapsed(startShootingAfter)) {
+        finalTimer.start();
         shootSubsystem.setStorageBeforeShootRunning(true);
         intakeSubsystem.setStorageAfterIntakeRunning(true);
       }
@@ -63,7 +66,6 @@ public class AutoShootCommand extends CommandBase {
     }
   }
 
-  // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     shootSubsystem.stopEverything();
@@ -71,9 +73,8 @@ public class AutoShootCommand extends CommandBase {
     visionSubsystem.noLongerNeeded();
   }
 
-  // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return finalTimer.hasElapsed(stopShootingAfter);
   }
 }
