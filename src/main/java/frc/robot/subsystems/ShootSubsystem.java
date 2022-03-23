@@ -31,7 +31,7 @@ public class ShootSubsystem extends SubsystemBase {
   public void setStorageBeforeShootRunning(boolean running) {
     System.out.println("Storage before shoot: " + running);
     if (running) {
-      storageBeforeShoot.setPower(0.4);
+      storageBeforeShoot.setPower(0.25);
     } else {
       storageBeforeShoot.stop();
     }
@@ -43,6 +43,10 @@ public class ShootSubsystem extends SubsystemBase {
   public void stopEverything() {
     idleRevwheel();
     setStorageBeforeShootRunning(false);
+  }
+
+  public boolean isBallInStorage() {
+    return limitSwitch.get();
   }
 
   @Override
