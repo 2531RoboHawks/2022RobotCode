@@ -24,7 +24,6 @@ import frc.robot.commands.ToggleClimbExtendCommand;
 import frc.robot.commands.ToggleClimbGrabCommand;
 import frc.robot.commands.ToggleIntakeCommand;
 import frc.robot.commands.auto.AutoAimShootCommand;
-import frc.robot.commands.auto.CooksleyStraight;
 import frc.robot.commands.auto.ShootOneBall;
 import frc.robot.commands.auto.TwoBallAuto;
 import frc.robot.commands.auto.Taxi;
@@ -95,7 +94,7 @@ public class RobotContainer {
       new TwoBallAuto(driveSubsystem, shootSubsystem, intakeSubsystem, visionSubsystem)
     );
     autoChooser.addOption("Wall Maria", new WallMaria(driveSubsystem, intakeSubsystem, shootSubsystem));
-    autoChooser.addOption("Cooksley Straight", new CooksleyStraight(driveSubsystem, intakeSubsystem, shootSubsystem, visionSubsystem));
+    // autoChooser.addOption("Cooksley Straight", new CooksleyStraight(driveSubsystem, intakeSubsystem, shootSubsystem, visionSubsystem));
     autoChooser.addOption("The Rumbling", new TheRumbling(driveSubsystem, intakeSubsystem, shootSubsystem, visionSubsystem));
     SmartDashboard.putData(autoChooser);
   }
