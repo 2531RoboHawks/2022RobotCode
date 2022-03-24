@@ -93,7 +93,6 @@ public class RobotContainer {
       "Two Ball",
       new TwoBallAuto(driveSubsystem, shootSubsystem, intakeSubsystem, visionSubsystem)
     );
-    autoChooser.addOption("Wall Maria", new WallMaria(driveSubsystem, intakeSubsystem, shootSubsystem));
     // autoChooser.addOption("Cooksley Straight", new CooksleyStraight(driveSubsystem, intakeSubsystem, shootSubsystem, visionSubsystem));
     autoChooser.addOption("The Rumbling", new TheRumbling(driveSubsystem, intakeSubsystem, shootSubsystem, visionSubsystem));
     SmartDashboard.putData(autoChooser);
