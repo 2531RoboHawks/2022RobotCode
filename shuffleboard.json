@@ -59,7 +59,7 @@
           },
           "4,0": {
             "size": [
-              1,
+              2,
               1
             ],
             "content": {
@@ -68,7 +68,7 @@
               "_title": "SendableChooser[0]"
             }
           },
-          "5,0": {
+          "6,0": {
             "size": [
               1,
               1
@@ -79,7 +79,7 @@
               "_title": "Pose X"
             }
           },
-          "6,0": {
+          "7,0": {
             "size": [
               1,
               1
@@ -90,7 +90,7 @@
               "_title": "Pose Y"
             }
           },
-          "7,0": {
+          "8,0": {
             "size": [
               1,
               1
@@ -158,31 +158,26 @@
               "_title": "Testing RPM"
             }
           },
+          "6,2": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Actual Revwheel RPM",
+              "_title": "/SmartDashboard/Actual Revwheel RPM"
+            }
+          },
           "6,1": {
             "size": [
               2,
               1
             ],
             "content": {
-              "_type": "Grid Layout",
-              "_title": "Grid Layout",
-              "Layout/Number of columns": 3,
-              "Layout/Number of rows": 3,
-              "Layout/Label position": "BOTTOM",
-              "_children": {
-                "0,0": {
-                  "_type": "Graph",
-                  "_source0": "network_table:///SmartDashboard/Actual Revwheel RPM",
-                  "_title": "Actual Revwheel RPM",
-                  "Graph/Visible time": 30.0,
-                  "Graph/X-axis auto scrolling": true,
-                  "Y-axis/Automatic bounds": true,
-                  "Y-axis/Upper bound": 1.0,
-                  "Y-axis/Lower bound": -1.0,
-                  "Y-axis/Unit": "ul",
-                  "Visible data/SmartDashboard/Actual Revwheel RPM": true
-                }
-              }
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Target Revwheel RPM",
+              "_title": "Target Revwheel RPM"
             }
           }
         }
@@ -841,8 +836,8 @@
     }
   ],
   "windowGeometry": {
-    "x": -6.0,
-    "y": 1.0,
+    "x": -7.0,
+    "y": 2.0,
     "width": 1378.0,
     "height": 733.0
   }

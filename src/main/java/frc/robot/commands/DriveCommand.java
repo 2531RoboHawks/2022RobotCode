@@ -50,7 +50,7 @@ public class DriveCommand extends CommandBase {
     } else {
       xMultiplier = .5;
       yMultiplier = .5;
-      rotationMultiplier = .5;
+      rotationMultiplier = .33;
     }
 
     double x = RobotContainer.gamepad.getLeftX();

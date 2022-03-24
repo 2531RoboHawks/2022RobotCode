@@ -24,6 +24,7 @@ public class ShootSubsystem extends SubsystemBase {
 
   public void setRevwheelRPM(double rpm) {
     // Max RPM: ~6540 RPM
+    SmartDashboard.putNumber("Target Revwheel RPM", rpm);
     double revolutionsPerSecond = rpm / 60.0;
     revwheel.setLinearVelocityFeedforwardPID(revolutionsPerSecond);
   }
@@ -35,7 +36,7 @@ public class ShootSubsystem extends SubsystemBase {
 
   public void setStorageBeforeShootRunning(boolean running) {
     if (running) {
-      setStorageBeforeShootPower(0.16);
+      setStorageBeforeShootPower(0.17);
     } else {
       setStorageBeforeShootPower(0);
     }

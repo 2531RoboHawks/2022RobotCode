@@ -16,7 +16,7 @@ public class TwoBallAuto extends SequentialCommandGroup {
     addCommands(new ShootOneBall(shootSubsystem, intakeSubsystem, visionSubsystem));
     addCommands(new RunIntakeCommandGroup(
       intakeSubsystem,
-      new DriveToWaypoint(driveSubsystem, Units.inchesToMeters(42.421), 0, 0),
+      new DriveToWaypoint(driveSubsystem, Units.inchesToMeters(54), 0, 0),
       new WaitCommand(2),
       new ShootOneBall(shootSubsystem, intakeSubsystem, visionSubsystem)
     ));

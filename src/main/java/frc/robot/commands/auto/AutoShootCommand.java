@@ -39,10 +39,9 @@ public class AutoShootCommand extends CommandBase {
     rpm = 4000;
   }
 
-  private double calculateRPMForDistance(double inches) {
+  public static double calculateRPMForDistance(double inches) {
     // return SmartDashboard.getNumber("Testing RPM", 0);
-    // See "The Data" spreadsheet
-    return inches * 12.8 + 3500;
+    return inches * 12.8 + 3450;
   }
 
   private double rpm = 0;

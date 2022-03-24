@@ -28,7 +28,7 @@ public class LimelightTrackCommand extends CommandBase {
   @Override
   public void initialize() {
     pidController = new PIDController(RotatePID.kP, RotatePID.kI, RotatePID.kD);
-    pidController.setTolerance(0.5);
+    pidController.setTolerance(1);
     pidController.setSetpoint(0);
     visionSubsystem.ensureEnabled();
   }
@@ -39,7 +39,7 @@ public class LimelightTrackCommand extends CommandBase {
     if (!visionSubsystem.isReady()) {
       return;
     }
-    double maxPower = 0.3;
+    double maxPower = 1;
     double amount = MathUtil.clamp(pidController.calculate(visionSubsystem.getX()), -maxPower, maxPower);
     if (visionSubsystem.hasValidTarget()) {
       this.driveSubsystem.drivePercent(0, 0, -amount);
