@@ -14,7 +14,7 @@ import frc.robot.subsystems.VisionSubsystem;
 public class LimelightTrackCommand extends CommandBase {
   private DriveSubsystem driveSubsystem;
   private VisionSubsystem visionSubsystem;
-  private PIDController pidController = new PIDController(RotatePID.kP, RotatePID.kI, RotatePID.kD);
+  private PIDController pidController;
 
   /** Creates a new LimelightTrackCommand. */
   public LimelightTrackCommand(VisionSubsystem visionSubsystem, DriveSubsystem driveSubsystem) {
@@ -22,14 +22,14 @@ public class LimelightTrackCommand extends CommandBase {
     this.driveSubsystem = driveSubsystem;
     addRequirements(this.visionSubsystem);
     addRequirements(this.driveSubsystem);
-    pidController.setTolerance(0.5);
-    pidController.setSetpoint(0);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    pidController.reset();
+    pidController = new PIDController(RotatePID.kP, RotatePID.kI, RotatePID.kD);
+    pidController.setTolerance(0.5);
+    pidController.setSetpoint(0);
     visionSubsystem.ensureEnabled();
   }
 

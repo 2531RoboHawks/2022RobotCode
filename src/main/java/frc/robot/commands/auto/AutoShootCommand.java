@@ -5,6 +5,7 @@
 package frc.robot.commands.auto;
 
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShootSubsystem;
@@ -25,6 +26,7 @@ public class AutoShootCommand extends CommandBase {
     this.visionSubsystem = visionSubsystem;
     this.shootSubsystem = shootSubsystem;
     this.intakeSubsystem = intakeSubsystem;
+    SmartDashboard.putNumber("Testing RPM", 0);
   }
 
   @Override
@@ -34,11 +36,16 @@ public class AutoShootCommand extends CommandBase {
     timer.stop();
     finalTimer.reset();
     finalTimer.stop();
+    rpm = 4000;
   }
 
   private double calculateRPMForDistance(double inches) {
-    return inches * 12 + 3440;
+    // return SmartDashboard.getNumber("Testing RPM", 0);
+    // See "The Data" spreadsheet
+    return inches * 12.8 + 3500;
   }
+
+  private double rpm = 0;
 
   @Override
   public void execute() {
@@ -51,8 +58,7 @@ public class AutoShootCommand extends CommandBase {
 
     if (visionSubsystem.hasValidTarget()) {
       double distance = visionSubsystem.getDistance();
-      double rpm = calculateRPMForDistance(distance);
-      shootSubsystem.setRevwheelRPM(rpm);
+      rpm = calculateRPMForDistance(distance);
 
       if (timer.hasElapsed(startShootingAfter)) {
         finalTimer.start();
@@ -64,6 +70,8 @@ public class AutoShootCommand extends CommandBase {
       shootSubsystem.setStorageBeforeShootRunning(false);
       intakeSubsystem.setStorageAfterIntakeRunning(false);
     }
+
+    shootSubsystem.setRevwheelRPM(rpm);
   }
 
   @Override

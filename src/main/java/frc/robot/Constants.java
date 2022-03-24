@@ -38,6 +38,7 @@ public final class Constants {
 
     public static final int PrepareToShootBall = 3;
     public static final int AutoAimShoot = Axis.kLeftTrigger.value;
+    public static final int EjectBall = Axis.kRightTrigger.value;
     public static final int AutoShoot = 10;
   }
 

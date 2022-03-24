@@ -35,7 +35,7 @@ public class ShootSubsystem extends SubsystemBase {
 
   public void setStorageBeforeShootRunning(boolean running) {
     if (running) {
-      setStorageBeforeShootPower(0.17);
+      setStorageBeforeShootPower(0.16);
     } else {
       setStorageBeforeShootPower(0);
     }
