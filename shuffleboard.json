@@ -101,9 +101,9 @@
               "_title": "Gyro"
             }
           },
-          "8,0": {
+          "4,2": {
             "size": [
-              1,
+              2,
               1
             ],
             "content": {
@@ -125,9 +125,9 @@
               "Colors/Color when false": "#8B0000FF"
             }
           },
-          "1,1": {
+          "2,2": {
             "size": [
-              1,
+              2,
               1
             ],
             "content": {

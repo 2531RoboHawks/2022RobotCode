@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.RotatePID;
@@ -38,7 +39,8 @@ public class LimelightTrackCommand extends CommandBase {
     if (!visionSubsystem.isReady()) {
       return;
     }
-    double amount = pidController.calculate(visionSubsystem.getX());
+    double maxPower = 0.3;
+    double amount = MathUtil.clamp(pidController.calculate(visionSubsystem.getX()), -maxPower, maxPower);
     if (visionSubsystem.hasValidTarget()) {
       this.driveSubsystem.drivePercent(0, 0, -amount);
     } else {

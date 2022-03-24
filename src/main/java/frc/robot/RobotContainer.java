@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.Controls;
@@ -109,7 +110,7 @@ public class RobotContainer {
     new JoystickButton(helms, HelmsControls.ToggleIntakeDown).whenPressed(new ToggleIntakeCommand(intakeSubsystem));
     new JoystickButton(helms, HelmsControls.ToggleClimbExtended).whenPressed(new ToggleClimbExtendCommand(climbSubsystem));
     new JoystickButton(helms, HelmsControls.ToggleClimbGrab).whenPressed(new ToggleClimbGrabCommand(climbSubsystem));
-    new JoystickButton(gamepad, Controls.ToggleIntakeDown).toggleWhenActive(new IntakeDownCommand(intakeSubsystem));
+    new JoystickButton(gamepad, Controls.ToggleIntakeDown).toggleWhenActive(new ParallelCommandGroup(new IntakeDownCommand(intakeSubsystem), new PrepareToShootBallCommand(shootSubsystem)));
     new JoystickAxis(gamepad, Controls.AutoAimShoot).whenAboveThreshold(0.5, new AutoAimShootCommand(visionSubsystem, driveSubsystem, shootSubsystem, intakeSubsystem));
     new JoystickButton(gamepad, Controls.PrepareToShootBall).whenHeld(new PrepareToShootBallCommand(shootSubsystem));
   }

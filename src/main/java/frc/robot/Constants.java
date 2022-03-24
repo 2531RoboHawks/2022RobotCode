@@ -24,7 +24,7 @@ public final class Constants {
   public static final class RotatePID {
     // (in degrees)
     public static final double kP = 0.013;
-    public static final double kI = 0.025;
+    public static final double kI = 0.01;
     public static final double kD = 0;
   }
 
