@@ -18,7 +18,7 @@ public class AutoShootCommand extends CommandBase {
   private Timer finalTimer = new Timer();
 
   private static final double startShootingAfter = 2;
-  private static final double stopShootingAfter = 2.5;
+  private static final double stopShootingAfter = 3;
 
   public AutoShootCommand(ShootSubsystem shootSubsystem, VisionSubsystem visionSubsystem, IntakeSubsystem intakeSubsystem) {
     addRequirements(shootSubsystem, intakeSubsystem);
