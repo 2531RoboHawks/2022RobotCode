@@ -13,7 +13,11 @@ public class PrepareToShootBallCommand extends CommandBase {
 
   @Override
   public void execute() {
-    shootSubsystem.setStorageBeforeShootRunning(!shootSubsystem.isBallInStorage());
+    if (shootSubsystem.isBallInStorage()) {
+      cancel();
+    } else {
+      shootSubsystem.setStorageBeforeShootPower(0.15);
+    }
   }
 
   @Override

@@ -28,12 +28,16 @@ public class ShootSubsystem extends SubsystemBase {
     revwheel.setLinearVelocityFeedforwardPID(revolutionsPerSecond);
   }
 
+  public void setStorageBeforeShootPower(double power) {
+    System.out.println("Storage before shoot: " + power);
+    storageBeforeShoot.setPower(power);
+  }
+
   public void setStorageBeforeShootRunning(boolean running) {
-    System.out.println("Storage before shoot: " + running);
     if (running) {
-      storageBeforeShoot.setPower(0.25);
+      setStorageBeforeShootPower(0.25);
     } else {
-      storageBeforeShoot.stop();
+      setStorageBeforeShootPower(0);
     }
   }
 
@@ -46,7 +50,7 @@ public class ShootSubsystem extends SubsystemBase {
   }
 
   public boolean isBallInStorage() {
-    return limitSwitch.get();
+    return !limitSwitch.get();
   }
 
   @Override

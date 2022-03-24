@@ -93,7 +93,6 @@ public class RobotContainer {
       "Two Ball",
       new TwoBallAuto(driveSubsystem, shootSubsystem, intakeSubsystem, visionSubsystem)
     );
-    // autoChooser.addOption("Cooksley Straight", new CooksleyStraight(driveSubsystem, intakeSubsystem, shootSubsystem, visionSubsystem));
     autoChooser.addOption("The Rumbling", new TheRumbling(driveSubsystem, intakeSubsystem, shootSubsystem, visionSubsystem));
     SmartDashboard.putData(autoChooser);
   }
@@ -112,7 +111,7 @@ public class RobotContainer {
     new JoystickButton(helms, HelmsControls.ToggleClimbGrab).whenPressed(new ToggleClimbGrabCommand(climbSubsystem));
     new JoystickButton(gamepad, Controls.ToggleIntakeDown).toggleWhenActive(new IntakeDownCommand(intakeSubsystem));
     new JoystickAxis(gamepad, Controls.AutoAimShoot).whenAboveThreshold(0.5, new AutoAimShootCommand(visionSubsystem, driveSubsystem, shootSubsystem, intakeSubsystem));
-    new JoystickButton(gamepad, Controls.PrepareToShootBall).whenPressed(new PrepareToShootBallCommand(shootSubsystem).withTimeout(0.1));
+    new JoystickButton(gamepad, Controls.PrepareToShootBall).whenHeld(new PrepareToShootBallCommand(shootSubsystem));
   }
 
   /**
