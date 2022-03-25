@@ -22,7 +22,6 @@ import frc.robot.commands.PrepareToShootBallCommand;
 import frc.robot.commands.ShootCommand;
 import frc.robot.commands.SynchronizedClimbCommand;
 import frc.robot.commands.ToggleClimbExtendCommand;
-import frc.robot.commands.ToggleClimbGrabCommand;
 import frc.robot.commands.ToggleIntakeCommand;
 import frc.robot.commands.auto.AutoAimShootCommand;
 import frc.robot.commands.auto.EjectBallCommand;
@@ -110,7 +109,6 @@ public class RobotContainer {
     new JoystickButton(helms, HelmsControls.ManualClimb).toggleWhenActive(new ManualClimbCommand(climbSubsystem, intakeSubsystem));
     new JoystickButton(helms, HelmsControls.ToggleIntakeDown).whenPressed(new ToggleIntakeCommand(intakeSubsystem));
     new JoystickButton(helms, HelmsControls.ToggleClimbExtended).whenPressed(new ToggleClimbExtendCommand(climbSubsystem));
-    new JoystickButton(helms, HelmsControls.ToggleClimbGrab).whenPressed(new ToggleClimbGrabCommand(climbSubsystem));
     new JoystickButton(gamepad, Controls.ToggleIntakeDown).toggleWhenActive(new ParallelCommandGroup(new IntakeDownCommand(intakeSubsystem), new PrepareToShootBallCommand(shootSubsystem)));
     new JoystickAxis(gamepad, Controls.AutoAimShoot).whenAboveThreshold(0.5, new AutoAimShootCommand(visionSubsystem, driveSubsystem, shootSubsystem, intakeSubsystem));
     new JoystickAxis(gamepad, Controls.EjectBall).whenAboveThreshold(0.5, new EjectBallCommand(shootSubsystem, intakeSubsystem, driveSubsystem));

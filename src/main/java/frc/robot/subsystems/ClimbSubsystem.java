@@ -2,7 +2,6 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.BetterTalonFX;
 import frc.robot.PIDSettings;
@@ -12,7 +11,6 @@ public class ClimbSubsystem extends SubsystemBase {
   public BetterTalonFX leftTalon = new BetterTalonFX(21);
   public BetterTalonFX rightTalon = new BetterTalonFX(22);
   private Solenoid extendArmsSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, Solenoids.ClimbExtend);
-  private Solenoid grabSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, Solenoids.ClimbGrab);
 
   private static final PIDSettings talonPid = new PIDSettings(0.014, 0, 0);
   private static final double secondsFromNeutralToFull = 1;
@@ -25,7 +23,6 @@ public class ClimbSubsystem extends SubsystemBase {
     rightTalon.configureRamp(secondsFromNeutralToFull);
 
     setArmsExtended(false);
-    setGrabbing(false);
   }
 
   public double getArmExtensionTarget() {
@@ -69,17 +66,6 @@ public class ClimbSubsystem extends SubsystemBase {
   public void toggleArmsExtended() {
     // don't use .toggle() here so that we get log messages from setArmsExtended
     setArmsExtended(!areArmsExtended());
-  }
-
-  public void setGrabbing(boolean grabbing) {
-    System.out.println("Climb grabbing: " + grabbing);
-    grabSolenoid.set(grabbing);
-  }
-  public boolean isGrabbing() {
-    return grabSolenoid.get();
-  }
-  public void toggleGrabbing() {
-    setGrabbing(!isGrabbing());
   }
 
   @Override
