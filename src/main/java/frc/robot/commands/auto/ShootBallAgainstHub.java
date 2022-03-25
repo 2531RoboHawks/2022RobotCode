@@ -16,23 +16,28 @@ import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShootSubsystem;
 
-public class EjectBallCommand extends SequentialCommandGroup {
+public class ShootBallAgainstHub extends SequentialCommandGroup {
   private ShootSubsystem shootSubsystem;
   private IntakeSubsystem intakeSubsystem;
 
-  public EjectBallCommand(ShootSubsystem shootSubsystem, IntakeSubsystem intakeSubsystem, DriveSubsystem driveSubsystem) {
+  public ShootBallAgainstHub(
+    ShootSubsystem shootSubsystem,
+    IntakeSubsystem intakeSubsystem,
+    DriveSubsystem driveSubsystem,
+    double rpm,
+    double distance
+  ) {
     this.shootSubsystem = shootSubsystem;
     this.intakeSubsystem = intakeSubsystem;
     double ejectBallPower = 0.3;
     double moveBallForwardPower = 0.14;
     double keepBallInPower = 0;
-    double rpm = 2300;
     addCommands(new ParallelCommandGroup(
       new RevSetSpeed(shootSubsystem, rpm),
       new SequentialCommandGroup(
         new ResetOdometryCommand(driveSubsystem),
-        new DriveToWaypoint(driveSubsystem, new Pose2d(Units.inchesToMeters(12), 0, Rotation2d.fromDegrees(0))).withTimeout(2),
-        new WaitForShooterToBeAtSpeed(shootSubsystem, rpm).withTimeout(0.5),
+        new DriveToWaypoint(driveSubsystem, new Pose2d(Units.inchesToMeters(distance), 0, Rotation2d.fromDegrees(0))).withTimeout(2),
+        new WaitForShooterToBeAtSpeed(shootSubsystem, rpm).withTimeout(2),
         new InstantCommand(() -> {
           shootSubsystem.setStorageBeforeShootPower(ejectBallPower);
         }),
@@ -45,7 +50,8 @@ public class EjectBallCommand extends SequentialCommandGroup {
         new InstantCommand(() -> {
           shootSubsystem.setStorageBeforeShootPower(keepBallInPower);
         }),
-        new WaitForShooterToBeAtSpeed(shootSubsystem, rpm).withTimeout(0.25),
+        new WaitCommand(0.1),
+        new WaitForShooterToBeAtSpeed(shootSubsystem, rpm).withTimeout(2),
         new InstantCommand(() -> {
           shootSubsystem.setStorageBeforeShootPower(ejectBallPower);
         })
