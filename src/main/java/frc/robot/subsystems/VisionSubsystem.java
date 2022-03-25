@@ -45,8 +45,8 @@ public class VisionSubsystem extends SubsystemBase {
 
   public double getDistance() {
     double targetHeight = 102.5; // inches
-    double mountHeight = 21; // inches
-    double mountAngle = 36; // degrees
+    double mountHeight = 20.47; // inches
+    double mountAngle = 37; // degrees
     double y = getY();
     return (targetHeight - mountHeight) / Math.tan((mountAngle + y) * (Math.PI / 180.0));
   }

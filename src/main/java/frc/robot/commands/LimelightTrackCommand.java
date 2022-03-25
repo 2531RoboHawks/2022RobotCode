@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.RotatePID;
@@ -13,7 +14,8 @@ import frc.robot.subsystems.VisionSubsystem;
 public class LimelightTrackCommand extends CommandBase {
   private DriveSubsystem driveSubsystem;
   private VisionSubsystem visionSubsystem;
-  private PIDController pidController = new PIDController(RotatePID.kP, RotatePID.kI, RotatePID.kD);
+  private PIDController pidController = new PIDController(RotatePID.kP, RotatePID.kI, RotatePID.kD);;
+  private boolean hasRunOnce = false;
 
   /** Creates a new LimelightTrackCommand. */
   public LimelightTrackCommand(VisionSubsystem visionSubsystem, DriveSubsystem driveSubsystem) {
@@ -21,15 +23,15 @@ public class LimelightTrackCommand extends CommandBase {
     this.driveSubsystem = driveSubsystem;
     addRequirements(this.visionSubsystem);
     addRequirements(this.driveSubsystem);
-    pidController.setTolerance(0.5);
+    pidController.setTolerance(1);
     pidController.setSetpoint(0);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    pidController.reset();
     visionSubsystem.ensureEnabled();
+    hasRunOnce = false;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -38,7 +40,9 @@ public class LimelightTrackCommand extends CommandBase {
     if (!visionSubsystem.isReady()) {
       return;
     }
-    double amount = pidController.calculate(visionSubsystem.getX());
+    hasRunOnce = true;
+    double maxPower = 1;
+    double amount = MathUtil.clamp(pidController.calculate(visionSubsystem.getX()), -maxPower, maxPower);
     if (visionSubsystem.hasValidTarget()) {
       this.driveSubsystem.drivePercent(0, 0, -amount);
     } else {
@@ -56,6 +60,6 @@ public class LimelightTrackCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return pidController.atSetpoint() && visionSubsystem.isReady();
+    return hasRunOnce && pidController.atSetpoint();
   }
 }

@@ -5,6 +5,7 @@
 package frc.robot.commands.auto;
 
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShootSubsystem;
@@ -17,14 +18,15 @@ public class AutoShootCommand extends CommandBase {
   private Timer timer = new Timer();
   private Timer finalTimer = new Timer();
 
-  private static final double startShootingAfter = 1.5;
-  private static final double stopShootingAfter = 1;
+  private static final double startShootingAfter = 2;
+  private static final double stopShootingAfter = 3;
 
   public AutoShootCommand(ShootSubsystem shootSubsystem, VisionSubsystem visionSubsystem, IntakeSubsystem intakeSubsystem) {
     addRequirements(shootSubsystem, intakeSubsystem);
     this.visionSubsystem = visionSubsystem;
     this.shootSubsystem = shootSubsystem;
     this.intakeSubsystem = intakeSubsystem;
+    SmartDashboard.putNumber("Testing RPM", 0);
   }
 
   @Override
@@ -34,11 +36,15 @@ public class AutoShootCommand extends CommandBase {
     timer.stop();
     finalTimer.reset();
     finalTimer.stop();
+    rpm = 4000;
   }
 
-  private double calculateRPMForDistance(double inches) {
-    return inches * 12 + 3440;
+  public static double calculateRPMForDistance(double inches) {
+    // return SmartDashboard.getNumber("Testing RPM", 0);
+    return inches * 14.5 + 3217;
   }
+
+  private double rpm = 0;
 
   @Override
   public void execute() {
@@ -51,8 +57,7 @@ public class AutoShootCommand extends CommandBase {
 
     if (visionSubsystem.hasValidTarget()) {
       double distance = visionSubsystem.getDistance();
-      double rpm = calculateRPMForDistance(distance);
-      shootSubsystem.setRevwheelRPM(rpm);
+      rpm = calculateRPMForDistance(distance);
 
       if (timer.hasElapsed(startShootingAfter)) {
         finalTimer.start();
@@ -64,6 +69,8 @@ public class AutoShootCommand extends CommandBase {
       shootSubsystem.setStorageBeforeShootRunning(false);
       intakeSubsystem.setStorageAfterIntakeRunning(false);
     }
+
+    shootSubsystem.setRevwheelRPM(rpm);
   }
 
   @Override

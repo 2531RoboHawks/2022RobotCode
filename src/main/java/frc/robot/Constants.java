@@ -23,8 +23,8 @@ public final class Constants {
 
   public static final class RotatePID {
     // (in degrees)
-    public static final double kP = 0.013;
-    public static final double kI = 0.025;
+    public static final double kP = 0.02;
+    public static final double kI = 0.001;
     public static final double kD = 0;
   }
 
@@ -38,6 +38,7 @@ public final class Constants {
 
     public static final int PrepareToShootBall = 3;
     public static final int AutoAimShoot = Axis.kLeftTrigger.value;
+    public static final int EjectBall = Axis.kRightTrigger.value;
     public static final int AutoShoot = 10;
   }
 
