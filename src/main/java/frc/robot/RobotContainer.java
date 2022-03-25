@@ -113,7 +113,7 @@ public class RobotContainer {
     new JoystickButton(helms, HelmsControls.ToggleClimbGrab).whenPressed(new ToggleClimbGrabCommand(climbSubsystem));
     new JoystickButton(gamepad, Controls.ToggleIntakeDown).toggleWhenActive(new ParallelCommandGroup(new IntakeDownCommand(intakeSubsystem), new PrepareToShootBallCommand(shootSubsystem)));
     new JoystickAxis(gamepad, Controls.AutoAimShoot).whenAboveThreshold(0.5, new AutoAimShootCommand(visionSubsystem, driveSubsystem, shootSubsystem, intakeSubsystem));
-    new JoystickAxis(gamepad, Controls.EjectBall).whenAboveThreshold(0.5, new EjectBallCommand(shootSubsystem, intakeSubsystem));
+    new JoystickAxis(gamepad, Controls.EjectBall).whenAboveThreshold(0.5, new EjectBallCommand(shootSubsystem, intakeSubsystem, driveSubsystem));
     new JoystickButton(gamepad, Controls.PrepareToShootBall).whenHeld(new PrepareToShootBallCommand(shootSubsystem));
   }
 

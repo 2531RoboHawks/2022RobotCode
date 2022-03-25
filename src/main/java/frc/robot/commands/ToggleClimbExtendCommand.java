@@ -14,9 +14,9 @@ public class ToggleClimbExtendCommand extends SequentialCommandGroup {
       newExtended = !climbSubsystem.areArmsExtended();
       climbSubsystem.setArmsExtended(newExtended);
     }));
-    // addCommands(new WaitCommand(1));
-    // addCommands(new InstantCommand(() -> {
-    //   climbSubsystem.setGrabbing(newExtended);
-    // }));
+    addCommands(new WaitCommand(2));
+    addCommands(new InstantCommand(() -> {
+      climbSubsystem.setGrabbing(newExtended);
+    }));
   }
 }

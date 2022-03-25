@@ -4,40 +4,59 @@
 
 package frc.robot.commands.auto;
 
-import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
+import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
+import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShootSubsystem;
 
-public class EjectBallCommand extends CommandBase {
+public class EjectBallCommand extends SequentialCommandGroup {
   private ShootSubsystem shootSubsystem;
   private IntakeSubsystem intakeSubsystem;
-  private Timer timer = new Timer();
 
-  public EjectBallCommand(ShootSubsystem shootSubsystem, IntakeSubsystem intakeSubsystem) {
-    addRequirements(shootSubsystem, intakeSubsystem);
+  public EjectBallCommand(ShootSubsystem shootSubsystem, IntakeSubsystem intakeSubsystem, DriveSubsystem driveSubsystem) {
     this.shootSubsystem = shootSubsystem;
     this.intakeSubsystem = intakeSubsystem;
-  }
-
-  @Override
-  public void initialize() {
-    timer.reset();
-    timer.start();
-  }
-
-  @Override
-  public void execute() {
-    shootSubsystem.setRevwheelRPM(4000);
-    if (timer.hasElapsed(3)) {
-      shootSubsystem.setStorageBeforeShootPower(0.8);
-      intakeSubsystem.setStorageAfterIntakeRunning(true);
-    }
+    double ejectBallPower = 0.3;
+    double moveBallForwardPower = 0.14;
+    double keepBallInPower = 0;
+    double rpm = 2300;
+    addCommands(new ParallelCommandGroup(
+      new RevSetSpeed(shootSubsystem, rpm),
+      new SequentialCommandGroup(
+        new ResetOdometryCommand(driveSubsystem),
+        new DriveToWaypoint(driveSubsystem, new Pose2d(Units.inchesToMeters(12), 0, Rotation2d.fromDegrees(0))).withTimeout(2),
+        new WaitForShooterToBeAtSpeed(shootSubsystem, rpm).withTimeout(0.5),
+        new InstantCommand(() -> {
+          shootSubsystem.setStorageBeforeShootPower(ejectBallPower);
+        }),
+        new WaitUntilCommand(() -> !shootSubsystem.isBallInStorage()),
+        new InstantCommand(() -> {
+          intakeSubsystem.setStorageAfterIntakeRunning(true);
+          shootSubsystem.setStorageBeforeShootPower(moveBallForwardPower);
+        }),
+        new WaitUntilCommand(() -> shootSubsystem.isBallInStorage()),
+        new InstantCommand(() -> {
+          shootSubsystem.setStorageBeforeShootPower(keepBallInPower);
+        }),
+        new WaitForShooterToBeAtSpeed(shootSubsystem, rpm).withTimeout(0.25),
+        new InstantCommand(() -> {
+          shootSubsystem.setStorageBeforeShootPower(ejectBallPower);
+        })
+      )
+    ));
   }
 
   @Override
   public void end(boolean interrupted) {
+    super.end(interrupted);
     shootSubsystem.stopEverything();
-    intakeSubsystem.setStorageAfterIntakeRunning(false);
+    intakeSubsystem.setEverything(false);
   }
 }

@@ -13,7 +13,7 @@ import frc.robot.PIDSettings;
 public class ShootSubsystem extends SubsystemBase {
   private BetterTalonFX revwheel = new BetterTalonFX(15)
     .configureUnitsPerRevolution(1)
-    .configureFeedforward(new SimpleMotorFeedforward(0.52166, 0.10843, 0.0062646), new PIDSettings(0.0, 0, 0));
+    .configureFeedforward(new SimpleMotorFeedforward(0.52166, 0.10843, 0.0062646), new PIDSettings(0.10962, 0, 0));
 
   private BetterSparkMaxBrushless storageBeforeShoot = new BetterSparkMaxBrushless(17)
     .configureInverted(true);
@@ -43,7 +43,7 @@ public class ShootSubsystem extends SubsystemBase {
 
   public void setStorageBeforeShootRunning(boolean running) {
     if (running) {
-      setStorageBeforeShootPower(0.17);
+      setStorageBeforeShootPower(0.18);
     } else {
       setStorageBeforeShootPower(0);
     }
