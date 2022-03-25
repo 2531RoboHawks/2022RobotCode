@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -11,7 +13,7 @@ import frc.robot.PIDSettings;
 public class ShootSubsystem extends SubsystemBase {
   private BetterTalonFX revwheel = new BetterTalonFX(15)
     .configureUnitsPerRevolution(1)
-    .configureFeedforward(new SimpleMotorFeedforward(0.52166, 0.10843, 0.0062646), new PIDSettings(0.10962, 0, 0));
+    .configureFeedforward(new SimpleMotorFeedforward(0.52166, 0.10843, 0.0062646), new PIDSettings(0.0, 0, 0));
 
   private BetterSparkMaxBrushless storageBeforeShoot = new BetterSparkMaxBrushless(17)
     .configureInverted(true);
@@ -27,6 +29,7 @@ public class ShootSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Target Revwheel RPM", rpm);
     double revolutionsPerSecond = rpm / 60.0;
     revwheel.setLinearVelocityFeedforwardPID(revolutionsPerSecond);
+    revwheel.getWPI().setNeutralMode(NeutralMode.Coast);
   }
 
   public double getRevwheelRPM() {

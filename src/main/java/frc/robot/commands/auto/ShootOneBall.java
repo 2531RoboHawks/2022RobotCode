@@ -10,6 +10,6 @@ import frc.robot.subsystems.VisionSubsystem;
 public class ShootOneBall extends SequentialCommandGroup {
   public ShootOneBall(DriveSubsystem driveSubsystem, ShootSubsystem shootSubsystem, IntakeSubsystem intakeSubsystem, VisionSubsystem visionSubsystem) {
     addCommands(new LimelightTrackCommand(visionSubsystem, driveSubsystem).withTimeout(2));
-    addCommands(new AutoShootCommand(shootSubsystem, visionSubsystem, intakeSubsystem).withTimeout(4));
+    addCommands(new AutoShootCommand(shootSubsystem, visionSubsystem, intakeSubsystem).withTimeout(3));
   }
 }

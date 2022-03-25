@@ -10,7 +10,7 @@ public class WaitForShootToBeReady extends CommandBase {
   private ShootSubsystem shootSubsystem;
   private ArrayList<Double> rpms = new ArrayList<>();
   private int period = 40;
-  private double maxError = 20;
+  private double maxError = 10;
   private double maxTime = 3;
   private Timer timer = new Timer();
 

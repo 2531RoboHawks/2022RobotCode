@@ -208,7 +208,7 @@ public class DriveSubsystem extends SubsystemBase {
     MecanumDriveWheelSpeeds wheelSpeeds = getWheelSpeeds();
     odometry.update(rotation, wheelSpeeds);
 
-    fieldImage.setRobotPose(getPose());
+    // fieldImage.setRobotPose(getPose());
 
     SmartDashboard.putNumber("Pose X", getPose().getX());
     SmartDashboard.putNumber("Pose Y", getPose().getY());
