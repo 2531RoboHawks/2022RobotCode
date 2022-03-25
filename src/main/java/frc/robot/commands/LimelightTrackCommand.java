@@ -14,7 +14,8 @@ import frc.robot.subsystems.VisionSubsystem;
 public class LimelightTrackCommand extends CommandBase {
   private DriveSubsystem driveSubsystem;
   private VisionSubsystem visionSubsystem;
-  private PIDController pidController;
+  private PIDController pidController = new PIDController(RotatePID.kP, RotatePID.kI, RotatePID.kD);;
+  private boolean hasRunOnce = false;
 
   /** Creates a new LimelightTrackCommand. */
   public LimelightTrackCommand(VisionSubsystem visionSubsystem, DriveSubsystem driveSubsystem) {
@@ -22,15 +23,15 @@ public class LimelightTrackCommand extends CommandBase {
     this.driveSubsystem = driveSubsystem;
     addRequirements(this.visionSubsystem);
     addRequirements(this.driveSubsystem);
+    pidController.setTolerance(1);
+    pidController.setSetpoint(0);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    pidController = new PIDController(RotatePID.kP, RotatePID.kI, RotatePID.kD);
-    pidController.setTolerance(1);
-    pidController.setSetpoint(0);
     visionSubsystem.ensureEnabled();
+    hasRunOnce = false;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -39,6 +40,7 @@ public class LimelightTrackCommand extends CommandBase {
     if (!visionSubsystem.isReady()) {
       return;
     }
+    hasRunOnce = true;
     double maxPower = 1;
     double amount = MathUtil.clamp(pidController.calculate(visionSubsystem.getX()), -maxPower, maxPower);
     if (visionSubsystem.hasValidTarget()) {
@@ -58,6 +60,6 @@ public class LimelightTrackCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return pidController.atSetpoint() && visionSubsystem.isReady();
+    return hasRunOnce && pidController.atSetpoint();
   }
 }

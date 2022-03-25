@@ -17,7 +17,7 @@ public class TheRumbling extends SequentialCommandGroup {
 
   public TheRumbling(DriveSubsystem driveSubsystem, IntakeSubsystem intakeSubsystem, ShootSubsystem shootSubsystem, VisionSubsystem visionSubsystem) {
     addCommands(new ResetOdometryCommand(driveSubsystem, START));
-    addCommands(new ShootOneBall(shootSubsystem, intakeSubsystem, visionSubsystem));
+    addCommands(new ShootOneBall(driveSubsystem, shootSubsystem, intakeSubsystem, visionSubsystem));
     addCommands(new RunIntakeCommandGroup(
       intakeSubsystem,
       TrajectoryCommand.fromWaypoints(driveSubsystem, START, FIRST_BALL),

@@ -13,12 +13,12 @@ import frc.robot.subsystems.VisionSubsystem;
 public class TwoBallAuto extends SequentialCommandGroup {
   public TwoBallAuto(DriveSubsystem driveSubsystem, ShootSubsystem shootSubsystem, IntakeSubsystem intakeSubsystem, VisionSubsystem visionSubsystem) {
     addCommands(new ResetOdometryCommand(driveSubsystem));
-    addCommands(new ShootOneBall(shootSubsystem, intakeSubsystem, visionSubsystem));
+    addCommands(new ShootOneBall(driveSubsystem, shootSubsystem, intakeSubsystem, visionSubsystem));
     addCommands(new RunIntakeCommandGroup(
       intakeSubsystem,
-      new DriveToWaypoint(driveSubsystem, Units.inchesToMeters(54), 0, 0),
+      new DriveToWaypoint(driveSubsystem, Units.inchesToMeters(82), 0, 0),
       new WaitCommand(2),
-      new ShootOneBall(shootSubsystem, intakeSubsystem, visionSubsystem)
+      new ShootOneBall(driveSubsystem, shootSubsystem, intakeSubsystem, visionSubsystem)
     ));
   }
 }

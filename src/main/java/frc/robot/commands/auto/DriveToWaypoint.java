@@ -5,7 +5,6 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants.RotatePID;
 import frc.robot.subsystems.DriveSubsystem;
 
 public class DriveToWaypoint extends CommandBase {
@@ -14,7 +13,7 @@ public class DriveToWaypoint extends CommandBase {
   private boolean shouldResetOdometry = false;
   private PIDController forwardController = new PIDController(0.5, 0, 0);
   private PIDController sidewaysController = new PIDController(0.5, 0, 0);
-  private PIDController rotationController = new PIDController(RotatePID.kP, RotatePID.kI, RotatePID.kD);
+  private PIDController rotationController = new PIDController(0.0115, 0.012, 0);
 
   private static final double maxVelocity = 0.3;
   private static final double maxRotation = 0.3;

@@ -29,7 +29,7 @@ public class AutoAimShootCommand extends ParallelCommandGroup {
     addCommands(
       new SequentialCommandGroup(
         new LimelightTrackCommand(visionSubsystem, driveSubsystem).withTimeout(2),
-        new WaitCommand(5),
+        new WaitForShootToBeReady(shootSubsystem),
         new InstantCommand(() -> {
           shootSubsystem.setStorageBeforeShootPower(ejectBallPower);
         }),
@@ -42,7 +42,8 @@ public class AutoAimShootCommand extends ParallelCommandGroup {
         new InstantCommand(() -> {
           shootSubsystem.setStorageBeforeShootPower(keepBallInPower);
         }),
-        new WaitCommand(1),
+        new WaitCommand(0.3),
+        new WaitForShootToBeReady(shootSubsystem),
         new InstantCommand(() -> {
           shootSubsystem.setStorageBeforeShootPower(ejectBallPower);
         })

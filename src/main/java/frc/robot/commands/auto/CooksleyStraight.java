@@ -15,7 +15,7 @@ public class CooksleyStraight extends SequentialCommandGroup {
 
   public CooksleyStraight(DriveSubsystem driveSubsystem, IntakeSubsystem intakeSubsystem, ShootSubsystem shootSubsystem, VisionSubsystem visionSubsystem) {
     addCommands(new ResetOdometryCommand(driveSubsystem, START));
-    addCommands(new ShootOneBall(shootSubsystem, intakeSubsystem, visionSubsystem));
+    addCommands(new ShootOneBall(driveSubsystem, shootSubsystem, intakeSubsystem, visionSubsystem));
     addCommands(new DriveToWaypoint(driveSubsystem, FIRST_BALL));
     addCommands(new WaitCommand(1)); // TODO: shoot
     addCommands(new DriveToWaypoint(driveSubsystem, SECOND_BALL));

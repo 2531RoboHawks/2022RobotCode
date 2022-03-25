@@ -29,6 +29,10 @@ public class ShootSubsystem extends SubsystemBase {
     revwheel.setLinearVelocityFeedforwardPID(revolutionsPerSecond);
   }
 
+  public double getRevwheelRPM() {
+    return revwheel.getRPM();
+  }
+
   public void setStorageBeforeShootPower(double power) {
     System.out.println("Storage before shoot: " + power);
     storageBeforeShoot.setPower(power);

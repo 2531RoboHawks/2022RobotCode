@@ -87,7 +87,7 @@ public class RobotContainer {
     autoChooser.addOption(
       "One Ball",
       new SequentialCommandGroup(
-        new ShootOneBall(shootSubsystem, intakeSubsystem, visionSubsystem),
+        new ShootOneBall(driveSubsystem, shootSubsystem, intakeSubsystem, visionSubsystem),
         new Taxi(driveSubsystem)
       )
     );
