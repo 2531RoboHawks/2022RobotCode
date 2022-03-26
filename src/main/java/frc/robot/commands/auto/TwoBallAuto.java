@@ -13,13 +13,17 @@ import frc.robot.subsystems.VisionSubsystem;
 
 public class TwoBallAuto extends SequentialCommandGroup {
   public TwoBallAuto(DriveSubsystem driveSubsystem, ShootSubsystem shootSubsystem, IntakeSubsystem intakeSubsystem, VisionSubsystem visionSubsystem) {
+    double startingDistance = 52.5;
+    double moves = 82;
+    double jiggle = 45;
     addCommands(new ResetOdometryCommand(driveSubsystem));
-    addCommands(new ShootOneBall(driveSubsystem, shootSubsystem, intakeSubsystem, visionSubsystem));
+    addCommands(new ShootOneBall(driveSubsystem, shootSubsystem, intakeSubsystem, visionSubsystem, startingDistance));
     addCommands(new RunIntakeCommandGroup(
       intakeSubsystem,
-      new DriveToWaypoint(driveSubsystem, Units.inchesToMeters(82), 0, 0),
-      new WaitCommand(2),
-      new ShootOneBall(driveSubsystem, shootSubsystem, intakeSubsystem, visionSubsystem)
+      new DriveToWaypoint(driveSubsystem, Units.inchesToMeters(moves), 0, 0),
+      // new DriveToWaypoint(driveSubsystem, Units.inchesToMeters(jiggle), 0, 0),
+      new WaitCommand(1),
+      new ShootOneBall(driveSubsystem, shootSubsystem, intakeSubsystem, visionSubsystem, startingDistance + moves)
     ));
   }
 }

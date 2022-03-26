@@ -83,13 +83,13 @@ public class RobotContainer {
       "Taxi",
       new Taxi(driveSubsystem)
     );
-    autoChooser.addOption(
-      "One Ball",
-      new SequentialCommandGroup(
-        new ShootOneBall(driveSubsystem, shootSubsystem, intakeSubsystem, visionSubsystem),
-        new Taxi(driveSubsystem)
-      )
-    );
+    // autoChooser.addOption(
+    //   "One Ball",
+    //   new SequentialCommandGroup(
+    //     new ShootOneBall(driveSubsystem, shootSubsystem, intakeSubsystem, visionSubsystem),
+    //     new Taxi(driveSubsystem)
+    //   )
+    // );
     autoChooser.setDefaultOption(
       "Two Ball",
       new TwoBallAuto(driveSubsystem, shootSubsystem, intakeSubsystem, visionSubsystem)

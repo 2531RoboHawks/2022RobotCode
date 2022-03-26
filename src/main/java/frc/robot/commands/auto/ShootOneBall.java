@@ -8,8 +8,8 @@ import frc.robot.subsystems.ShootSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 
 public class ShootOneBall extends SequentialCommandGroup {
-  public ShootOneBall(DriveSubsystem driveSubsystem, ShootSubsystem shootSubsystem, IntakeSubsystem intakeSubsystem, VisionSubsystem visionSubsystem) {
-    addCommands(new LimelightTrackCommand(visionSubsystem, driveSubsystem).withTimeout(2));
-    addCommands(new AutoShootCommand(shootSubsystem, visionSubsystem, intakeSubsystem).withTimeout(3));
+  public ShootOneBall(DriveSubsystem driveSubsystem, ShootSubsystem shootSubsystem, IntakeSubsystem intakeSubsystem, VisionSubsystem visionSubsystem, double distance) {
+    addCommands(new LimelightTrackCommand(visionSubsystem, driveSubsystem).withTimeout(1.5));
+    addCommands(new AutoShootCommand(shootSubsystem, visionSubsystem, intakeSubsystem, distance).withTimeout(3));
   }
 }
