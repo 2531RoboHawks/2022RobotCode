@@ -30,7 +30,7 @@ public final class Constants {
 
   public static final class Controls {
     public static final int Slow = 2;
-    public static final int Turbo = 3;
+    public static final int Turbo = 4;
 
     public static final int Shoot = 5;
 

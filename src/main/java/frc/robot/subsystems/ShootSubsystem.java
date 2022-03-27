@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -27,6 +29,7 @@ public class ShootSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Target Revwheel RPM", rpm);
     double revolutionsPerSecond = rpm / 60.0;
     revwheel.setLinearVelocityFeedforwardPID(revolutionsPerSecond);
+    revwheel.getWPI().setNeutralMode(NeutralMode.Coast);
   }
 
   public double getRevwheelRPM() {
@@ -40,7 +43,7 @@ public class ShootSubsystem extends SubsystemBase {
 
   public void setStorageBeforeShootRunning(boolean running) {
     if (running) {
-      setStorageBeforeShootPower(0.17);
+      setStorageBeforeShootPower(0.18);
     } else {
       setStorageBeforeShootPower(0);
     }

@@ -149,7 +149,7 @@
           },
           "4,2": {
             "size": [
-              2,
+              1,
               1
             ],
             "content": {
@@ -158,7 +158,7 @@
               "_title": "Testing RPM"
             }
           },
-          "6,2": {
+          "7,2": {
             "size": [
               2,
               1
@@ -169,7 +169,7 @@
               "_title": "/SmartDashboard/Actual Revwheel RPM"
             }
           },
-          "6,1": {
+          "5,2": {
             "size": [
               2,
               1
@@ -252,7 +252,7 @@
               "_title": "SysIdTestType"
             }
           },
-          "8,2": {
+          "6,1": {
             "size": [
               1,
               1
@@ -283,6 +283,19 @@
               "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/Rate",
               "_title": "Rate"
+            }
+          },
+          "2,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/Pressure Switch",
+              "_title": "Pressure Switch",
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
             }
           }
         }
@@ -791,20 +804,6 @@
         "vgap": 16.0,
         "titleType": 0,
         "tiles": {
-          "4,3": {
-            "size": [
-              2,
-              1
-            ],
-            "content": {
-              "_type": "Field",
-              "_source0": "network_table:///SmartDashboard/Field",
-              "_title": "SmartDashboard/Field",
-              "Game/Game": "A2022_Rapid_React",
-              "Visuals/Robot Icon Size": 50.0,
-              "Visuals/Show Outside Circles": false
-            }
-          },
           "0,0": {
             "size": [
               3,
@@ -824,40 +823,7 @@
               "imageHeight": -1
             }
           },
-          "3,1": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Pose X",
-              "_title": "SmartDashboard/Pose X"
-            }
-          },
           "3,0": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Pose Y",
-              "_title": "SmartDashboard/Pose Y"
-            }
-          },
-          "3,2": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Gyro",
-              "_title": "SmartDashboard/Gyro"
-            }
-          },
-          "3,3": {
             "size": [
               1,
               1
@@ -868,9 +834,9 @@
               "_title": "SmartDashboard/Limelight Distance"
             }
           },
-          "4,0": {
+          "5,0": {
             "size": [
-              2,
+              1,
               1
             ],
             "content": {
@@ -881,20 +847,9 @@
               "Colors/Color when false": "#8B0000FF"
             }
           },
-          "0,3": {
+          "5,2": {
             "size": [
-              3,
-              1
-            ],
-            "content": {
-              "_type": "Basic FMS Info",
-              "_source0": "network_table:///FMSInfo",
-              "_title": "FMSInfo"
-            }
-          },
-          "4,2": {
-            "size": [
-              2,
+              1,
               1
             ],
             "content": {
@@ -905,9 +860,9 @@
               "Colors/Color when false": "#8B0000FF"
             }
           },
-          "4,1": {
+          "5,1": {
             "size": [
-              2,
+              1,
               1
             ],
             "content": {
@@ -921,7 +876,7 @@
           "6,0": {
             "size": [
               3,
-              4
+              3
             ],
             "content": {
               "_type": "Graph",
@@ -932,8 +887,89 @@
               "Y-axis/Automatic bounds": true,
               "Y-axis/Upper bound": 1.0,
               "Y-axis/Lower bound": -1.0,
-              "Y-axis/Unit": "ul",
-              "Visible data/SmartDashboard/Battery Voltage": true
+              "Y-axis/Unit": "ul"
+            }
+          },
+          "4,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/Pressure Switch",
+              "_title": "SmartDashboard/Pressure Switch",
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          }
+        }
+      }
+    },
+    {
+      "title": "The DATA",
+      "autoPopulate": false,
+      "autoPopulatePrefix": "",
+      "widgetPane": {
+        "gridSize": 128.0,
+        "showGrid": true,
+        "hgap": 16.0,
+        "vgap": 16.0,
+        "titleType": 0,
+        "tiles": {
+          "4,0": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Limelight Distance",
+              "_title": "SmartDashboard/Limelight Distance"
+            }
+          },
+          "6,0": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Target Revwheel RPM",
+              "_title": "SmartDashboard/Target Revwheel RPM"
+            }
+          },
+          "4,1": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Testing RPM",
+              "_title": "/SmartDashboard/Testing RPM"
+            }
+          },
+          "6,1": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Actual Revwheel RPM",
+              "_title": "SmartDashboard/Actual Revwheel RPM"
+            }
+          },
+          "4,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///limelight/ledMode",
+              "_title": "/limelight/ledMode"
             }
           }
         }
@@ -941,9 +977,9 @@
     }
   ],
   "windowGeometry": {
-    "x": -7.0,
-    "y": 2.0,
-    "width": 1378.0,
-    "height": 733.0
+    "x": -8.0,
+    "y": -8.0,
+    "width": 1382.0,
+    "height": 744.0
   }
 }
