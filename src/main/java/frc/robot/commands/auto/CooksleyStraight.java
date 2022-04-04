@@ -14,12 +14,12 @@ public class CooksleyStraight extends SequentialCommandGroup {
   private static final Waypoint FINAL_SHOT = SECOND_BALL;
 
   public CooksleyStraight(DriveSubsystem driveSubsystem, IntakeSubsystem intakeSubsystem, ShootSubsystem shootSubsystem, VisionSubsystem visionSubsystem) {
-    addCommands(new ResetOdometryCommand(driveSubsystem, START));
-    addCommands(new ShootOneBall(driveSubsystem, shootSubsystem, intakeSubsystem, visionSubsystem));
-    addCommands(new DriveToWaypoint(driveSubsystem, FIRST_BALL));
-    addCommands(new WaitCommand(1)); // TODO: shoot
-    addCommands(new DriveToWaypoint(driveSubsystem, SECOND_BALL));
-    addCommands(new DriveToWaypoint(driveSubsystem, FINAL_SHOT));
-    addCommands(new WaitCommand(1)); // TODO: shoot
+    // addCommands(new ResetOdometryCommand(driveSubsystem, START));
+    // addCommands(new ShootOneBall(driveSubsystem, shootSubsystem, intakeSubsystem, visionSubsystem));
+    // addCommands(new DriveToWaypoint(driveSubsystem, FIRST_BALL));
+    // addCommands(new WaitCommand(1)); // TODO: shoot
+    // addCommands(new DriveToWaypoint(driveSubsystem, SECOND_BALL));
+    // addCommands(new DriveToWaypoint(driveSubsystem, FINAL_SHOT));
+    // addCommands(new WaitCommand(1)); // TODO: shoot
   }
 }

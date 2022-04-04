@@ -16,18 +16,18 @@ public class TheRumbling extends SequentialCommandGroup {
   private static final Waypoint FINAL_SHOT = SECOND_BALL;
 
   public TheRumbling(DriveSubsystem driveSubsystem, IntakeSubsystem intakeSubsystem, ShootSubsystem shootSubsystem, VisionSubsystem visionSubsystem) {
-    addCommands(new ResetOdometryCommand(driveSubsystem, START));
-    addCommands(new ShootOneBall(driveSubsystem, shootSubsystem, intakeSubsystem, visionSubsystem));
-    addCommands(new RunIntakeCommandGroup(
-      intakeSubsystem,
-      TrajectoryCommand.fromWaypoints(driveSubsystem, START, FIRST_BALL),
-      new WaitCommand(1),
-      TrajectoryCommand.fromWaypoints(driveSubsystem, FIRST_BALL, SECOND_BALL),
-      new WaitCommand(1),
-      TrajectoryCommand.fromWaypoints(driveSubsystem, SECOND_BALL, TERMINAL),
-      new WaitCommand(1),
-      TrajectoryCommand.fromWaypoints(driveSubsystem, TERMINAL, FINAL_SHOT),
-      new WaitCommand(1)
-    ));
+    // addCommands(new ResetOdometryCommand(driveSubsystem, START));
+    // addCommands(new ShootOneBall(driveSubsystem, shootSubsystem, intakeSubsystem, visionSubsystem));
+    // addCommands(new RunIntakeCommandGroup(
+    //   intakeSubsystem,
+    //   TrajectoryCommand.fromWaypoints(driveSubsystem, START, FIRST_BALL),
+    //   new WaitCommand(1),
+    //   TrajectoryCommand.fromWaypoints(driveSubsystem, FIRST_BALL, SECOND_BALL),
+    //   new WaitCommand(1),
+    //   TrajectoryCommand.fromWaypoints(driveSubsystem, SECOND_BALL, TERMINAL),
+    //   new WaitCommand(1),
+    //   TrajectoryCommand.fromWaypoints(driveSubsystem, TERMINAL, FINAL_SHOT),
+    //   new WaitCommand(1)
+    // ));
   }
 }

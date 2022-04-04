@@ -18,14 +18,15 @@ public class AutoShootCommand extends CommandBase {
   private Timer timer = new Timer();
   private Timer finalTimer = new Timer();
 
-  private static final double startShootingAfter = 2;
-  private static final double stopShootingAfter = 3;
+  private static final double startShootingAfter = 1.5;
+  private static final double stopShootingAfter = 1.5;
 
-  public AutoShootCommand(ShootSubsystem shootSubsystem, VisionSubsystem visionSubsystem, IntakeSubsystem intakeSubsystem) {
+  public AutoShootCommand(ShootSubsystem shootSubsystem, VisionSubsystem visionSubsystem, IntakeSubsystem intakeSubsystem, double distance) {
     addRequirements(shootSubsystem, intakeSubsystem);
     this.visionSubsystem = visionSubsystem;
     this.shootSubsystem = shootSubsystem;
     this.intakeSubsystem = intakeSubsystem;
+    this.rpm = calculateRPMForDistance(distance);
     SmartDashboard.putNumber("Testing RPM", 0);
   }
 
@@ -36,7 +37,6 @@ public class AutoShootCommand extends CommandBase {
     timer.stop();
     finalTimer.reset();
     finalTimer.stop();
-    rpm = 4000;
   }
 
   public static double calculateRPMForDistance(double inches) {
@@ -55,20 +55,20 @@ public class AutoShootCommand extends CommandBase {
     // Start timer after limelight is ready
     timer.start();
 
-    if (visionSubsystem.hasValidTarget()) {
-      double distance = visionSubsystem.getDistance();
-      rpm = calculateRPMForDistance(distance);
+    // if (visionSubsystem.hasValidTarget()) {
+    //   double distance = visionSubsystem.getDistance();
+    //   rpm = calculateRPMForDistance(distance);
 
-      if (timer.hasElapsed(startShootingAfter)) {
-        finalTimer.start();
-        shootSubsystem.setStorageBeforeShootRunning(true);
-        intakeSubsystem.setStorageAfterIntakeRunning(true);
-      }
-    } else {
-      timer.reset();
-      shootSubsystem.setStorageBeforeShootRunning(false);
-      intakeSubsystem.setStorageAfterIntakeRunning(false);
+    if (timer.hasElapsed(startShootingAfter)) {
+      finalTimer.start();
+      shootSubsystem.setStorageBeforeShootRunning(true);
+      intakeSubsystem.setStorageAfterIntakeRunning(true);
     }
+    // } else {
+    //   timer.reset();
+    //   shootSubsystem.setStorageBeforeShootRunning(false);
+    //   intakeSubsystem.setStorageAfterIntakeRunning(false);
+    // }
 
     shootSubsystem.setRevwheelRPM(rpm);
   }
