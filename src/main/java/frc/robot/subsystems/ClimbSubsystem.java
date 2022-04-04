@@ -7,11 +7,12 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.BetterTalonFX;
 import frc.robot.PIDSettings;
+import frc.robot.Constants.Motors;
 import frc.robot.Constants.Solenoids;
 
 public class ClimbSubsystem extends SubsystemBase {
-  public BetterTalonFX leftTalon = new BetterTalonFX(21);
-  public BetterTalonFX rightTalon = new BetterTalonFX(22);
+  public BetterTalonFX leftTalon = new BetterTalonFX(Motors.ClimbLeft);
+  public BetterTalonFX rightTalon = new BetterTalonFX(Motors.ClimbRight);
   private Solenoid extendArmsSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, Solenoids.ClimbExtend);
 
   private static final PIDSettings talonPid = new PIDSettings(0.014, 0, 0);

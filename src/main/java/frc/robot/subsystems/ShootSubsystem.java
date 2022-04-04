@@ -9,16 +9,18 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.BetterSparkMaxBrushless;
 import frc.robot.BetterTalonFX;
 import frc.robot.PIDSettings;
+import frc.robot.Constants.DigitalInputs;
+import frc.robot.Constants.Motors;
 
 public class ShootSubsystem extends SubsystemBase {
-  private BetterTalonFX revwheel = new BetterTalonFX(15)
+  private BetterTalonFX revwheel = new BetterTalonFX(Motors.ShooterRevwheel)
     .configureUnitsPerRevolution(1)
     .configureFeedforward(new SimpleMotorFeedforward(0.52166, 0.10843, 0.0062646), new PIDSettings(0.10962, 0, 0));
 
-  private BetterSparkMaxBrushless storageBeforeShoot = new BetterSparkMaxBrushless(17)
+  private BetterSparkMaxBrushless storageBeforeShoot = new BetterSparkMaxBrushless(Motors.ShooterStorage)
     .configureInverted(true);
 
-  private DigitalInput limitSwitch = new DigitalInput(0);
+  private DigitalInput limitSwitch = new DigitalInput(DigitalInputs.BallStorage);
 
   public ShootSubsystem() {
     stopEverything();

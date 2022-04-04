@@ -16,10 +16,30 @@ import edu.wpi.first.wpilibj.XboxController.Button;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+  public static final class Motors {
+    public static final int ClimbLeft = 21;
+    public static final int ClimbRight = 22;
+
+    public static final int DriveFrontLeft = 30;
+    public static final int DriveFrontRight = 31;
+    public static final int DriveBackLeft = 32;
+    public static final int DriveBackRight = 33;
+
+    public static final int IntakeSpinner = 20;
+    public static final int IntakeStorage = 28;
+
+    public static final int ShooterRevwheel = 15;
+    public static final int ShooterStorage = 17;
+  }
+
   public static final class Solenoids {
     public static final int ClimbExtend = 0;
     public static final int Intake = 1;
     public static final int ClimbGrab = 2;
+  }
+
+  public static final class DigitalInputs {
+    public static final int BallStorage = 0;
   }
 
   public static final PIDSettings rotationPID = new PIDSettings(0.02, 0.001, 0);

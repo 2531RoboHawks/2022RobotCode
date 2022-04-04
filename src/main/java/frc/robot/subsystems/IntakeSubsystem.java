@@ -7,11 +7,12 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.BetterSparkMaxBrushless;
 import frc.robot.BetterTalonFX;
 import frc.robot.PIDSettings;
+import frc.robot.Constants.Motors;
 import frc.robot.Constants.Solenoids;
 
 public class IntakeSubsystem extends SubsystemBase {
-  private BetterSparkMaxBrushless intakeWheel = new BetterSparkMaxBrushless(20);
-  private BetterTalonFX storageAfterIntake = new BetterTalonFX(28);
+  private BetterSparkMaxBrushless intakeWheel = new BetterSparkMaxBrushless(Motors.IntakeSpinner);
+  private BetterTalonFX storageAfterIntake = new BetterTalonFX(Motors.IntakeStorage);
   private Solenoid solenoid = new Solenoid(PneumaticsModuleType.CTREPCM, Solenoids.Intake);
 
   public IntakeSubsystem() {
