@@ -12,7 +12,8 @@ import frc.robot.Constants.Solenoids;
 
 public class IntakeSubsystem extends SubsystemBase {
   private BetterSparkMaxBrushless intakeWheel = new BetterSparkMaxBrushless(Motors.IntakeSpinner);
-  private BetterTalonFX storageAfterIntake = new BetterTalonFX(Motors.IntakeStorage);
+  private BetterTalonFX storageAfterIntake = new BetterTalonFX(Motors.IntakeStorage)
+    .configureBrakes(false);
   private Solenoid solenoid = new Solenoid(PneumaticsModuleType.CTREPCM, Solenoids.Intake);
 
   public IntakeSubsystem() {

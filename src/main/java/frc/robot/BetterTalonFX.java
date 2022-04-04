@@ -2,6 +2,7 @@ package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import edu.wpi.first.math.controller.PIDController;
@@ -124,6 +125,11 @@ public class BetterTalonFX {
   public BetterTalonFX configureRamp(double secondsFromNeutralToFull) {
     talon.configOpenloopRamp(secondsFromNeutralToFull);
     talon.configClosedloopRamp(secondsFromNeutralToFull);
+    return this;
+  }
+
+  public BetterTalonFX configureBrakes(boolean brakes) {
+    talon.setNeutralMode(brakes ? NeutralMode.Brake : NeutralMode.Coast);
     return this;
   }
 }

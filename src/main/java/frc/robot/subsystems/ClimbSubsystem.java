@@ -11,12 +11,15 @@ import frc.robot.Constants.Motors;
 import frc.robot.Constants.Solenoids;
 
 public class ClimbSubsystem extends SubsystemBase {
-  public BetterTalonFX leftTalon = new BetterTalonFX(Motors.ClimbLeft);
-  public BetterTalonFX rightTalon = new BetterTalonFX(Motors.ClimbRight);
+  public BetterTalonFX leftTalon = new BetterTalonFX(Motors.ClimbLeft)
+    .configureBrakes(true);
+  public BetterTalonFX rightTalon = new BetterTalonFX(Motors.ClimbRight)
+    .configureBrakes(true);
+
   private Solenoid extendArmsSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, Solenoids.ClimbExtend);
 
-  private static final PIDSettings talonPid = new PIDSettings(0.014, 0, 0);
-  private static final double secondsFromNeutralToFull = 1;
+  private static final PIDSettings talonPid = new PIDSettings(0.014, 0, 0); // TODO: tune
+  private static final double secondsFromNeutralToFull = 1; // TODO: remove or at least lower a LOT
 
   public ClimbSubsystem() {
     leftTalon.configurePID(talonPid);

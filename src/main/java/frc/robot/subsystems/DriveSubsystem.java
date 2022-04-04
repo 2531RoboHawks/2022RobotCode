@@ -55,6 +55,11 @@ public class DriveSubsystem extends SubsystemBase {
   private final PIDSettings feedforwardPID = new PIDSettings(2.2706, 0, 0);
 
   public DriveSubsystem() {
+    frontLeft.configureBrakes(true);
+    frontRight.configureBrakes(true);
+    backLeft.configureBrakes(true);
+    backRight.configureBrakes(true);
+
     frontLeft.configureFeedforward(feedforward, feedforwardPID);
     frontRight.configureFeedforward(feedforward, feedforwardPID);
     backLeft.configureFeedforward(feedforward, feedforwardPID);

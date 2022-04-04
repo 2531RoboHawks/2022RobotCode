@@ -14,6 +14,7 @@ import frc.robot.Constants.Motors;
 
 public class ShootSubsystem extends SubsystemBase {
   private BetterTalonFX revwheel = new BetterTalonFX(Motors.ShooterRevwheel)
+    .configureBrakes(false)
     .configureUnitsPerRevolution(1)
     .configureFeedforward(new SimpleMotorFeedforward(0.52166, 0.10843, 0.0062646), new PIDSettings(0.10962, 0, 0));
 
