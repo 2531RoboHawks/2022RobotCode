@@ -10,28 +10,23 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.Controls;
 import frc.robot.Constants.HelmsControls;
-import frc.robot.commands.DriveCommand;
-import frc.robot.commands.ResetIntakeCommand;
-import frc.robot.commands.IntakeDownCommand;
-import frc.robot.commands.ManualClimbCommand;
-import frc.robot.commands.PrepareToShootBallCommand;
-import frc.robot.commands.ShootCommand;
-import frc.robot.commands.SynchronizedClimbCommand;
-import frc.robot.commands.ToggleClimbExtendCommand;
-import frc.robot.commands.ToggleIntakeCommand;
-import frc.robot.commands.auto.AutoAimShootCommand;
-import frc.robot.commands.auto.ShootBallAgainstHub;
-import frc.robot.commands.auto.ShootOneBall;
+import frc.robot.commands.PutIntakeDown;
+import frc.robot.commands.ToggleIntakeDown;
 import frc.robot.commands.auto.TwoBallAuto;
 import frc.robot.commands.auto.Taxi;
 import frc.robot.commands.auto.TheRumbling;
-import frc.robot.commands.auto.TrajectoryCommand;
-import frc.robot.commands.auto.WallMaria;
-import frc.robot.commands.auto.Waypoint;
+import frc.robot.commands.auto.DriveTrajectory;
+import frc.robot.commands.climb.ManualClimb;
+import frc.robot.commands.climb.SynchronizedClimb;
+import frc.robot.commands.climb.ToggleClimbExtended;
+import frc.robot.commands.defaults.DefaultDrive;
+import frc.robot.commands.defaults.DefaultIntake;
+import frc.robot.commands.defaults.DefaultShoot;
+import frc.robot.commands.shooting.PrepareToShootBall;
+import frc.robot.commands.shooting.ShootBallAgainstHub;
 import frc.robot.subsystems.ClimbSubsystem;
 import frc.robot.subsystems.CompressorSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
@@ -62,17 +57,17 @@ public class RobotContainer {
   public RobotContainer() {
     configureButtonBindings();
 
-    driveSubsystem.setDefaultCommand(new DriveCommand(driveSubsystem));
-    intakeSubsystem.setDefaultCommand(new ResetIntakeCommand(intakeSubsystem));
-    shootSubsystem.setDefaultCommand(new ShootCommand(shootSubsystem));
+    driveSubsystem.setDefaultCommand(new DefaultDrive(driveSubsystem));
+    intakeSubsystem.setDefaultCommand(new DefaultIntake(intakeSubsystem));
+    shootSubsystem.setDefaultCommand(new DefaultShoot(shootSubsystem));
 
-    SmartDashboard.putData("Manual Climb Command", new ManualClimbCommand(climbSubsystem, intakeSubsystem));
+    SmartDashboard.putData("Manual Climb Command", new ManualClimb(climbSubsystem, intakeSubsystem));
 
     autoChooser.addOption("None", null);
     autoChooser.addOption(
       // TODO: remove; was for testing only
       "8 Ball Auto",
-      TrajectoryCommand.fromWaypoints(
+      DriveTrajectory.fromWaypoints(
         driveSubsystem,
         Waypoint.LEFT,
         Waypoint.UP,
@@ -105,14 +100,14 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    new JoystickButton(helms, HelmsControls.SynchronizedClimb).toggleWhenActive(new SynchronizedClimbCommand(climbSubsystem, intakeSubsystem));
-    new JoystickButton(helms, HelmsControls.ManualClimb).toggleWhenActive(new ManualClimbCommand(climbSubsystem, intakeSubsystem));
-    new JoystickButton(helms, HelmsControls.ToggleIntakeDown).whenPressed(new ToggleIntakeCommand(intakeSubsystem));
-    new JoystickButton(helms, HelmsControls.ToggleClimbExtended).whenPressed(new ToggleClimbExtendCommand(climbSubsystem));
-    new JoystickButton(gamepad, Controls.ToggleIntakeDown).toggleWhenActive(new ParallelCommandGroup(new IntakeDownCommand(intakeSubsystem), new PrepareToShootBallCommand(shootSubsystem)));
+    new JoystickButton(helms, HelmsControls.SynchronizedClimb).toggleWhenActive(new SynchronizedClimb(climbSubsystem, intakeSubsystem));
+    new JoystickButton(helms, HelmsControls.ManualClimb).toggleWhenActive(new ManualClimb(climbSubsystem, intakeSubsystem));
+    new JoystickButton(helms, HelmsControls.ToggleIntakeDown).whenPressed(new ToggleIntakeDown(intakeSubsystem));
+    new JoystickButton(helms, HelmsControls.ToggleClimbExtended).whenPressed(new ToggleClimbExtended(climbSubsystem));
+    new JoystickButton(gamepad, Controls.ToggleIntakeDown).toggleWhenActive(new ParallelCommandGroup(new PutIntakeDown(intakeSubsystem), new PrepareToShootBall(shootSubsystem)));
     new JoystickAxis(gamepad, Controls.AutoAimShoot).whenActivated(new ShootBallAgainstHub(shootSubsystem, intakeSubsystem, driveSubsystem, 3950, 32));
     new JoystickAxis(gamepad, Controls.EjectBall).whenActivated(new ShootBallAgainstHub(shootSubsystem, intakeSubsystem, driveSubsystem, 2300, 12));
-    new JoystickButton(gamepad, Controls.PrepareToShootBall).whenHeld(new PrepareToShootBallCommand(shootSubsystem));
+    new JoystickButton(gamepad, Controls.PrepareToShootBall).whenHeld(new PrepareToShootBall(shootSubsystem));
   }
 
   /**

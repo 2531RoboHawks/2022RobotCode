@@ -1,4 +1,4 @@
-package frc.robot.commands.auto;
+package frc.robot.commands.shooting;
 
 import java.util.ArrayList;
 

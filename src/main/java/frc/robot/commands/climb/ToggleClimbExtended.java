@@ -1,14 +1,13 @@
-package frc.robot.commands;
+package frc.robot.commands.climb;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.subsystems.ClimbSubsystem;
 
-public class ToggleClimbExtendCommand extends SequentialCommandGroup {
+public class ToggleClimbExtended extends SequentialCommandGroup {
   private boolean newExtended;
 
-  public ToggleClimbExtendCommand(ClimbSubsystem climbSubsystem) {
+  public ToggleClimbExtended(ClimbSubsystem climbSubsystem) {
     // do not use requirements to not interrupt other climbing commands
     addCommands(new InstantCommand(() -> {
       newExtended = !climbSubsystem.areArmsExtended();

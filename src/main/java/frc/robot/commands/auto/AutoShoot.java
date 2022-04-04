@@ -11,7 +11,9 @@ import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShootSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 
-public class AutoShootCommand extends CommandBase {
+// NEEDS TO BE REFACTORED
+@Deprecated
+public class AutoShoot extends CommandBase {
   private VisionSubsystem visionSubsystem;
   private ShootSubsystem shootSubsystem;
   private IntakeSubsystem intakeSubsystem;
@@ -21,7 +23,7 @@ public class AutoShootCommand extends CommandBase {
   private static final double startShootingAfter = 1.5;
   private static final double stopShootingAfter = 1.5;
 
-  public AutoShootCommand(ShootSubsystem shootSubsystem, VisionSubsystem visionSubsystem, IntakeSubsystem intakeSubsystem, double distance) {
+  public AutoShoot(ShootSubsystem shootSubsystem, VisionSubsystem visionSubsystem, IntakeSubsystem intakeSubsystem, double distance) {
     addRequirements(shootSubsystem, intakeSubsystem);
     this.visionSubsystem = visionSubsystem;
     this.shootSubsystem = shootSubsystem;

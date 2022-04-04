@@ -1,4 +1,4 @@
-package frc.robot.commands.auto;
+package frc.robot.commands.shooting;
 
 import java.util.ArrayList;
 
@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ShootSubsystem;
 
-public class WaitForShootToBeReady extends CommandBase {
+public class WaitForShooterToBeStable extends CommandBase {
   private ShootSubsystem shootSubsystem;
   private ArrayList<Double> rpms = new ArrayList<>();
   private int period = 40;
@@ -14,7 +14,7 @@ public class WaitForShootToBeReady extends CommandBase {
   private double maxTime = 3;
   private Timer timer = new Timer();
 
-  public WaitForShootToBeReady(ShootSubsystem shootSubsystem) {
+  public WaitForShooterToBeStable(ShootSubsystem shootSubsystem) {
     // intentionally not using requirements here -- this shouldn't interrupt something actually using the shooter
     this.shootSubsystem = shootSubsystem;
   }
