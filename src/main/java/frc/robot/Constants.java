@@ -22,12 +22,7 @@ public final class Constants {
     public static final int ClimbGrab = 2;
   }
 
-  public static final class RotatePID {
-    // (in degrees)
-    public static final double kP = 0.02;
-    public static final double kI = 0.001;
-    public static final double kD = 0;
-  }
+  public static final PIDSettings rotationPID = new PIDSettings(0.02, 0.001, 0);
 
   public static final class Controls {
     public static final int Slow = Button.kB.value;

@@ -7,14 +7,14 @@ package frc.robot.commands;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants.RotatePID;
+import frc.robot.Constants;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 
 public class LimelightTrackCommand extends CommandBase {
   private DriveSubsystem driveSubsystem;
   private VisionSubsystem visionSubsystem;
-  private PIDController pidController = new PIDController(RotatePID.kP, RotatePID.kI, RotatePID.kD);;
+  private PIDController pidController = Constants.rotationPID.toController();
   private boolean hasRunOnce = false;
 
   /** Creates a new LimelightTrackCommand. */
