@@ -17,7 +17,6 @@ public class IntakeSubsystem extends SubsystemBase {
   private Solenoid solenoid = new Solenoid(PneumaticsModuleType.CTREPCM, Solenoids.Intake);
 
   public IntakeSubsystem() {
-    intakeWheel.configurePID(new PIDSettings(0.0005, 0, 0));
     setDown(false);
   }
 

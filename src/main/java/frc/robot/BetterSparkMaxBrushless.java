@@ -1,20 +1,23 @@
 package frc.robot;
 
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+
 import com.revrobotics.RelativeEncoder;
-import com.revrobotics.SparkMaxPIDController;
 
 public class BetterSparkMaxBrushless {
   private CANSparkMax canSparkMax;
-  private SparkMaxPIDController pidController;
-  private RelativeEncoder encoder;
+  private RelativeEncoder integratedEncoder;
+
+  private SimpleMotorFeedforward feedforward;
+  private PIDController feedforwardPID;
 
   public BetterSparkMaxBrushless(int id) {
     canSparkMax = new CANSparkMax(id, MotorType.kBrushless);
-    encoder = canSparkMax.getEncoder();
-    pidController = canSparkMax.getPIDController();
+    integratedEncoder = canSparkMax.getEncoder();
   }
 
   public BetterSparkMaxBrushless configureInverted(boolean inverted) {
@@ -30,18 +33,18 @@ public class BetterSparkMaxBrushless {
     canSparkMax.stopMotor();
   }
 
-  public void setRPM(double rpm) {
-    pidController.setReference(rpm, ControlType.kVelocity);
-  }
-
   public double getRPM() {
-    return encoder.getVelocity();
+    return integratedEncoder.getVelocity();
   }
 
-  public void configurePID(PIDSettings pidSettings) {
-    pidController.setP(pidSettings.kp);
-    pidController.setI(pidSettings.ki);
-    pidController.setD(pidSettings.kd);
+  public void setRPMFeedforwardPID(double rpm) {
+    double revolutionsPerSecond = rpm / 60.0;
+    canSparkMax.setVoltage(feedforward.calculate(revolutionsPerSecond) + feedforwardPID.calculate(getRPM(), revolutionsPerSecond));
+  }
+
+  public void configureFeedforward(SimpleMotorFeedforward feedforward, PIDSettings pidSettings) {
+    this.feedforward = feedforward;
+    this.feedforwardPID = pidSettings.toController();
   }
 
   public CANSparkMax getCanSparkMax() {
