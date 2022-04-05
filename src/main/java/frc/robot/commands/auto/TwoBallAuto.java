@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.RobotContainer;
+import frc.robot.commands.PutIntakeDownAndSpin;
 import frc.robot.commands.shooting.MoveBallToShooter;
 import frc.robot.commands.shooting.PrepareToShootBall;
 import frc.robot.commands.shooting.RevShooterToSpeedThenNeutral;
@@ -28,17 +29,16 @@ public class TwoBallAuto extends SequentialCommandGroup {
 
   public TwoBallAuto() {
     addCommands(new ResetOdometry(driveSubsystem));
-    addCommands(new RevShooterToSpeedThenNeutral(4000, shootSubsystem));
+    addCommands(new RevShooterToSpeedThenNeutral(4000, shootSubsystem)); // TODO: tune
     addCommands(new MoveBallToShooter(storageSubsystem));
-    // TODO: reimplement the second ball
-    // addCommands(new RunIntakeCommandGroup(
-    //   intakeSubsystem,
-    //   new DriveToWaypoint(driveSubsystem, Units.inchesToMeters(moves), 0, 0),
+    addCommands(new WaitCommand(0.2));
+    // addCommands(new ParallelCommandGroup(
+    //   new PutIntakeDownAndSpin(intakeSubsystem),
     //   new SequentialCommandGroup(
-    //     new WaitCommand(1),
-    //     new DriveToWaypoint(driveSubsystem, 0, 0, 0)
-    //   ).deadlineWith(new PrepareToShootBall(shootSubsystem)),
-    //   new ShootOneBall(driveSubsystem, shootSubsystem, intakeSubsystem, visionSubsystem, startingDistance)
+    //     new DriveToWaypoint(driveSubsystem, Units.inchesToMeters(moves), 0, 0),
+    //     new RevShooterToSpeedThenNeutral(4000, shootSubsystem),
+    //     new MoveBallToShooter(storageSubsystem)
+    //   )
     // ));
   }
 }

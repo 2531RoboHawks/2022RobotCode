@@ -88,7 +88,6 @@ public class RobotContainer {
     //   )
     // );
     autoChooser.setDefaultOption("Two Ball", new TwoBallAuto());
-    autoChooser.addOption("The Rumbling", new TheRumbling(driveSubsystem, intakeSubsystem, shootSubsystem, visionSubsystem));
     SmartDashboard.putData(autoChooser);
   }
 
