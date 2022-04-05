@@ -1,15 +1,11 @@
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.BetterSparkMaxBrushless;
 import frc.robot.BetterTalonFX;
 import frc.robot.PIDSettings;
-import frc.robot.Constants.DigitalInputs;
+import frc.robot.RobotContainer;
 import frc.robot.Constants.Motors;
 
 public class ShootSubsystem extends SubsystemBase {
@@ -17,11 +13,6 @@ public class ShootSubsystem extends SubsystemBase {
     .configureBrakes(false)
     .configureUnitsPerRevolution(1)
     .configureFeedforward(new SimpleMotorFeedforward(0.52166, 0.10843, 0.0062646), new PIDSettings(0.10962, 0, 0));
-
-  private BetterSparkMaxBrushless storageBeforeShoot = new BetterSparkMaxBrushless(Motors.ShooterStorage)
-    .configureInverted(true);
-
-  private DigitalInput limitSwitch = new DigitalInput(DigitalInputs.BallStorage);
 
   public ShootSubsystem() {
     stopEverything();
@@ -38,36 +29,36 @@ public class ShootSubsystem extends SubsystemBase {
     return revwheel.getRPM();
   }
 
-  public void setStorageBeforeShootPower(double power) {
-    System.out.println("Storage before shoot: " + power);
-    storageBeforeShoot.setPower(power);
-  }
-
-  public void setStorageBeforeShootRunning(boolean running) {
-    if (running) {
-      setStorageBeforeShootPower(0.18);
-    } else {
-      setStorageBeforeShootPower(0);
-    }
-  }
-
   public void idleRevwheel() {
     revwheel.stop();
   }
+
+  // use idleRevwheel instead
+  @Deprecated
   public void stopEverything() {
     idleRevwheel();
-    setStorageBeforeShootRunning(false);
   }
 
+  // use storage subsytem
+  @Deprecated
+  public void setStorageBeforeShootPower(double power) {
+    RobotContainer.storageSubsystem.setBeforeShooterPower(power);
+  }
+
+  // use storage subsytem
+  @Deprecated
+  public void setStorageBeforeShootRunning(boolean running) {
+    RobotContainer.storageSubsystem.setBeforeShooterRunning(running);
+  }
+
+  // use storage subsytem
+  @Deprecated
   public boolean isBallInStorage() {
-    return !limitSwitch.get();
+    return RobotContainer.storageSubsystem.isBallInStorage();
   }
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("Actual Revwheel RPM", revwheel.getRPM());
-    SmartDashboard.putBoolean("Limit Switch", limitSwitch.get());
-    // SmartDashboard.putNumber("Revwheel Voltage", revwheel.getWPI().getBusVoltage());
-    // SmartDashboard.putNumber("Revwheel Current", revwheel.getWPI().getSupplyCurrent());
+    // SmartDashboard.putNumber("Actual Revwheel RPM", revwheel.getRPM());
   }
 }

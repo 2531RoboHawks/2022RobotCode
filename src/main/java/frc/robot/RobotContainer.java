@@ -32,6 +32,7 @@ import frc.robot.subsystems.CompressorSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShootSubsystem;
+import frc.robot.subsystems.StorageSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 
 /**
@@ -45,6 +46,7 @@ public class RobotContainer {
   public static final DriveSubsystem driveSubsystem = new DriveSubsystem();
   public static final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
   public static final ShootSubsystem shootSubsystem = new ShootSubsystem();
+  public static final StorageSubsystem storageSubsystem = new StorageSubsystem();
   public static final VisionSubsystem visionSubsystem = new VisionSubsystem();
   public static final CompressorSubsystem compressorSubsystem = new CompressorSubsystem();
 
