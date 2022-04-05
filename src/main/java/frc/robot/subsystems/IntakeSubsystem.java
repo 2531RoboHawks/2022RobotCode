@@ -45,6 +45,7 @@ public class IntakeSubsystem extends SubsystemBase {
   public void setStorageAfterIntakeRunning(boolean running) {
     System.out.println("Storage after intake: " + running);
     if (running) {
+      // TODO: tune
       storageAfterIntake.setPower(0.17);
     } else {
       storageAfterIntake.stop();
