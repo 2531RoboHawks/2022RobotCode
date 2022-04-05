@@ -28,7 +28,7 @@ public class TwoBallAuto extends SequentialCommandGroup {
 
   public TwoBallAuto() {
     addCommands(new ResetOdometry(driveSubsystem));
-    addCommands(new RevShooterToSpeedThenNeutral(shootSubsystem, 4000));
+    addCommands(new RevShooterToSpeedThenNeutral(4000, shootSubsystem));
     addCommands(new MoveBallToShooter(storageSubsystem));
     // TODO: reimplement the second ball
     // addCommands(new RunIntakeCommandGroup(
