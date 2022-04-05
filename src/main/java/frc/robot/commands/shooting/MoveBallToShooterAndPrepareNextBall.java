@@ -4,17 +4,17 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.ShootingConstants;
 import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.subsystems.ShootSubsystem;
+import frc.robot.subsystems.StorageSubsystem;
 
 public class MoveBallToShooterAndPrepareNextBall extends SequentialCommandGroup {
-  public MoveBallToShooterAndPrepareNextBall(ShootSubsystem shootSubsystem, IntakeSubsystem intakeSubsystem) {
-    addCommands(new MoveBallToShooter(shootSubsystem));
+  public MoveBallToShooterAndPrepareNextBall(StorageSubsystem storageSubsystem, IntakeSubsystem intakeSubsystem) {
+    addCommands(new MoveBallToShooter(storageSubsystem));
     addCommands(
       new ParallelCommandGroup(
-        new RunStorageBeforeShooter(ShootingConstants.moveBallForwardPower, shootSubsystem),
+        new RunStorageBeforeShooter(ShootingConstants.moveBallForwardPower, storageSubsystem),
         new RunStorageAfterIntake(intakeSubsystem)
       )
-        .until(() -> shootSubsystem.isBallInStorage())
+        .until(() -> storageSubsystem.isBallBeforeShooter())
         .withTimeout(ShootingConstants.waitForBallToBePreparedTimeout)
     );
   }

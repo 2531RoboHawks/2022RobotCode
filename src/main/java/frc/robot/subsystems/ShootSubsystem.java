@@ -54,7 +54,7 @@ public class ShootSubsystem extends SubsystemBase {
   // use storage subsytem
   @Deprecated
   public boolean isBallInStorage() {
-    return RobotContainer.storageSubsystem.isBallInStorage();
+    return RobotContainer.storageSubsystem.isBallBeforeShooter();
   }
 
   @Override

@@ -87,10 +87,7 @@ public class RobotContainer {
     //     new Taxi(driveSubsystem)
     //   )
     // );
-    autoChooser.setDefaultOption(
-      "Two Ball",
-      new TwoBallAuto(driveSubsystem, shootSubsystem, intakeSubsystem, visionSubsystem)
-    );
+    autoChooser.setDefaultOption("Two Ball", new TwoBallAuto());
     autoChooser.addOption("The Rumbling", new TheRumbling(driveSubsystem, intakeSubsystem, shootSubsystem, visionSubsystem));
     SmartDashboard.putData(autoChooser);
   }

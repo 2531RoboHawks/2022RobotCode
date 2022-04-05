@@ -23,11 +23,11 @@ public class StorageSubsystem extends SubsystemBase {
     setBeforeShooterPower(running ? 0.18 : 0);
   }
 
-  public void stop() {
+  public void stopBeforeShooter() {
     beforeShooter.stop();
   }
 
-  public boolean isBallInStorage() {
+  public boolean isBallBeforeShooter() {
     return !switchBeforeShooter.get();
   }
 }

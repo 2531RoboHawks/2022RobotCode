@@ -1,18 +1,18 @@
 package frc.robot.commands.shooting;
 
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
-import frc.robot.subsystems.ShootSubsystem;
+import frc.robot.subsystems.StorageSubsystem;
 
 public class RunStorageBeforeShooter extends StartEndCommand {
-  public RunStorageBeforeShooter(double power, ShootSubsystem shootSubsystem) {
+  public RunStorageBeforeShooter(double power, StorageSubsystem storageSubsystem) {
     super(
       () -> {
-        shootSubsystem.setStorageBeforeShootPower(power);
+        storageSubsystem.setBeforeShooterPower(power);
       },
       () -> {
-        shootSubsystem.setStorageBeforeShootRunning(false);
+        storageSubsystem.stopBeforeShooter();
       },
-      shootSubsystem
+      storageSubsystem
     );
   }
 }
