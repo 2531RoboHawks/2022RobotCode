@@ -15,7 +15,6 @@ public class BetterSparkMaxBrushless {
     canSparkMax = new CANSparkMax(id, MotorType.kBrushless);
     encoder = canSparkMax.getEncoder();
     pidController = canSparkMax.getPIDController();
-    zero();
   }
 
   public BetterSparkMaxBrushless configureInverted(boolean inverted) {
@@ -34,29 +33,15 @@ public class BetterSparkMaxBrushless {
   public void setRPM(double rpm) {
     pidController.setReference(rpm, ControlType.kVelocity);
   }
+
   public double getRPM() {
     return encoder.getVelocity();
-  }
-
-  private double zero;
-  public void zero() {
-    zero = encoder.getPosition();
-  }
-  public void setPosition(double turns) {
-    pidController.setReference(zero + turns, ControlType.kPosition);
-  }
-  public double getPosition() {
-    return encoder.getPosition();
   }
 
   public void configurePID(PIDSettings pidSettings) {
     pidController.setP(pidSettings.kp);
     pidController.setI(pidSettings.ki);
     pidController.setD(pidSettings.kd);
-  }
-
-  public void setMaxPIDOutput(double output) {
-    pidController.setOutputRange(-output, output);
   }
 
   public CANSparkMax getCanSparkMax() {
