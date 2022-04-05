@@ -20,9 +20,9 @@ public final class Constants {
     public static final int ClimbLeft = 21;
     public static final int ClimbRight = 22;
 
-    public static final int DriveFrontLeft = 30;
+    public static final int DriveFrontLeft = 32;
     public static final int DriveFrontRight = 31;
-    public static final int DriveBackLeft = 32;
+    public static final int DriveBackLeft = 30;
     public static final int DriveBackRight = 33;
 
     public static final int IntakeSpinner = 20;
