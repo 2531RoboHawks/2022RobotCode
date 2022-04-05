@@ -19,7 +19,7 @@ public class DriveToWaypoint extends CommandBase {
   private static final double maxVelocity = 0.3;
   private static final double maxRotation = 0.3;
 
-  public DriveToWaypoint(DriveSubsystem driveSubsystem, Pose2d pose) {
+  public DriveToWaypoint(Pose2d pose, DriveSubsystem driveSubsystem) {
     this.driveSubsystem = driveSubsystem;
     this.desiredPose = pose;
     addRequirements(driveSubsystem);
@@ -32,12 +32,16 @@ public class DriveToWaypoint extends CommandBase {
     sidewaysController.setTolerance(0.1);
   }
 
+  public DriveToWaypoint(DriveSubsystem driveSubsystem, Pose2d pose) {
+    this(pose, driveSubsystem);
+  }
+
   public DriveToWaypoint(DriveSubsystem driveSubsystem, double forward, double sideways, double rotationDegrees) {
-    this(driveSubsystem, new Pose2d(forward, sideways, Rotation2d.fromDegrees(rotationDegrees)));
+    this(new Pose2d(forward, sideways, Rotation2d.fromDegrees(rotationDegrees)), driveSubsystem);
   }
 
   public DriveToWaypoint(DriveSubsystem driveSubsystem, Waypoint waypoint) {
-    this(driveSubsystem, waypoint.getPose());
+    this(waypoint.getPose(), driveSubsystem);
   }
 
   @Override
