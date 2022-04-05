@@ -29,9 +29,6 @@ public class ClimbSubsystem extends SubsystemBase {
     rightTalon.configureRamp(secondsFromNeutralToFull);
 
     setArmsExtended(false);
-
-    rightTalon.getWPI().setNeutralMode(NeutralMode.Brake);
-    leftTalon.getWPI().setNeutralMode(NeutralMode.Brake);
   }
 
   public double getArmExtensionTarget() {

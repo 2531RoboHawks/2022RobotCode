@@ -32,7 +32,6 @@ public class ShootSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Target Revwheel RPM", rpm);
     double revolutionsPerSecond = rpm / 60.0;
     revwheel.setLinearVelocityFeedforwardPID(revolutionsPerSecond);
-    revwheel.getWPI().setNeutralMode(NeutralMode.Coast);
   }
 
   public double getRevwheelRPM() {
