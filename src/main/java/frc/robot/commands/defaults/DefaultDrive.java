@@ -57,7 +57,7 @@ public class DefaultDrive extends CommandBase {
     double y = -RobotContainer.gamepad.getLeftY();
     double z = RobotContainer.gamepad.getRawAxis(4);
 
-    driveSubsystem.drivePercent(driveSubsystem.calculateMecanumDrive(
+    driveSubsystem.drivePercent(driveSubsystem.calculateRobotOriented(
       scale(y) * yMultiplier,
       scale(x) * xMultiplier,
       scale(z) * rotationMultiplier
