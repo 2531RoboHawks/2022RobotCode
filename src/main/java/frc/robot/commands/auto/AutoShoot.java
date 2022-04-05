@@ -7,6 +7,7 @@ package frc.robot.commands.auto;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.commands.shooting.RPMCalculator;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShootSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
@@ -28,7 +29,7 @@ public class AutoShoot extends CommandBase {
     this.visionSubsystem = visionSubsystem;
     this.shootSubsystem = shootSubsystem;
     this.intakeSubsystem = intakeSubsystem;
-    this.rpm = calculateRPMForDistance(distance);
+    this.rpm = RPMCalculator.distancesToRPM(distance);
     SmartDashboard.putNumber("Testing RPM", 0);
   }
 
@@ -39,11 +40,6 @@ public class AutoShoot extends CommandBase {
     timer.stop();
     finalTimer.reset();
     finalTimer.stop();
-  }
-
-  public static double calculateRPMForDistance(double inches) {
-    // return SmartDashboard.getNumber("Testing RPM", 0);
-    return inches * 17.6 + 2886.0;
   }
 
   private double rpm = 0;

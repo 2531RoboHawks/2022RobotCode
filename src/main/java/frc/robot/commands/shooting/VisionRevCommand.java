@@ -35,7 +35,7 @@ public class VisionRevCommand extends CommandBase {
   public void execute() {
     if (visionSubsystem.isReady() && visionSubsystem.hasValidTarget()) {
       double distance = visionSubsystem.getDistance();
-      rpm = AutoShoot.calculateRPMForDistance(distance);
+      rpm = RPMCalculator.distancesToRPM(distance);
     }
 
     shootSubsystem.setRevwheelRPM(rpm);
