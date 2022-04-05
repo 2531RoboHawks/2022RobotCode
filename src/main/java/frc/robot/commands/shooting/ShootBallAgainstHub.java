@@ -39,7 +39,7 @@ public class ShootBallAgainstHub extends SequentialCommandGroup {
       new SequentialCommandGroup(
         new ResetOdometry(driveSubsystem),
         new DriveToWaypoint(driveSubsystem, new Pose2d(Units.inchesToMeters(distance), 0, Rotation2d.fromDegrees(0))).withTimeout(2),
-        new WaitForShooterToBeAtSpeed(shootSubsystem, rpm).withTimeout(2),
+        new WaitForShooterToBeAtSpeed(rpm, shootSubsystem).withTimeout(2),
         new InstantCommand(() -> {
           shootSubsystem.setStorageBeforeShootPower(ejectBallPower);
         }),
@@ -53,7 +53,7 @@ public class ShootBallAgainstHub extends SequentialCommandGroup {
           shootSubsystem.setStorageBeforeShootPower(keepBallInPower);
         }),
         new WaitCommand(0.1),
-        new WaitForShooterToBeAtSpeed(shootSubsystem, rpm).withTimeout(2),
+        new WaitForShooterToBeAtSpeed(rpm, shootSubsystem).withTimeout(2),
         new InstantCommand(() -> {
           shootSubsystem.setStorageBeforeShootPower(ejectBallPower);
         })

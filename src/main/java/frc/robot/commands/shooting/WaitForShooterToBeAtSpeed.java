@@ -12,7 +12,7 @@ public class WaitForShooterToBeAtSpeed extends CommandBase {
   private ArrayList<Double> rpms = new ArrayList<>();
   private double targetRpm;
 
-  public WaitForShooterToBeAtSpeed(ShootSubsystem shootSubsystem, double rpm) {
+  public WaitForShooterToBeAtSpeed(double rpm, ShootSubsystem shootSubsystem) {
     // intentionally not using requirements here -- this shouldn't interrupt something actually using the shooter
     this.shootSubsystem = shootSubsystem;
     this.targetRpm = rpm;
