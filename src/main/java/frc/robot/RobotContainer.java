@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.Controls;
 import frc.robot.Constants.HelmsControls;
-import frc.robot.commands.PutIntakeDown;
+import frc.robot.commands.PutIntakeDownAndSpin;
 import frc.robot.commands.ToggleIntakeDown;
 import frc.robot.commands.auto.TwoBallAuto;
 import frc.robot.commands.auto.Taxi;
@@ -103,10 +103,10 @@ public class RobotContainer {
     new JoystickButton(helms, HelmsControls.ManualClimb).toggleWhenActive(new ManualClimb(climbSubsystem, intakeSubsystem));
     new JoystickButton(helms, HelmsControls.ToggleIntakeDown).whenPressed(new ToggleIntakeDown(intakeSubsystem));
     new JoystickButton(helms, HelmsControls.ToggleClimbExtended).whenPressed(new ToggleClimbExtended(climbSubsystem));
-    new JoystickButton(gamepad, Controls.ToggleIntakeDown).toggleWhenActive(new ParallelCommandGroup(new PutIntakeDown(intakeSubsystem), new PrepareToShootBall(shootSubsystem)));
+    new JoystickButton(gamepad, Controls.ToggleIntakeDown).toggleWhenActive(new ParallelCommandGroup(new PutIntakeDownAndSpin(intakeSubsystem), new PrepareToShootBall(storageSubsystem)));
     new JoystickAxis(gamepad, Controls.AutoAimShoot).whenActivated(new ShootBallAgainstHub(shootSubsystem, intakeSubsystem, driveSubsystem, 3950, 32));
     new JoystickAxis(gamepad, Controls.EjectBall).whenActivated(new ShootBallAgainstHub(shootSubsystem, intakeSubsystem, driveSubsystem, 2300, 12));
-    new JoystickButton(gamepad, Controls.PrepareToShootBall).whenHeld(new PrepareToShootBall(shootSubsystem));
+    new JoystickButton(gamepad, Controls.PrepareToShootBall).whenHeld(new PrepareToShootBall(storageSubsystem));
   }
 
   /**

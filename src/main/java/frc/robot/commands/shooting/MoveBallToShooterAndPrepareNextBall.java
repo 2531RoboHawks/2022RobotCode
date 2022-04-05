@@ -11,7 +11,7 @@ public class MoveBallToShooterAndPrepareNextBall extends SequentialCommandGroup 
     addCommands(new MoveBallToShooter(storageSubsystem));
     addCommands(
       new ParallelCommandGroup(
-        new RunStorageBeforeShooter(ShootingConstants.moveBallForwardPower, storageSubsystem),
+        new RunStorageBeforeShooter(ShootingConstants.moveBallToShooterPower, storageSubsystem),
         new RunStorageAfterIntake(intakeSubsystem)
       )
         .until(() -> storageSubsystem.isBallBeforeShooter())

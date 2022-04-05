@@ -5,7 +5,7 @@ import frc.robot.subsystems.IntakeSubsystem;
 
 public class ToggleIntakeDown extends InstantCommand {
   public ToggleIntakeDown(IntakeSubsystem intakeSubsystem) {
-    // do not use requirements to not interrupt other climbing commands
+    // do not use requirements to avoid interrupting other climbing commands
     super(() -> {
       intakeSubsystem.toggleDown();
     });

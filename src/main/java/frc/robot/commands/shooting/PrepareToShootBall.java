@@ -1,28 +1,27 @@
 package frc.robot.commands.shooting;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.ShootSubsystem;
+import frc.robot.subsystems.StorageSubsystem;
 
 public class PrepareToShootBall extends CommandBase {
-  private ShootSubsystem shootSubsystem;
+  private StorageSubsystem storageSubsystem;
 
-  public PrepareToShootBall(ShootSubsystem shootSubsystem) {
-    addRequirements(shootSubsystem);
-    this.shootSubsystem = shootSubsystem;
+  public PrepareToShootBall(StorageSubsystem storageSubsystem) {
+    addRequirements(storageSubsystem);
+    this.storageSubsystem = storageSubsystem;
   }
 
   @Override
   public void execute() {
-    if (shootSubsystem.isBallInStorage()) {
-      shootSubsystem.setStorageBeforeShootPower(0);
-      cancel();
+    if (storageSubsystem.isBallBeforeShooter()) {
+      storageSubsystem.stopBeforeShooter();
     } else {
-      shootSubsystem.setStorageBeforeShootPower(0.13);
+      storageSubsystem.setBeforeShooterPower(0.13);
     }
   }
 
   @Override
   public void end(boolean interrupted) {
-    shootSubsystem.setStorageBeforeShootRunning(false);
+    storageSubsystem.stopBeforeShooter();
   }
 }

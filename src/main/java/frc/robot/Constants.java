@@ -69,7 +69,7 @@ public final class Constants {
 
   public static final class ShootingConstants {
     public static final double ejectBallPower = 0.3;
-    public static final double moveBallForwardPower = 0.14;
+    public static final double moveBallToShooterPower = 0.14;
     public static final double waitForBallToShootTimeout = 1; // TODO: tune
     public static final double waitForBallToBePreparedTimeout = 1; // TODO: tune
     public static final double waitForShooterToReachSpeedTimeout = 2; // TODO: tune
