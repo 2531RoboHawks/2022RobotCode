@@ -32,13 +32,12 @@ public class TwoBallAuto extends SequentialCommandGroup {
     addCommands(new RevShooterToSpeedThenNeutral(4000, shootSubsystem)); // TODO: tune
     addCommands(new MoveBallToShooter(storageSubsystem));
     addCommands(new WaitCommand(0.2));
-    // addCommands(new ParallelCommandGroup(
-    //   new PutIntakeDownAndSpin(intakeSubsystem),
-    //   new SequentialCommandGroup(
-    //     new DriveToWaypoint(driveSubsystem, Units.inchesToMeters(moves), 0, 0),
-    //     new RevShooterToSpeedThenNeutral(4000, shootSubsystem),
-    //     new MoveBallToShooter(storageSubsystem)
-    //   )
-    // ));
+    addCommands(
+      new SequentialCommandGroup(
+        new DriveToWaypoint(driveSubsystem, Units.inchesToMeters(moves), 0, 0),
+        new RevShooterToSpeedThenNeutral(4000, shootSubsystem), // TODO: tune
+        new MoveBallToShooter(storageSubsystem)
+      ).deadlineWith(new PutIntakeDownAndSpin(intakeSubsystem))
+    );
   }
 }
