@@ -16,7 +16,9 @@ import edu.wpi.first.wpilibj.XboxController.Button;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-  public static final class Motors {
+  public static final class CAN {
+    public static final int Pigeon = 1;
+
     public static final int ClimbLeft = 21;
     public static final int ClimbRight = 22;
 

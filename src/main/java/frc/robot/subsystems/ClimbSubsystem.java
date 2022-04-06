@@ -5,13 +5,13 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.BetterTalonFX;
 import frc.robot.PIDSettings;
-import frc.robot.Constants.Motors;
+import frc.robot.Constants.CAN;
 import frc.robot.Constants.Solenoids;
 
 public class ClimbSubsystem extends SubsystemBase {
-  public BetterTalonFX leftTalon = new BetterTalonFX(Motors.ClimbLeft)
+  public BetterTalonFX leftTalon = new BetterTalonFX(CAN.ClimbLeft)
     .configureBrakes(true);
-  public BetterTalonFX rightTalon = new BetterTalonFX(Motors.ClimbRight)
+  public BetterTalonFX rightTalon = new BetterTalonFX(CAN.ClimbRight)
     .configureBrakes(true);
 
   private Solenoid extendArmsSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, Solenoids.ClimbExtend);

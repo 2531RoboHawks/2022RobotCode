@@ -4,10 +4,10 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.BetterSparkMaxBrushless;
 import frc.robot.Constants.DigitalInputs;
-import frc.robot.Constants.Motors;
+import frc.robot.Constants.CAN;
 
 public class StorageSubsystem extends SubsystemBase {
-  private BetterSparkMaxBrushless beforeShooter = new BetterSparkMaxBrushless(Motors.ShooterStorage)
+  private BetterSparkMaxBrushless beforeShooter = new BetterSparkMaxBrushless(CAN.ShooterStorage)
     .configureInverted(true);
 
   private DigitalInput switchBeforeShooter = new DigitalInput(DigitalInputs.BallStorage);

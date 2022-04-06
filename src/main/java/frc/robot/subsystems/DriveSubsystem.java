@@ -24,15 +24,15 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.BetterTalonFX;
 import frc.robot.MecanumDriveInfo;
 import frc.robot.PIDSettings;
-import frc.robot.Constants.Motors;
+import frc.robot.Constants.CAN;
 
 public class DriveSubsystem extends SubsystemBase {
-  private Gyro gyro = new WPI_PigeonIMU(1);
+  private Gyro gyro = new WPI_PigeonIMU(CAN.Pigeon);
 
-  private BetterTalonFX frontLeft = new BetterTalonFX(Motors.DriveFrontLeft);
-  private BetterTalonFX frontRight = new BetterTalonFX(Motors.DriveFrontRight);
-  private BetterTalonFX backLeft = new BetterTalonFX(Motors.DriveBackLeft);
-  private BetterTalonFX backRight = new BetterTalonFX(Motors.DriveBackRight);
+  private BetterTalonFX frontLeft = new BetterTalonFX(CAN.DriveFrontLeft);
+  private BetterTalonFX frontRight = new BetterTalonFX(CAN.DriveFrontRight);
+  private BetterTalonFX backLeft = new BetterTalonFX(CAN.DriveBackLeft);
+  private BetterTalonFX backRight = new BetterTalonFX(CAN.DriveBackRight);
 
   private final MecanumDriveKinematics kinematics = new MecanumDriveKinematics(
     // In meters from center of robot

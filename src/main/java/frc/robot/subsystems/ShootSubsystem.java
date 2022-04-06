@@ -6,10 +6,10 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.BetterTalonFX;
 import frc.robot.PIDSettings;
 import frc.robot.RobotContainer;
-import frc.robot.Constants.Motors;
+import frc.robot.Constants.CAN;
 
 public class ShootSubsystem extends SubsystemBase {
-  private BetterTalonFX revwheel = new BetterTalonFX(Motors.ShooterRevwheel)
+  private BetterTalonFX revwheel = new BetterTalonFX(CAN.ShooterRevwheel)
     .configureBrakes(false)
     .configureUnitsPerRevolution(1)
     .configureFeedforward(new SimpleMotorFeedforward(0.52166, 0.10843, 0.0062646), new PIDSettings(0.10962, 0, 0));
