@@ -13,11 +13,12 @@ public class PrepareToShootBall extends CommandBase {
 
   @Override
   public void execute() {
-    if (storageSubsystem.isBallBeforeShooter()) {
-      storageSubsystem.stopBeforeShooter();
-    } else {
-      storageSubsystem.setBeforeShooterPower(0.13);
-    }
+    storageSubsystem.setBeforeShooterPower(0.13);
+  }
+
+  @Override
+  public boolean isFinished() {
+    return storageSubsystem.isBallBeforeShooter();
   }
 
   @Override

@@ -75,5 +75,11 @@ public final class Constants {
     public static final double waitForBallToShootTimeout = 1; // TODO: tune
     public static final double waitForBallToBePreparedTimeout = 1; // TODO: tune
     public static final double waitForShooterToReachSpeedTimeout = 2; // TODO: tune
+
+    public static final double highGoalOptimalRPM = 3950;
+    public static final double highGoalOptimalDistance = 32; // inches
+
+    public static final double lowGoalOptimalRPM = 2300;
+    public static final double lowGoalOptimalDistance = 12; // inches
   }
 }

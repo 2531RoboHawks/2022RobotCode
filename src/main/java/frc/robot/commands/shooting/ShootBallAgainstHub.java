@@ -12,51 +12,34 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
+import frc.robot.RobotContainer;
 import frc.robot.commands.auto.DriveToWaypoint;
 import frc.robot.commands.auto.ResetOdometry;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShootSubsystem;
+import frc.robot.subsystems.StorageSubsystem;
 
 public class ShootBallAgainstHub extends SequentialCommandGroup {
-  private ShootSubsystem shootSubsystem;
-  private IntakeSubsystem intakeSubsystem;
+  private ShootSubsystem shootSubsystem = RobotContainer.shootSubsystem;
+  private IntakeSubsystem intakeSubsystem = RobotContainer.intakeSubsystem;
+  private DriveSubsystem driveSubsystem = RobotContainer.driveSubsystem;
+  private StorageSubsystem storageSubsystem = RobotContainer.storageSubsystem;
 
-  public ShootBallAgainstHub(
-    ShootSubsystem shootSubsystem,
-    IntakeSubsystem intakeSubsystem,
-    DriveSubsystem driveSubsystem,
-    double rpm,
-    double distance
-  ) {
-    this.shootSubsystem = shootSubsystem;
-    this.intakeSubsystem = intakeSubsystem;
-    double ejectBallPower = 0.3;
-    double moveBallForwardPower = 0.14;
-    double keepBallInPower = 0;
+  public ShootBallAgainstHub(double rpm, double distance) {
     addCommands(new ParallelCommandGroup(
       new RevSetSpeed(shootSubsystem, rpm),
       new SequentialCommandGroup(
         new ResetOdometry(driveSubsystem),
-        new DriveToWaypoint(driveSubsystem, new Pose2d(Units.inchesToMeters(distance), 0, Rotation2d.fromDegrees(0))).withTimeout(2),
-        new WaitForShooterToBeAtSpeed(rpm, shootSubsystem).withTimeout(2),
-        new InstantCommand(() -> {
-          shootSubsystem.setStorageBeforeShootPower(ejectBallPower);
-        }),
-        new WaitUntilCommand(() -> !shootSubsystem.isBallInStorage()),
-        new InstantCommand(() -> {
-          intakeSubsystem.setStorageAfterIntakeRunning(true);
-          shootSubsystem.setStorageBeforeShootPower(moveBallForwardPower);
-        }),
-        new WaitUntilCommand(() -> shootSubsystem.isBallInStorage()),
-        new InstantCommand(() -> {
-          shootSubsystem.setStorageBeforeShootPower(keepBallInPower);
-        }),
-        new WaitCommand(0.1),
-        new WaitForShooterToBeAtSpeed(rpm, shootSubsystem).withTimeout(2),
-        new InstantCommand(() -> {
-          shootSubsystem.setStorageBeforeShootPower(ejectBallPower);
-        })
+        new DriveToWaypoint(
+          driveSubsystem,
+          new Pose2d(Units.inchesToMeters(distance), 0, Rotation2d.fromDegrees(0))
+        ).withTimeout(2),
+        new RevShooterToSpeedThenNeutral(rpm, shootSubsystem),
+        new MoveBallToShooter(storageSubsystem),
+        new PrepareToShootBall(storageSubsystem),
+        new RevShooterToSpeedThenNeutral(rpm, shootSubsystem),
+        new MoveBallToShooter(storageSubsystem)
       )
     ));
   }

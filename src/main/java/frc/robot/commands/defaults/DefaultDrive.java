@@ -22,9 +22,6 @@ public class DefaultDrive extends CommandBase {
   @Override
   public void initialize() {
     driveSubsystem.reset();
-
-    // For testing pose accuracy
-    driveSubsystem.resetOdometry(new Pose2d());
   }
 
   private double scale(double n) {
