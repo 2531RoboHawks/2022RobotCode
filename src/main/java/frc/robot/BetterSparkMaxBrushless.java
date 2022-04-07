@@ -29,6 +29,10 @@ public class BetterSparkMaxBrushless {
     canSparkMax.set(power);
   }
 
+  public void setVoltage(double voltage) {
+    canSparkMax.setVoltage(voltage);
+  }
+
   public void stop() {
     canSparkMax.stopMotor();
   }
