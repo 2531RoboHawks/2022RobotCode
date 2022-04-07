@@ -27,8 +27,7 @@ public class ShootBallAgainstHub extends SequentialCommandGroup {
   private StorageSubsystem storageSubsystem = RobotContainer.storageSubsystem;
 
   public ShootBallAgainstHub(double rpm, double distance) {
-    addCommands(new ParallelCommandGroup(
-      new RevSetSpeed(shootSubsystem, rpm),
+    addCommands(
       new SequentialCommandGroup(
         new ResetOdometry(driveSubsystem),
         new DriveToWaypoint(
@@ -41,13 +40,6 @@ public class ShootBallAgainstHub extends SequentialCommandGroup {
         new RevShooterToSpeedThenNeutral(rpm, shootSubsystem),
         new MoveBallToShooter(storageSubsystem)
       )
-    ));
-  }
-
-  @Override
-  public void end(boolean interrupted) {
-    super.end(interrupted);
-    shootSubsystem.stopEverything();
-    intakeSubsystem.setEverything(false);
+    );
   }
 }
