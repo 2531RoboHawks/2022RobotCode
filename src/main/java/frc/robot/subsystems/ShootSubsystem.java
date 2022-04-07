@@ -39,24 +39,6 @@ public class ShootSubsystem extends SubsystemBase {
     idleRevwheel();
   }
 
-  // use storage subsytem
-  @Deprecated
-  public void setStorageBeforeShootPower(double power) {
-    RobotContainer.storageSubsystem.setBeforeShooterPower(power);
-  }
-
-  // use storage subsytem
-  @Deprecated
-  public void setStorageBeforeShootRunning(boolean running) {
-    RobotContainer.storageSubsystem.setBeforeShooterRunning(running);
-  }
-
-  // use storage subsytem
-  @Deprecated
-  public boolean isBallInStorage() {
-    return RobotContainer.storageSubsystem.isBallBeforeShooter();
-  }
-
   @Override
   public void periodic() {
     // SmartDashboard.putNumber("Actual Revwheel RPM", revwheel.getRPM());

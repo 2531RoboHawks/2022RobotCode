@@ -59,7 +59,7 @@ public class AutoShoot extends CommandBase {
 
     if (timer.hasElapsed(startShootingAfter)) {
       finalTimer.start();
-      shootSubsystem.setStorageBeforeShootRunning(true);
+      // shootSubsystem.setStorageBeforeShootRunning(true);
       intakeSubsystem.setStorageAfterIntakeRunning(true);
     }
     // } else {

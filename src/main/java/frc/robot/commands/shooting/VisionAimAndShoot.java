@@ -30,21 +30,21 @@ public class VisionAimAndShoot extends ParallelCommandGroup {
         new VisionAim(visionSubsystem, driveSubsystem).withTimeout(2),
         new WaitForShooterToBeStable(shootSubsystem),
         new InstantCommand(() -> {
-          shootSubsystem.setStorageBeforeShootPower(ejectBallPower);
+          // shootSubsystem.setStorageBeforeShootPower(ejectBallPower);
         }),
-        new WaitUntilCommand(() -> !shootSubsystem.isBallInStorage()),
+        // new WaitUntilCommand(() -> !shootSubsystem.isBallInStorage()),
         new InstantCommand(() -> {
           intakeSubsystem.setStorageAfterIntakeRunning(true);
-          shootSubsystem.setStorageBeforeShootPower(moveBallForwardPower);
+          // shootSubsystem.setStorageBeforeShootPower(moveBallForwardPower);
         }),
-        new WaitUntilCommand(() -> shootSubsystem.isBallInStorage()),
+        // new WaitUntilCommand(() -> shootSubsystem.isBallInStorage()),
         new InstantCommand(() -> {
-          shootSubsystem.setStorageBeforeShootPower(keepBallInPower);
+          // shootSubsystem.setStorageBeforeShootPower(keepBallInPower);
         }),
         new WaitCommand(0.3),
         new WaitForShooterToBeStable(shootSubsystem),
         new InstantCommand(() -> {
-          shootSubsystem.setStorageBeforeShootPower(ejectBallPower);
+          // shootSubsystem.setStorageBeforeShootPower(ejectBallPower);
         })
       )
     );
