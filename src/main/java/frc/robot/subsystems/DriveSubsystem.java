@@ -16,7 +16,7 @@ import edu.wpi.first.math.kinematics.MecanumDriveMotorVoltages;
 import edu.wpi.first.math.kinematics.MecanumDriveOdometry;
 import edu.wpi.first.math.kinematics.MecanumDriveWheelSpeeds;
 import edu.wpi.first.math.trajectory.Trajectory;
-import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.drive.Vector2d;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -102,10 +102,14 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public MecanumDriveInfo calculateFieldOriented(double forward, double sideways, double rotation) {
-    double radians = Units.degreesToRadians(getAngle());
-    double newForward = forward * Math.cos(radians) + sideways * Math.sin(sideways);
-    double newSideways = -forward * Math.sin(radians) + sideways * Math.cos(sideways);
-    return calculateRobotOriented(newForward, newSideways, rotation);
+    Vector2d input = new Vector2d(forward, sideways);
+    input.rotate(-getAngle());
+    return new MecanumDriveInfo(
+      input.x + input.y + rotation,
+      input.x - input.y - rotation,
+      input.x - input.y + rotation,
+      input.x + input.y - rotation  
+    );
   }
 
   public void drivePercent(double forward, double sideways, double rotation) {
