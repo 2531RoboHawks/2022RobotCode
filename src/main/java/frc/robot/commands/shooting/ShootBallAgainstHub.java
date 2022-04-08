@@ -5,6 +5,7 @@
 package frc.robot.commands.shooting;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.RobotContainer;
 import frc.robot.commands.auto.DriveDistance;
 import frc.robot.commands.auto.ResetOdometry;
@@ -20,16 +21,25 @@ public class ShootBallAgainstHub extends SequentialCommandGroup {
   private StorageSubsystem storageSubsystem = RobotContainer.storageSubsystem;
 
   public ShootBallAgainstHub(double rpm, double distance) {
+    // addCommands(new ResetOdometry(driveSubsystem));
     addCommands(
       new SequentialCommandGroup(
-        new ResetOdometry(driveSubsystem),
         new DriveDistance(distance, driveSubsystem).withTimeout(2),
-        new WaitForShooterToBeAtSpeed(rpm, shootSubsystem),
-        new MoveBallToShooter(storageSubsystem),
-        new PrepareToShootBall(storageSubsystem),
-        new WaitForShooterToBeAtSpeed(rpm, shootSubsystem),
-        new MoveBallToShooter(storageSubsystem)
+        new WaitForShooterToBeStable(shootSubsystem)
       ).deadlineWith(new RevShooterToSpeed(rpm, shootSubsystem))
+    );
+    addCommands(
+      new MoveBallToShooter(storageSubsystem)
+    );
+    addCommands(
+      new SequentialCommandGroup(
+        new WaitCommand(0.5),
+        new PrepareToShootBall(storageSubsystem),
+        new WaitForShooterToBeStable(shootSubsystem)
+      ).deadlineWith(new RevShooterToSpeed(rpm, shootSubsystem))
+    );
+    addCommands(
+      new MoveBallToShooter(storageSubsystem)
     );
   }
 }

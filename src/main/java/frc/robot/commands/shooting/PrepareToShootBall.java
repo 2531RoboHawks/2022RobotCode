@@ -1,6 +1,7 @@
 package frc.robot.commands.shooting;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants.ShootingConstants;
 import frc.robot.subsystems.StorageSubsystem;
 
 public class PrepareToShootBall extends CommandBase {
@@ -13,7 +14,12 @@ public class PrepareToShootBall extends CommandBase {
 
   @Override
   public void execute() {
-    storageSubsystem.setBeforeShooterPower(0.13);
+    // this is werid but it's necessary
+    if (isFinished()) {
+      end(false);
+    } else {
+      storageSubsystem.setBeforeShooterPower(ShootingConstants.prepareBallPower);
+    }
   }
 
   @Override
