@@ -43,7 +43,7 @@ public class IntakeSubsystem extends SubsystemBase {
   public void setStorageAfterIntakeRunning(boolean running) {
     System.out.println("Storage after intake: " + running);
     if (running) {
-      storageAfterIntake.setVoltage(4);
+      storageAfterIntake.setVoltage(3.5);
     } else {
       storageAfterIntake.stop();
     }

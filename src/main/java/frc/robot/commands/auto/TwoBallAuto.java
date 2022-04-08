@@ -20,6 +20,7 @@ import frc.robot.subsystems.VisionSubsystem;
 public class TwoBallAuto extends SequentialCommandGroup {
   private static final Waypoint start = new Waypoint(7.06, 4.79, 133.57);
   private static final Waypoint shoot = new Waypoint(7.06 + Units.inchesToMeters(ShootingConstants.highGoalOptimalDistance), 4.79, 133.57);
+  private static final Waypoint pickupBall = new Waypoint(7.06 + Units.inchesToMeters(ShootingConstants.highGoalOptimalDistance), 4.79, 133.57);
 
   private final DriveSubsystem driveSubsystem = RobotContainer.driveSubsystem;
   private final ShootSubsystem shootSubsystem = RobotContainer.shootSubsystem;
@@ -36,7 +37,7 @@ public class TwoBallAuto extends SequentialCommandGroup {
       new SequentialCommandGroup(
         new ParallelCommandGroup(
           new SequentialCommandGroup(
-            // new DriveToWaypoint(driveSubsystem, Units.inchesToMeters(80), 0, 0),
+            new DriveToWaypoint(driveSubsystem, pickupBall),
             new WaitCommand(1),
             new DriveToWaypoint(driveSubsystem, shoot)
           ),

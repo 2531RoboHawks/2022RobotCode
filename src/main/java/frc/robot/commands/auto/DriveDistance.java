@@ -3,14 +3,12 @@ package frc.robot.commands.auto;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Waypoint;
 import frc.robot.subsystems.DriveSubsystem;
 
-public class DriveToWaypoint extends CommandBase {
+public class DriveDistance extends CommandBase {
   private DriveSubsystem driveSubsystem;
-  private Pose2d desiredPose;
   private PIDController forwardController = new PIDController(2, 0, 0);
   private PIDController sidewaysController = new PIDController(2, 0, 0);
   private PIDController rotationController = new PIDController(0.1, 0, 0);
@@ -18,31 +16,18 @@ public class DriveToWaypoint extends CommandBase {
   private static final double maxVelocity = 3;
   private static final double maxRotation = 3;
 
-  public DriveToWaypoint(Pose2d pose, DriveSubsystem driveSubsystem) {
+  public DriveDistance(double inches, DriveSubsystem driveSubsystem) {
     this.driveSubsystem = driveSubsystem;
-    this.desiredPose = pose;
     addRequirements(driveSubsystem);
 
-    forwardController.setSetpoint(desiredPose.getX());
+    forwardController.setSetpoint(Units.inchesToMeters(inches));
     forwardController.setTolerance(0.1);
 
-    sidewaysController.setSetpoint(desiredPose.getY());
+    sidewaysController.setSetpoint(0);
     sidewaysController.setTolerance(0.1);
 
-    rotationController.setSetpoint(desiredPose.getRotation().getDegrees());
+    rotationController.setSetpoint(0);
     rotationController.setTolerance(1);
-  }
-
-  public DriveToWaypoint(DriveSubsystem driveSubsystem, Pose2d pose) {
-    this(pose, driveSubsystem);
-  }
-
-  public DriveToWaypoint(DriveSubsystem driveSubsystem, double forward, double sideways, double rotationDegrees) {
-    this(new Pose2d(forward, sideways, Rotation2d.fromDegrees(rotationDegrees)), driveSubsystem);
-  }
-
-  public DriveToWaypoint(DriveSubsystem driveSubsystem, Waypoint waypoint) {
-    this(waypoint.getPose(), driveSubsystem);
   }
 
   @Override
@@ -50,6 +35,8 @@ public class DriveToWaypoint extends CommandBase {
     forwardController.reset();
     sidewaysController.reset();
     rotationController.reset();
+
+    driveSubsystem.resetOdometry(new Pose2d());
   }
 
   @Override
@@ -59,13 +46,14 @@ public class DriveToWaypoint extends CommandBase {
     double forwards = MathUtil.clamp(forwardController.calculate(currentPose.getX()), -maxVelocity, maxVelocity);
     double sideways = MathUtil.clamp(sidewaysController.calculate(currentPose.getY()), -maxVelocity, maxVelocity);
     double rotation = MathUtil.clamp(rotationController.calculate(currentPose.getRotation().getDegrees()), -maxRotation, maxRotation);
+
+    System.out.println("F: " + forwards + " P: " + currentPose.getX());
+    System.out.println("S: " + sideways + " P: " + currentPose.getY());
+    System.out.println("R: " + rotation + " P: " + currentPose.getRotation().getDegrees());
+    System.out.println("---");
+
     sideways = 0;
     rotation = 0;
-
-    System.out.println("F: " + forwards + " P: " + currentPose.getX() + " D: " + desiredPose.getX());
-    System.out.println("S: " + sideways + " P: " + currentPose.getY() + " D: " + desiredPose.getY());
-    System.out.println("R: " + rotation + " P: " + currentPose.getRotation().getDegrees() + " D: " + desiredPose.getRotation().getDegrees());
-    System.out.println("---");
 
     driveSubsystem.driveWheelSpeeds(driveSubsystem.calculateFieldOriented(forwards, -sideways, -rotation));
   }

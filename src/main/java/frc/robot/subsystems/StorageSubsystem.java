@@ -17,12 +17,6 @@ public class StorageSubsystem extends SubsystemBase {
     beforeShooter.setPower(power);
   }
 
-  // use specific power levels instead
-  @Deprecated
-  public void setBeforeShooterRunning(boolean running) {
-    setBeforeShooterPower(running ? 0.18 : 0);
-  }
-
   public void stopBeforeShooter() {
     beforeShooter.stop();
   }
