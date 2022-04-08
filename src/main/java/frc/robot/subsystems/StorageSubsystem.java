@@ -14,7 +14,7 @@ public class StorageSubsystem extends SubsystemBase {
 
   public void setBeforeShooterPower(double power) {
     System.out.println("Before shooter: " + power);
-    beforeShooter.setPower(power);
+    beforeShooter.setVoltage(power);
   }
 
   public void stopBeforeShooter() {
