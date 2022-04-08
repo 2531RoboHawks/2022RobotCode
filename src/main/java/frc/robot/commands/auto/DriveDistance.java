@@ -9,9 +9,9 @@ import frc.robot.subsystems.DriveSubsystem;
 
 public class DriveDistance extends CommandBase {
   private DriveSubsystem driveSubsystem;
-  private PIDController forwardController = new PIDController(3, 0, 0);
-  private PIDController sidewaysController = new PIDController(3, 0, 0);
-  private PIDController rotationController = new PIDController(0.1, 0, 0);
+  private PIDController forwardController = new PIDController(1.5, 0, 0);
+  private PIDController sidewaysController = new PIDController(1.5, 0, 0);
+  private PIDController rotationController = new PIDController(0.05, 0, 0);
 
   private static final double maxVelocity = 5;
   private static final double maxRotation = 5;
@@ -61,7 +61,6 @@ public class DriveDistance extends CommandBase {
     System.out.println("---");
 
     sideways = 0;
-    rotation = 0;
 
     driveSubsystem.driveWheelSpeeds(driveSubsystem.calculateFieldOriented(forwards, -sideways, -rotation));
   }

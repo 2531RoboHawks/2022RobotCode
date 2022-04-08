@@ -11,7 +11,7 @@ public class WaitForShooterToBeStable extends CommandBase {
   private ArrayList<Double> rpms = new ArrayList<>();
   private int period = 40;
   private double maxError = 10;
-  private double maxTime = 3;
+  private double maxTime = 2;
   private Timer timer = new Timer();
 
   public WaitForShooterToBeStable(ShootSubsystem shootSubsystem) {
