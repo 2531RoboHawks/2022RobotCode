@@ -4,6 +4,7 @@
 
 package frc.robot.commands.shooting;
 
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.RobotContainer;
@@ -22,7 +23,7 @@ public class ShootBallAgainstHub extends SequentialCommandGroup {
   public ShootBallAgainstHub(double rpm, double distance) {
     addCommands(
       new SequentialCommandGroup(
-        new DriveDistance(distance, driveSubsystem).withTimeout(2),
+        distance == 0 ? new InstantCommand() : new DriveDistance(distance, driveSubsystem).withTimeout(2),
         new WaitForShooterToBeStable(shootSubsystem)
       ).deadlineWith(new RevShooterToSpeed(rpm, shootSubsystem))
     );

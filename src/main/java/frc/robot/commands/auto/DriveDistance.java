@@ -16,13 +16,9 @@ public class DriveDistance extends CommandBase {
   private static final double maxVelocity = 5;
   private static final double maxRotation = 5;
 
-  private boolean doesNothing;
-
   public DriveDistance(double inches, DriveSubsystem driveSubsystem) {
     this.driveSubsystem = driveSubsystem;
     addRequirements(driveSubsystem);
-
-    doesNothing = inches == 0;
 
     forwardController.setSetpoint(Units.inchesToMeters(inches));
     forwardController.setTolerance(0.1);
@@ -45,10 +41,6 @@ public class DriveDistance extends CommandBase {
 
   @Override
   public void execute() {
-    if (doesNothing) {
-      return;
-    }
-
     Pose2d currentPose = driveSubsystem.getPose();
 
     double forwards = MathUtil.clamp(forwardController.calculate(currentPose.getX()), -maxVelocity, maxVelocity);
@@ -67,9 +59,6 @@ public class DriveDistance extends CommandBase {
 
   @Override
   public boolean isFinished() {
-    if (doesNothing) {
-      return true;
-    }
     return forwardController.atSetpoint() && sidewaysController.atSetpoint() && rotationController.atSetpoint();
   }
 
