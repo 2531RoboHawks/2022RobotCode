@@ -55,9 +55,9 @@ public final class Constants {
     public static final int ToggleIntakeDown = Button.kA.value;
 
     public static final int PrepareToShootBall = Button.kX.value;
-    public static final int AutoAimShoot = Axis.kLeftTrigger.value;
-    public static final int EjectBall = Axis.kRightTrigger.value;
-    public static final int AutoShoot = Button.kRightStick.value;
+
+    public static final int HighGoal = Axis.kLeftTrigger.value;
+    public static final int LowGoal = Axis.kRightTrigger.value;
   }
 
   public static final class HelmsControls {

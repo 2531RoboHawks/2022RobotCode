@@ -103,10 +103,11 @@ public class RobotContainer {
     new JoystickButton(helms, HelmsControls.ToggleIntakeDown).whenPressed(new ToggleIntakeDown(intakeSubsystem));
     new JoystickButton(helms, HelmsControls.ToggleClimbExtended).whenPressed(new ToggleClimbExtended(climbSubsystem));
     new JoystickButton(gamepad, Controls.ToggleIntakeDown).toggleWhenActive(new ParallelCommandGroup(new PutIntakeDownAndSpin(intakeSubsystem), new PrepareToShootBall(storageSubsystem)));
-    new JoystickAxis(gamepad, Controls.AutoAimShoot).whenActivated(
-      new ShootBallAgainstHub(ShootingConstants.highGoalOptimalRPM, ShootingConstants.highGoalOptimalDistance)
-    );
-    new JoystickAxis(gamepad, Controls.EjectBall).whenActivated(
+    // High goal is temporarily disabled for the VFW demo
+    // new JoystickAxis(gamepad, Controls.HighGoal).whenActivated(
+    //   new ShootBallAgainstHub(ShootingConstants.highGoalOptimalRPM, ShootingConstants.highGoalOptimalDistance)
+    // );
+    new JoystickAxis(gamepad, Controls.LowGoal).whenActivated(
       new ShootBallAgainstHub(ShootingConstants.lowGoalOptimalRPM, ShootingConstants.lowGoalOptimalDistance)
     );
     new JoystickButton(gamepad, Controls.PrepareToShootBall).whenHeld(new PrepareToShootBall(storageSubsystem));
