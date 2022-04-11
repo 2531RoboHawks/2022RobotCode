@@ -22,6 +22,7 @@ import frc.robot.commands.climb.ManualClimb;
 import frc.robot.commands.climb.SynchronizedClimb;
 import frc.robot.commands.climb.ToggleClimbExtended;
 import frc.robot.commands.climb.ToggleSpikes;
+import frc.robot.commands.climb.ZeroClimb;
 import frc.robot.commands.defaults.DefaultDrive;
 import frc.robot.commands.defaults.DefaultIntake;
 import frc.robot.commands.defaults.DefaultShoot;
@@ -63,6 +64,8 @@ public class RobotContainer {
     intakeSubsystem.setDefaultCommand(new DefaultIntake(intakeSubsystem));
     shootSubsystem.setDefaultCommand(new DefaultShoot(shootSubsystem));
 
+    SmartDashboard.putData("Zero Climber", new ZeroClimb(climbSubsystem));
+
     autoChooser.addOption("None", null);
     // autoChooser.addOption(
     //   "8 Ball Auto",
@@ -102,10 +105,9 @@ public class RobotContainer {
     new JoystickButton(helms, HelmsControls.ToggleSpikes).whenPressed(new ToggleSpikes(climbSubsystem));
 
     new JoystickButton(gamepad, Controls.ToggleIntakeDown).toggleWhenActive(new ParallelCommandGroup(new PutIntakeDownAndSpin(intakeSubsystem), new PrepareToShootBall(storageSubsystem)));
-    // High goal is temporarily disabled for the VFW demo
-    // new JoystickAxis(gamepad, Controls.HighGoal).whenActivated(
-    //   new ShootBallAgainstHub(ShootingConstants.highGoalOptimalRPM, ShootingConstants.highGoalOptimalDistance)
-    // );
+    new JoystickAxis(gamepad, Controls.HighGoal).whenActivated(
+      new ShootBallAgainstHub(ShootingConstants.highGoalOptimalRPM, ShootingConstants.highGoalOptimalDistance)
+    );
     new JoystickAxis(gamepad, Controls.LowGoal).whenActivated(
       new ShootBallAgainstHub(ShootingConstants.lowGoalOptimalRPM, ShootingConstants.lowGoalOptimalDistance)
     );
