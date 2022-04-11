@@ -15,6 +15,7 @@ public class ClimbSubsystem extends SubsystemBase {
     .configureBrakes(true);
 
   private Solenoid extendArmsSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, Solenoids.ClimbExtend);
+  private Solenoid spikeSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, Solenoids.ClimbSpikes);
 
   private static final PIDSettings talonPid = new PIDSettings(0.014, 0, 0); // TODO: tune
   private static final double secondsFromNeutralToFull = 1; // TODO: remove or at least lower a LOT
@@ -27,6 +28,7 @@ public class ClimbSubsystem extends SubsystemBase {
     rightTalon.configureRamp(secondsFromNeutralToFull);
 
     setArmsExtended(false);
+    setSpikes(false);
   }
 
   public double getArmExtensionTarget() {
@@ -70,6 +72,14 @@ public class ClimbSubsystem extends SubsystemBase {
   public void toggleArmsExtended() {
     // don't use .toggle() here so that we get log messages from setArmsExtended
     setArmsExtended(!areArmsExtended());
+  }
+
+  public void setSpikes(boolean spikes) {
+    System.out.println("Spikes: " + spikes);
+    spikeSolenoid.set(spikes);
+  }
+  public boolean getSpikes() {
+    return spikeSolenoid.get();
   }
 
   @Override

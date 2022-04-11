@@ -37,7 +37,7 @@ public final class Constants {
   public static final class Solenoids {
     public static final int ClimbExtend = 0;
     public static final int Intake = 1;
-    public static final int ClimbGrab = 2;
+    public static final int ClimbSpikes = 2;
   }
 
   public static final class DigitalInputs {
@@ -66,7 +66,8 @@ public final class Constants {
 
     public static final int ToggleIntakeDown = Button.kA.value;
     public static final int ToggleClimbExtended = Button.kB.value;
-    public static final int ToggleClimbGrab = Button.kX.value;
+
+    public static final int ToggleSpikes = Button.kY.value;
   }
 
   public static final class ShootingConstants {

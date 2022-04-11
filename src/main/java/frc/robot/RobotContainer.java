@@ -18,11 +18,10 @@ import frc.robot.commands.PutIntakeDownAndSpin;
 import frc.robot.commands.ToggleIntakeDown;
 import frc.robot.commands.auto.TwoBallAuto;
 import frc.robot.commands.auto.Taxi;
-import frc.robot.commands.auto.TheRumbling;
-import frc.robot.commands.auto.DriveTrajectory;
 import frc.robot.commands.climb.ManualClimb;
 import frc.robot.commands.climb.SynchronizedClimb;
 import frc.robot.commands.climb.ToggleClimbExtended;
+import frc.robot.commands.climb.ToggleSpikes;
 import frc.robot.commands.defaults.DefaultDrive;
 import frc.robot.commands.defaults.DefaultIntake;
 import frc.robot.commands.defaults.DefaultShoot;
@@ -102,6 +101,8 @@ public class RobotContainer {
     new JoystickButton(helms, HelmsControls.ManualClimb).toggleWhenActive(new ManualClimb(climbSubsystem, intakeSubsystem));
     new JoystickButton(helms, HelmsControls.ToggleIntakeDown).whenPressed(new ToggleIntakeDown(intakeSubsystem));
     new JoystickButton(helms, HelmsControls.ToggleClimbExtended).whenPressed(new ToggleClimbExtended(climbSubsystem));
+    new JoystickButton(helms, HelmsControls.ToggleSpikes).whenPressed(new ToggleSpikes(climbSubsystem));
+
     new JoystickButton(gamepad, Controls.ToggleIntakeDown).toggleWhenActive(new ParallelCommandGroup(new PutIntakeDownAndSpin(intakeSubsystem), new PrepareToShootBall(storageSubsystem)));
     // High goal is temporarily disabled for the VFW demo
     // new JoystickAxis(gamepad, Controls.HighGoal).whenActivated(
