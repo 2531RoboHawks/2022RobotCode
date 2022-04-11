@@ -63,8 +63,6 @@ public class RobotContainer {
     intakeSubsystem.setDefaultCommand(new DefaultIntake(intakeSubsystem));
     shootSubsystem.setDefaultCommand(new DefaultShoot(shootSubsystem));
 
-    SmartDashboard.putData("Manual Climb Command", new ManualClimb(climbSubsystem, intakeSubsystem));
-
     autoChooser.addOption("None", null);
     // autoChooser.addOption(
     //   "8 Ball Auto",
