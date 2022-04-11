@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.RobotContainer;
 import frc.robot.commands.auto.DriveDistance;
+import frc.robot.commands.auto.ResetOdometry;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShootSubsystem;
@@ -32,7 +33,6 @@ public class ShootBallAgainstHub extends SequentialCommandGroup {
     );
     addCommands(
       new SequentialCommandGroup(
-        new WaitCommand(0.2),
         new PrepareToShootBall(storageSubsystem),
         new WaitCommand(0.2),
         new WaitForShooterToBeStable(shootSubsystem)

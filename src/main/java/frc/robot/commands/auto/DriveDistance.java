@@ -54,7 +54,7 @@ public class DriveDistance extends CommandBase {
 
     sideways = 0;
 
-    driveSubsystem.driveWheelSpeeds(driveSubsystem.calculateFieldOriented(forwards, -sideways, -rotation));
+    driveSubsystem.driveWheelSpeeds(driveSubsystem.calculateRobotOriented(forwards, -sideways, -rotation));
   }
 
   @Override
