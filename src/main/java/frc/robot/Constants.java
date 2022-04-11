@@ -56,8 +56,8 @@ public final class Constants {
 
     public static final int PrepareToShootBall = Button.kX.value;
 
-    public static final int HighGoal = Axis.kLeftTrigger.value;
-    public static final int LowGoal = Axis.kRightTrigger.value;
+    public static final int HighGoal = Axis.kRightTrigger.value;
+    public static final int LowGoal = Axis.kLeftTrigger.value;
   }
 
   public static final class HelmsControls {
