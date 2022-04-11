@@ -20,7 +20,6 @@ public class VisionRevCommand extends CommandBase {
     addRequirements(shootSubsystem);
     this.visionSubsystem = visionSubsystem;
     this.shootSubsystem = shootSubsystem;
-    SmartDashboard.putNumber("Testing RPM", 0);
   }
 
   @Override

@@ -77,7 +77,7 @@ public class DriveSubsystem extends SubsystemBase {
     odometry = new MecanumDriveOdometry(kinematics, getRotation2d());
     reset();
 
-    SmartDashboard.putData("Field", fieldImage);
+    // SmartDashboard.putData("Field", fieldImage);
   }
 
   public MecanumDriveKinematics getKinematics() {
@@ -228,9 +228,9 @@ public class DriveSubsystem extends SubsystemBase {
 
     // fieldImage.setRobotPose(getPose());
 
-    SmartDashboard.putNumber("Pose X", getPose().getX());
-    SmartDashboard.putNumber("Pose Y", getPose().getY());
-    SmartDashboard.putNumber("Gyro", rotation.getDegrees());
+    // SmartDashboard.putNumber("Pose X", getPose().getX());
+    // SmartDashboard.putNumber("Pose Y", getPose().getY());
+    // SmartDashboard.putNumber("Gyro", rotation.getDegrees());
 
     // SmartDashboard.putNumber("FL Current", frontLeft.getWPI().getSupplyCurrent());
     // SmartDashboard.putNumber("FR Current", frontRight.getWPI().getSupplyCurrent());

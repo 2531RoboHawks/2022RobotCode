@@ -30,7 +30,6 @@ public class AutoShoot extends CommandBase {
     this.shootSubsystem = shootSubsystem;
     this.intakeSubsystem = intakeSubsystem;
     this.rpm = RPMCalculator.distancesToRPM(distance);
-    SmartDashboard.putNumber("Testing RPM", 0);
   }
 
   @Override
