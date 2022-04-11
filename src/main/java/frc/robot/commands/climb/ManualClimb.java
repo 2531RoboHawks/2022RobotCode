@@ -34,5 +34,6 @@ public class ManualClimb extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     climbSubsystem.stop();
+    climbSubsystem.zero();
   }
 }

@@ -19,13 +19,12 @@ public class SynchronizedClimb extends CommandBase {
   @Override
   public void initialize() {
     intakeSubsystem.setDown(true);
-    climbSubsystem.zero();
   }
 
   @Override
   public void execute() {
     double power = -InputUtils.deadzone(RobotContainer.helms.getRawAxis(1));
-    double delta = power * 3000;
+    double delta = power * (power < 0 ? 1500 : 6000);
     double newTarget = climbSubsystem.getArmExtensionTarget() + delta;
     climbSubsystem.setArmExtensionTarget(newTarget);
   }
