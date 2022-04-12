@@ -8,7 +8,7 @@ import frc.robot.RobotContainer;
 import frc.robot.Waypoint;
 import frc.robot.commands.PutIntakeDownAndSpin;
 import frc.robot.commands.shooting.LoadBallIntoStorage;
-import frc.robot.commands.shooting.ShootBallAgainstHub;
+import frc.robot.commands.shooting.ShootTwoBalls;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShootSubsystem;
@@ -42,6 +42,6 @@ public class TwoBallAuto extends SequentialCommandGroup {
       new PutIntakeDownAndSpin(intakeSubsystem),
       new LoadBallIntoStorage(storageSubsystem)
     ));
-    addCommands(new ShootBallAgainstHub(rpm, null));
+    addCommands(new ShootTwoBalls(rpm));
   }
 }
