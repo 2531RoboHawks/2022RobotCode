@@ -13,16 +13,15 @@ public class PutIntakeDownAndSpin extends CommandBase {
 
   @Override
   public void initialize() {
-    intakeSubsystem.setEverything(true);
   }
 
   @Override
   public void execute() {
-    intakeSubsystem.setEverything(true);
+    intakeSubsystem.putDownAndSpin();
   }
 
   @Override
   public void end(boolean interrupted) {
-    intakeSubsystem.setEverything(false);
+    intakeSubsystem.bringUpAndStopSpinning();
   }
 }

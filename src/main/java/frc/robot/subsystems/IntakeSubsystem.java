@@ -5,14 +5,11 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.BetterSparkMaxBrushless;
-import frc.robot.BetterTalonFX;
 import frc.robot.Constants.CAN;
 import frc.robot.Constants.Solenoids;
 
 public class IntakeSubsystem extends SubsystemBase {
   private BetterSparkMaxBrushless intakeWheel = new BetterSparkMaxBrushless(CAN.IntakeSpinner);
-  private BetterTalonFX storageAfterIntake = new BetterTalonFX(CAN.IntakeStorage)
-    .configureBrakes(false);
   private Solenoid solenoid = new Solenoid(PneumaticsModuleType.CTREPCM, Solenoids.Intake);
 
   public IntakeSubsystem() {
@@ -40,19 +37,14 @@ public class IntakeSubsystem extends SubsystemBase {
     setDown(!isDown());
   }
 
-  public void setStorageAfterIntakeRunning(boolean running) {
-    System.out.println("Storage after intake: " + running);
-    if (running) {
-      storageAfterIntake.setVoltage(3.1);
-    } else {
-      storageAfterIntake.stop();
-    }
+  public void bringUpAndStopSpinning() {
+    setDown(false);
+    setSpinning(false);
   }
 
-  public void setEverything(boolean running) {
-    setDown(running);
-    setSpinning(running);
-    setStorageAfterIntakeRunning(running);
+  public void putDownAndSpin() {
+    setDown(true);
+    setSpinning(true);
   }
 
   @Override

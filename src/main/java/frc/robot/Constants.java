@@ -75,6 +75,8 @@ public final class Constants {
     public static final double moveBallToShooterPower = 4; // volts
     public static final double prepareBallPower = 1.6; // volts
 
+    public static final double intakeStoragePower = 3.1; // volts
+
     public static final double waitForBallToShootTimeout = 1; // TODO: tune
     public static final double waitForBallToBePreparedTimeout = 1; // TODO: tune
     public static final double waitForShooterToReachSpeedTimeout = 2; // TODO: tune

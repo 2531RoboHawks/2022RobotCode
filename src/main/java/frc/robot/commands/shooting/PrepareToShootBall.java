@@ -14,12 +14,8 @@ public class PrepareToShootBall extends CommandBase {
 
   @Override
   public void execute() {
-    // this is werid but it's necessary
-    if (isFinished()) {
-      end(false);
-    } else {
-      storageSubsystem.setBeforeShooterPower(ShootingConstants.prepareBallPower);
-    }
+    storageSubsystem.setBeforeShooterPower(ShootingConstants.prepareBallPower);
+    storageSubsystem.setAfterIntakeRunning(true);
   }
 
   @Override
@@ -29,6 +25,7 @@ public class PrepareToShootBall extends CommandBase {
 
   @Override
   public void end(boolean interrupted) {
+    storageSubsystem.stopAfterIntake();
     storageSubsystem.stopBeforeShooter();
   }
 }
