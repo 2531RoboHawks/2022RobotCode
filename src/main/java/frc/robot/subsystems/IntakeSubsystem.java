@@ -13,7 +13,7 @@ public class IntakeSubsystem extends SubsystemBase {
   private Solenoid solenoid = new Solenoid(PneumaticsModuleType.CTREPCM, Solenoids.Intake);
 
   public IntakeSubsystem() {
-    setDown(false);
+    bringUpAndStopSpinning();
   }
 
   public void setSpinning(boolean spinning) {

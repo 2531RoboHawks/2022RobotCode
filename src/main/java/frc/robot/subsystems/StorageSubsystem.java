@@ -17,9 +17,9 @@ public class StorageSubsystem extends SubsystemBase {
 
   private DigitalInput switchBeforeShooter = new DigitalInput(DigitalInputs.BallStorage);
 
-  public void setBeforeShooterPower(double power) {
-    System.out.println("Before shooter: " + power);
-    beforeShooter.setVoltage(power);
+  public void setBeforeShooterPower(double volts) {
+    System.out.println("Before shooter: " + volts);
+    beforeShooter.setVoltage(volts);
   }
 
   public void stopBeforeShooter() {
@@ -30,16 +30,12 @@ public class StorageSubsystem extends SubsystemBase {
     return !switchBeforeShooter.get();
   }
 
-  public void setAfterIntakeRunning(boolean running) {
-    System.out.println("Storage after intake: " + running);
-    if (running) {
-      storageAfterIntake.setVoltage(ShootingConstants.intakeStoragePower);
-    } else {
-      storageAfterIntake.stop();
-    }
+  public void setAfterIntakePower(double volts) {
+    System.out.println("Ater intake: " + volts);
+    storageAfterIntake.setVoltage(volts);
   }
 
   public void stopAfterIntake() {
-    setAfterIntakeRunning(false);
+    setAfterIntakePower(0);
   }
 }

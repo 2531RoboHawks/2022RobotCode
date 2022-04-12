@@ -4,15 +4,15 @@ import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import frc.robot.subsystems.StorageSubsystem;
 
 public class RunStorage extends StartEndCommand {
-  public RunStorage(boolean afterIntake, double beforeShooter, StorageSubsystem storageSubsystem) {
+  public RunStorage(double afterIntake, double beforeShooter, StorageSubsystem storageSubsystem) {
     super(
       () -> {
-        storageSubsystem.setAfterIntakeRunning(afterIntake);
+        storageSubsystem.setAfterIntakePower(afterIntake);
         storageSubsystem.setBeforeShooterPower(beforeShooter);
       },
       () -> {
-        storageSubsystem.setAfterIntakeRunning(false);
-        storageSubsystem.setBeforeShooterPower(0);
+        storageSubsystem.stopAfterIntake();
+        storageSubsystem.stopBeforeShooter();
       },
       storageSubsystem
     );
