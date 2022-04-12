@@ -71,7 +71,7 @@ public final class Constants {
 
   public static final class ShootingConstants {
     public static final double beforeShooterEjectRPM = 1750;
-    public static final double beforeShooterPrepareVolts = 2.0;
+    public static final double beforeShooterPrepareVolts = 1.6;
 
     public static final double afterIntakeVolts = 3.1;
     public static final double afterIntakeSlowVolts = 2.5;
