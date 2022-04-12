@@ -64,7 +64,7 @@ public class WaitForShooterToBeStable extends CommandBase {
       }
     }
 
-    System.out.println("Seems stable!");
+    System.out.println("Seems stable! Current: " + shootSubsystem.getRevwheelRPM());
     return true;
   }
 }

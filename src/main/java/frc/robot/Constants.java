@@ -71,7 +71,7 @@ public final class Constants {
 
   public static final class ShootingConstants {
     public static final double beforeShooterEjectRPM = 1750;
-    public static final double beforeShooterPrepareRPM = 700;
+    public static final double beforeShooterPrepareVolts = 2.0;
 
     public static final double afterIntakeVolts = 3.1;
     public static final double afterIntakeSlowVolts = 2.5;
@@ -82,7 +82,7 @@ public final class Constants {
 
     public static final double highGoalOptimalRPM = 4000;
     public static final double highGoalOptimalDistance = Units.inchesToMeters(34);
-    public static final double highGoalOptimalRotation = 8;
+    public static final double highGoalOptimalRotation = 15;
 
     public static final double lowGoalOptimalRPM = 3000;
     public static final double lowGoalOptimalDistance = Units.inchesToMeters(0);
