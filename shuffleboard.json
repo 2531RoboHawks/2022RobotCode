@@ -297,6 +297,50 @@
               "Colors/Color when true": "#7CFC00FF",
               "Colors/Color when false": "#8B0000FF"
             }
+          },
+          "9,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Left Climb",
+              "_title": "Left Climb"
+            }
+          },
+          "10,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Command",
+              "_source0": "network_table:///SmartDashboard/Zero Climber",
+              "_title": "Zero Climber"
+            }
+          },
+          "7,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Right Climb",
+              "_title": "Right Climb"
+            }
+          },
+          "9,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Climb Target",
+              "_title": "Climb Target"
+            }
           }
         }
       }
@@ -786,6 +830,19 @@
               "_type": "Subsystem Layout",
               "_source0": "network_table:///LiveWindow/CompressorSubsystem",
               "_title": "CompressorSubsystem",
+              "Layout/Label position": "BOTTOM",
+              "_children": []
+            }
+          },
+          "8,0": {
+            "size": [
+              2,
+              4
+            ],
+            "content": {
+              "_type": "Subsystem Layout",
+              "_source0": "network_table:///LiveWindow/ShootSubsystem",
+              "_title": "ShootSubsystem",
               "Layout/Label position": "BOTTOM",
               "_children": []
             }
