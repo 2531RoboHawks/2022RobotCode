@@ -26,7 +26,7 @@ import frc.robot.commands.climb.ZeroClimb;
 import frc.robot.commands.defaults.DefaultDrive;
 import frc.robot.commands.defaults.DefaultIntake;
 import frc.robot.commands.defaults.DefaultShoot;
-import frc.robot.commands.shooting.PrepareToShootBall;
+import frc.robot.commands.shooting.LoadBallIntoStorage;
 import frc.robot.commands.shooting.ShootBallAgainstHub;
 import frc.robot.subsystems.ClimbSubsystem;
 import frc.robot.subsystems.CompressorSubsystem;
@@ -107,7 +107,7 @@ public class RobotContainer {
     new JoystickButton(gamepad, Controls.ToggleIntakeDown).toggleWhenActive(
       new ParallelCommandGroup(
         new PutIntakeDownAndSpin(intakeSubsystem),
-        new PrepareToShootBall(storageSubsystem)
+        new LoadBallIntoStorage(storageSubsystem)
       )
     );
     new JoystickAxis(gamepad, Controls.HighGoal).whenActivated(
@@ -116,7 +116,7 @@ public class RobotContainer {
     new JoystickAxis(gamepad, Controls.LowGoal).whenActivated(
       new ShootBallAgainstHub(ShootingConstants.lowGoalOptimalRPM, ShootingConstants.lowGoalOptimalDistance)
     );
-    new JoystickButton(gamepad, Controls.PrepareToShootBall).whenHeld(new PrepareToShootBall(storageSubsystem));
+    new JoystickButton(gamepad, Controls.PrepareToShootBall).whenHeld(new LoadBallIntoStorage(storageSubsystem));
   }
 
   /**

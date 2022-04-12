@@ -8,8 +8,8 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.RobotContainer;
-import frc.robot.commands.auto.DriveDistance;
-import frc.robot.commands.auto.ResetOdometry;
+import frc.robot.Waypoint;
+import frc.robot.commands.auto.DriveToWaypoint;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShootSubsystem;
@@ -24,7 +24,7 @@ public class ShootBallAgainstHub extends SequentialCommandGroup {
   public ShootBallAgainstHub(double rpm, double distance) {
     addCommands(
       new SequentialCommandGroup(
-        distance == 0 ? new InstantCommand() : new DriveDistance(distance, driveSubsystem).withTimeout(2),
+        distance == 0 ? new InstantCommand() : new DriveToWaypoint(driveSubsystem, new Waypoint(distance, 0, 0)).withTimeout(2),
         new WaitForShooterToBeStable(shootSubsystem)
       ).deadlineWith(new RevShooterToSpeed(rpm, shootSubsystem))
     );
@@ -33,7 +33,7 @@ public class ShootBallAgainstHub extends SequentialCommandGroup {
     );
     addCommands(
       new SequentialCommandGroup(
-        new PrepareToShootBall(storageSubsystem),
+        new LoadBallIntoStorageUntilLoaded(storageSubsystem),
         new WaitCommand(0.2),
         new WaitForShooterToBeStable(shootSubsystem)
       ).deadlineWith(new RevShooterToSpeed(rpm, shootSubsystem))

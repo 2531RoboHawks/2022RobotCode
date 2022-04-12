@@ -11,9 +11,9 @@ import frc.robot.subsystems.DriveSubsystem;
 public class DriveToWaypoint extends CommandBase {
   private DriveSubsystem driveSubsystem;
   private Pose2d desiredPose;
-  private PIDController forwardController = new PIDController(2, 0, 0);
-  private PIDController sidewaysController = new PIDController(2, 0, 0);
-  private PIDController rotationController = new PIDController(0.1, 0, 0);
+  private PIDController forwardController = new PIDController(1.5, 0, 0);
+  private PIDController sidewaysController = new PIDController(1.5, 0, 0);
+  private PIDController rotationController = new PIDController(0.05, 0, 0);
 
   private static final double maxVelocity = 3;
   private static final double maxRotation = 3;
@@ -60,14 +60,13 @@ public class DriveToWaypoint extends CommandBase {
     double sideways = MathUtil.clamp(sidewaysController.calculate(currentPose.getY()), -maxVelocity, maxVelocity);
     double rotation = MathUtil.clamp(rotationController.calculate(currentPose.getRotation().getDegrees()), -maxRotation, maxRotation);
     sideways = 0;
-    rotation = 0;
 
     System.out.println("F: " + forwards + " P: " + currentPose.getX() + " D: " + desiredPose.getX());
     System.out.println("S: " + sideways + " P: " + currentPose.getY() + " D: " + desiredPose.getY());
     System.out.println("R: " + rotation + " P: " + currentPose.getRotation().getDegrees() + " D: " + desiredPose.getRotation().getDegrees());
     System.out.println("---");
 
-    driveSubsystem.driveWheelSpeeds(driveSubsystem.calculateFieldOriented(forwards, -sideways, -rotation));
+    driveSubsystem.driveWheelSpeeds(driveSubsystem.calculateRobotOriented(forwards, -sideways, -rotation));
   }
 
   @Override

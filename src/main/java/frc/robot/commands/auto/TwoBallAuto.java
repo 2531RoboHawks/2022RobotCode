@@ -9,7 +9,8 @@ import frc.robot.Waypoint;
 import frc.robot.Constants.ShootingConstants;
 import frc.robot.commands.PutIntakeDownAndSpin;
 import frc.robot.commands.shooting.MoveBallToShooter;
-import frc.robot.commands.shooting.PrepareToShootBall;
+import frc.robot.commands.shooting.LoadBallIntoStorage;
+import frc.robot.commands.shooting.LoadBallIntoStorageUntilLoaded;
 import frc.robot.commands.shooting.RevShooterToSpeedThenNeutral;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -41,7 +42,7 @@ public class TwoBallAuto extends SequentialCommandGroup {
             new WaitCommand(1),
             new DriveToWaypoint(driveSubsystem, shoot)
           ),
-          new PrepareToShootBall(storageSubsystem)
+          new LoadBallIntoStorageUntilLoaded(storageSubsystem)
         ),
         new RevShooterToSpeedThenNeutral(ShootingConstants.highGoalOptimalRPM, shootSubsystem),
         new MoveBallToShooter(storageSubsystem)

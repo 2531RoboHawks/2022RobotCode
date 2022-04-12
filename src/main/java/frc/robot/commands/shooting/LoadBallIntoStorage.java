@@ -4,23 +4,24 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.ShootingConstants;
 import frc.robot.subsystems.StorageSubsystem;
 
-public class PrepareToShootBall extends CommandBase {
+public class LoadBallIntoStorage extends CommandBase {
   private StorageSubsystem storageSubsystem;
 
-  public PrepareToShootBall(StorageSubsystem storageSubsystem) {
+  public LoadBallIntoStorage(StorageSubsystem storageSubsystem) {
     addRequirements(storageSubsystem);
     this.storageSubsystem = storageSubsystem;
   }
 
   @Override
   public void execute() {
+    // TODO
+    if (storageSubsystem.isBallBeforeShooter()) {
+
+    } else {
+
+    }
     storageSubsystem.setBeforeShooterPower(ShootingConstants.prepareBallPower);
     storageSubsystem.setAfterIntakeRunning(true);
-  }
-
-  @Override
-  public boolean isFinished() {
-    return storageSubsystem.isBallBeforeShooter();
   }
 
   @Override
