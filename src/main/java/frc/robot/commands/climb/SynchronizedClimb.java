@@ -1,4 +1,4 @@
-package frc.robot.commands;
+package frc.robot.commands.climb;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.InputUtils;
@@ -6,11 +6,11 @@ import frc.robot.RobotContainer;
 import frc.robot.subsystems.ClimbSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 
-public class SynchronizedClimbCommand extends CommandBase {
+public class SynchronizedClimb extends CommandBase {
   private ClimbSubsystem climbSubsystem;
   private IntakeSubsystem intakeSubsystem;
 
-  public SynchronizedClimbCommand(ClimbSubsystem climbSubsystem, IntakeSubsystem intakeSubsystem) {
+  public SynchronizedClimb(ClimbSubsystem climbSubsystem, IntakeSubsystem intakeSubsystem) {
     this.climbSubsystem = climbSubsystem;
     this.intakeSubsystem = intakeSubsystem;
     addRequirements(climbSubsystem, intakeSubsystem);
@@ -19,13 +19,12 @@ public class SynchronizedClimbCommand extends CommandBase {
   @Override
   public void initialize() {
     intakeSubsystem.setDown(true);
-    climbSubsystem.zero();
   }
 
   @Override
   public void execute() {
     double power = -InputUtils.deadzone(RobotContainer.helms.getRawAxis(1));
-    double delta = power * 3000;
+    double delta = power * (power < 0 ? 1500 : 6000);
     double newTarget = climbSubsystem.getArmExtensionTarget() + delta;
     climbSubsystem.setArmExtensionTarget(newTarget);
   }

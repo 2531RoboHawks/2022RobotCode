@@ -1,8 +1,10 @@
-package frc.robot.commands.auto;
+package frc.robot.commands.shooting;
 
 import java.util.ArrayList;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants.ShootingConstants;
 import frc.robot.subsystems.ShootSubsystem;
 
 public class WaitForShooterToBeAtSpeed extends CommandBase {
@@ -11,8 +13,9 @@ public class WaitForShooterToBeAtSpeed extends CommandBase {
   private double period = 5;
   private ArrayList<Double> rpms = new ArrayList<>();
   private double targetRpm;
+  private Timer timer = new Timer();
 
-  public WaitForShooterToBeAtSpeed(ShootSubsystem shootSubsystem, double rpm) {
+  public WaitForShooterToBeAtSpeed(double rpm, ShootSubsystem shootSubsystem) {
     // intentionally not using requirements here -- this shouldn't interrupt something actually using the shooter
     this.shootSubsystem = shootSubsystem;
     this.targetRpm = rpm;
@@ -20,6 +23,8 @@ public class WaitForShooterToBeAtSpeed extends CommandBase {
 
   @Override
   public void initialize() {
+    timer.reset();
+    timer.start();
     rpms.clear();
   }
 
@@ -33,15 +38,23 @@ public class WaitForShooterToBeAtSpeed extends CommandBase {
 
   @Override
   public boolean isFinished() {
+    if (timer.hasElapsed(ShootingConstants.waitForShooterToReachSpeedTimeout)) {
+      System.out.println("Timed out");
+      return true;
+    }
     if (rpms.size() < period) {
+      System.out.println("Too little data");
       return false;
     }
     for (double i : rpms) {
       double error = Math.abs(i - targetRpm);
+      System.out.println(i);
       if (error > maxError) {
+        System.out.println("Error range exceeded: " + error);
         return false;
       }
     }
+    System.out.println("Done");
     return true;
   }
 }

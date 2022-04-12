@@ -16,6 +16,7 @@ import edu.wpi.first.math.kinematics.MecanumDriveMotorVoltages;
 import edu.wpi.first.math.kinematics.MecanumDriveOdometry;
 import edu.wpi.first.math.kinematics.MecanumDriveWheelSpeeds;
 import edu.wpi.first.math.trajectory.Trajectory;
+import edu.wpi.first.wpilibj.drive.Vector2d;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -23,14 +24,15 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.BetterTalonFX;
 import frc.robot.MecanumDriveInfo;
 import frc.robot.PIDSettings;
+import frc.robot.Constants.CAN;
 
 public class DriveSubsystem extends SubsystemBase {
-  private Gyro gyro = new WPI_PigeonIMU(1);
+  private Gyro gyro = new WPI_PigeonIMU(CAN.Pigeon);
 
-  private BetterTalonFX frontLeft = new BetterTalonFX(30);
-  private BetterTalonFX frontRight = new BetterTalonFX(31);
-  private BetterTalonFX backLeft = new BetterTalonFX(32);
-  private BetterTalonFX backRight = new BetterTalonFX(33);
+  private BetterTalonFX frontLeft = new BetterTalonFX(CAN.DriveFrontLeft);
+  private BetterTalonFX frontRight = new BetterTalonFX(CAN.DriveFrontRight);
+  private BetterTalonFX backLeft = new BetterTalonFX(CAN.DriveBackLeft);
+  private BetterTalonFX backRight = new BetterTalonFX(CAN.DriveBackRight);
 
   private final MecanumDriveKinematics kinematics = new MecanumDriveKinematics(
     // In meters from center of robot
@@ -54,6 +56,11 @@ public class DriveSubsystem extends SubsystemBase {
   private final PIDSettings feedforwardPID = new PIDSettings(2.2706, 0, 0);
 
   public DriveSubsystem() {
+    frontLeft.configureBrakes(true);
+    frontRight.configureBrakes(true);
+    backLeft.configureBrakes(true);
+    backRight.configureBrakes(true);
+
     frontLeft.configureFeedforward(feedforward, feedforwardPID);
     frontRight.configureFeedforward(feedforward, feedforwardPID);
     backLeft.configureFeedforward(feedforward, feedforwardPID);
@@ -70,7 +77,7 @@ public class DriveSubsystem extends SubsystemBase {
     odometry = new MecanumDriveOdometry(kinematics, getRotation2d());
     reset();
 
-    SmartDashboard.putData("Field", fieldImage);
+    // SmartDashboard.putData("Field", fieldImage);
   }
 
   public MecanumDriveKinematics getKinematics() {
@@ -85,7 +92,7 @@ public class DriveSubsystem extends SubsystemBase {
     return feedforwardPID.toController();
   }
 
-  public MecanumDriveInfo calculateMecanumDrive(double forward, double sideways, double rotation) {
+  public MecanumDriveInfo calculateRobotOriented(double forward, double sideways, double rotation) {
     return new MecanumDriveInfo(
       forward + sideways + rotation,
       forward - sideways - rotation,
@@ -94,8 +101,19 @@ public class DriveSubsystem extends SubsystemBase {
     );
   }
 
+  public MecanumDriveInfo calculateFieldOriented(double forward, double sideways, double rotation) {
+    Vector2d input = new Vector2d(forward, sideways);
+    input.rotate(-getAngle());
+    return new MecanumDriveInfo(
+      input.x + input.y + rotation,
+      input.x - input.y - rotation,
+      input.x - input.y + rotation,
+      input.x + input.y - rotation  
+    );
+  }
+
   public void drivePercent(double forward, double sideways, double rotation) {
-    drivePercent(calculateMecanumDrive(forward, sideways, rotation));
+    drivePercent(calculateRobotOriented(forward, sideways, rotation));
   }
 
   public void drivePercent(MecanumDriveInfo powers) {
@@ -210,9 +228,9 @@ public class DriveSubsystem extends SubsystemBase {
 
     // fieldImage.setRobotPose(getPose());
 
-    SmartDashboard.putNumber("Pose X", getPose().getX());
-    SmartDashboard.putNumber("Pose Y", getPose().getY());
-    SmartDashboard.putNumber("Gyro", rotation.getDegrees());
+    // SmartDashboard.putNumber("Pose X", getPose().getX());
+    // SmartDashboard.putNumber("Pose Y", getPose().getY());
+    // SmartDashboard.putNumber("Gyro", rotation.getDegrees());
 
     // SmartDashboard.putNumber("FL Current", frontLeft.getWPI().getSupplyCurrent());
     // SmartDashboard.putNumber("FR Current", frontRight.getWPI().getSupplyCurrent());

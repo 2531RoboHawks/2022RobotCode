@@ -1,5 +1,6 @@
 package frc.robot;
 
+import edu.wpi.first.math.kinematics.MecanumDriveMotorVoltages;
 import edu.wpi.first.math.kinematics.MecanumDriveWheelSpeeds;
 
 /**
@@ -20,6 +21,15 @@ public class MecanumDriveInfo {
 
   public MecanumDriveWheelSpeeds toWheelSpeeds() {
     return new MecanumDriveWheelSpeeds(
+      frontLeft,
+      frontRight,
+      backLeft,
+      backRight
+    );
+  }
+
+  public MecanumDriveMotorVoltages toMotorVoltages() {
+    return new MecanumDriveMotorVoltages(
       frontLeft,
       frontRight,
       backLeft,

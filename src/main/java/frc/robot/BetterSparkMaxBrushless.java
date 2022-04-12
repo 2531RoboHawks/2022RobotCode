@@ -1,21 +1,23 @@
 package frc.robot;
 
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+
 import com.revrobotics.RelativeEncoder;
-import com.revrobotics.SparkMaxPIDController;
 
 public class BetterSparkMaxBrushless {
   private CANSparkMax canSparkMax;
-  private SparkMaxPIDController pidController;
-  private RelativeEncoder encoder;
+  private RelativeEncoder integratedEncoder;
+
+  private SimpleMotorFeedforward feedforward;
+  private PIDController feedforwardPID;
 
   public BetterSparkMaxBrushless(int id) {
     canSparkMax = new CANSparkMax(id, MotorType.kBrushless);
-    encoder = canSparkMax.getEncoder();
-    pidController = canSparkMax.getPIDController();
-    zero();
+    integratedEncoder = canSparkMax.getEncoder();
   }
 
   public BetterSparkMaxBrushless configureInverted(boolean inverted) {
@@ -27,36 +29,26 @@ public class BetterSparkMaxBrushless {
     canSparkMax.set(power);
   }
 
+  public void setVoltage(double voltage) {
+    canSparkMax.setVoltage(voltage);
+  }
+
   public void stop() {
     canSparkMax.stopMotor();
   }
 
-  public void setRPM(double rpm) {
-    pidController.setReference(rpm, ControlType.kVelocity);
-  }
   public double getRPM() {
-    return encoder.getVelocity();
+    return integratedEncoder.getVelocity();
   }
 
-  private double zero;
-  public void zero() {
-    zero = encoder.getPosition();
-  }
-  public void setPosition(double turns) {
-    pidController.setReference(zero + turns, ControlType.kPosition);
-  }
-  public double getPosition() {
-    return encoder.getPosition();
+  public void setRPMFeedforwardPID(double rpm) {
+    double revolutionsPerSecond = rpm / 60.0;
+    canSparkMax.setVoltage(feedforward.calculate(revolutionsPerSecond) + feedforwardPID.calculate(getRPM(), revolutionsPerSecond));
   }
 
-  public void configurePID(PIDSettings pidSettings) {
-    pidController.setP(pidSettings.kp);
-    pidController.setI(pidSettings.ki);
-    pidController.setD(pidSettings.kd);
-  }
-
-  public void setMaxPIDOutput(double output) {
-    pidController.setOutputRange(-output, output);
+  public void configureFeedforward(SimpleMotorFeedforward feedforward, PIDSettings pidSettings) {
+    this.feedforward = feedforward;
+    this.feedforwardPID = pidSettings.toController();
   }
 
   public CANSparkMax getCanSparkMax() {

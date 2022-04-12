@@ -31,4 +31,8 @@ public class JoystickAxis {
       }
     });
   }
+
+  public void whenActivated(Command command) {
+    whenAboveThreshold(0.5, command);
+  }
 }

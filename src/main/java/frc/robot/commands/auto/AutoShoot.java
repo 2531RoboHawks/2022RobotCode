@@ -7,11 +7,14 @@ package frc.robot.commands.auto;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.commands.shooting.RPMCalculator;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShootSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 
-public class AutoShootCommand extends CommandBase {
+// NEEDS TO BE REFACTORED
+@Deprecated
+public class AutoShoot extends CommandBase {
   private VisionSubsystem visionSubsystem;
   private ShootSubsystem shootSubsystem;
   private IntakeSubsystem intakeSubsystem;
@@ -21,13 +24,12 @@ public class AutoShootCommand extends CommandBase {
   private static final double startShootingAfter = 1.5;
   private static final double stopShootingAfter = 1.5;
 
-  public AutoShootCommand(ShootSubsystem shootSubsystem, VisionSubsystem visionSubsystem, IntakeSubsystem intakeSubsystem, double distance) {
+  public AutoShoot(ShootSubsystem shootSubsystem, VisionSubsystem visionSubsystem, IntakeSubsystem intakeSubsystem, double distance) {
     addRequirements(shootSubsystem, intakeSubsystem);
     this.visionSubsystem = visionSubsystem;
     this.shootSubsystem = shootSubsystem;
     this.intakeSubsystem = intakeSubsystem;
-    this.rpm = calculateRPMForDistance(distance);
-    SmartDashboard.putNumber("Testing RPM", 0);
+    this.rpm = RPMCalculator.distancesToRPM(distance);
   }
 
   @Override
@@ -37,11 +39,6 @@ public class AutoShootCommand extends CommandBase {
     timer.stop();
     finalTimer.reset();
     finalTimer.stop();
-  }
-
-  public static double calculateRPMForDistance(double inches) {
-    // return SmartDashboard.getNumber("Testing RPM", 0);
-    return inches * 17.6 + 2886.0;
   }
 
   private double rpm = 0;
@@ -61,8 +58,8 @@ public class AutoShootCommand extends CommandBase {
 
     if (timer.hasElapsed(startShootingAfter)) {
       finalTimer.start();
-      shootSubsystem.setStorageBeforeShootRunning(true);
-      intakeSubsystem.setStorageAfterIntakeRunning(true);
+      // shootSubsystem.setStorageBeforeShootRunning(true);
+      // intakeSubsystem.setStorageAfterIntakeRunning(true);
     }
     // } else {
     //   timer.reset();
@@ -76,7 +73,7 @@ public class AutoShootCommand extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     shootSubsystem.stopEverything();
-    intakeSubsystem.setStorageAfterIntakeRunning(false);
+    // intakeSubsystem.setStorageAfterIntakeRunning(false);
     visionSubsystem.noLongerNeeded();
   }
 

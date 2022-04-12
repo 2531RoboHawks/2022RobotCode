@@ -5,7 +5,7 @@ import frc.robot.subsystems.DriveSubsystem;
 
 public class Taxi extends SequentialCommandGroup {
   public Taxi(DriveSubsystem driveSubsystem) {
-    addCommands(new ResetOdometryCommand(driveSubsystem));
+    addCommands(new ResetOdometry(driveSubsystem));
     addCommands(new DriveToWaypoint(driveSubsystem, 1.25, 0, 0));
   }
 }

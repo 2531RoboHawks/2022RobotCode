@@ -12,9 +12,10 @@ import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj2.command.MecanumControllerCommand;
+import frc.robot.Waypoint;
 import frc.robot.subsystems.DriveSubsystem;
 
-public class TrajectoryCommand extends MecanumControllerCommand {
+public class DriveTrajectory extends MecanumControllerCommand {
   // in meters/sec
   private static final double maxVelocity = 1;
   private static final double maxAcceleration = 1;
@@ -27,7 +28,7 @@ public class TrajectoryCommand extends MecanumControllerCommand {
   private Trajectory trajectory;
   private boolean shouldResetOdometry = false;
 
-  public TrajectoryCommand(Trajectory trajectory, DriveSubsystem driveSubsystem) {
+  public DriveTrajectory(Trajectory trajectory, DriveSubsystem driveSubsystem) {
     super(
       trajectory,
       driveSubsystem::getPose,
@@ -56,7 +57,7 @@ public class TrajectoryCommand extends MecanumControllerCommand {
     return new ProfiledPIDController(1, 0, 0, new TrapezoidProfile.Constraints(maxAngularVelocity, maxAngularAcceleration));
   }
 
-  public static TrajectoryCommand fromWaypoints(DriveSubsystem driveSubsystem, Waypoint... waypointsArray) {
+  public static DriveTrajectory fromWaypoints(DriveSubsystem driveSubsystem, Waypoint... waypointsArray) {
     if (waypointsArray.length < 2) {
       throw new IllegalArgumentException("forWaypoints called with too few waypoint arguments");
     }
@@ -85,10 +86,10 @@ public class TrajectoryCommand extends MecanumControllerCommand {
     //   throw new IllegalArgumentException("Trajectory is invalid: it is zero seconds long. There may be a more detailed message above.");
     // }
 
-    return new TrajectoryCommand(trajectory, driveSubsystem);
+    return new DriveTrajectory(trajectory, driveSubsystem);
   }
 
-  public TrajectoryCommand resetOdometry() {
+  public DriveTrajectory resetOdometry() {
     shouldResetOdometry = true;
     return this;
   }

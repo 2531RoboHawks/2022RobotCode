@@ -2,19 +2,18 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands;
+package frc.robot.commands.defaults;
 
-import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.InputUtils;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.Controls;
 import frc.robot.subsystems.DriveSubsystem;
 
-public class DriveCommand extends CommandBase {
+public class DefaultDrive extends CommandBase {
   private DriveSubsystem driveSubsystem;
 
-  public DriveCommand(DriveSubsystem driveSubsystem) {
+  public DefaultDrive(DriveSubsystem driveSubsystem) {
     this.driveSubsystem = driveSubsystem;
     addRequirements(driveSubsystem);
   }
@@ -22,9 +21,6 @@ public class DriveCommand extends CommandBase {
   @Override
   public void initialize() {
     driveSubsystem.reset();
-
-    // For testing pose accuracy
-    driveSubsystem.resetOdometry(new Pose2d());
   }
 
   private double scale(double n) {
@@ -57,7 +53,7 @@ public class DriveCommand extends CommandBase {
     double y = -RobotContainer.gamepad.getLeftY();
     double z = RobotContainer.gamepad.getRawAxis(4);
 
-    driveSubsystem.drivePercent(driveSubsystem.calculateMecanumDrive(
+    driveSubsystem.drivePercent(driveSubsystem.calculateRobotOriented(
       scale(y) * yMultiplier,
       scale(x) * xMultiplier,
       scale(z) * rotationMultiplier

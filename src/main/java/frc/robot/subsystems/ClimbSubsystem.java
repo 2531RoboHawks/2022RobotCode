@@ -1,40 +1,46 @@
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.BetterTalonFX;
 import frc.robot.PIDSettings;
+import frc.robot.Constants.CAN;
 import frc.robot.Constants.Solenoids;
 
 public class ClimbSubsystem extends SubsystemBase {
-  public BetterTalonFX leftTalon = new BetterTalonFX(21);
-  public BetterTalonFX rightTalon = new BetterTalonFX(22);
-  private Solenoid extendArmsSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, Solenoids.ClimbExtend);
+  public BetterTalonFX leftTalon = new BetterTalonFX(CAN.ClimbLeft)
+    .configureBrakes(true);
+  public BetterTalonFX rightTalon = new BetterTalonFX(CAN.ClimbRight)
+    .configureBrakes(true);
 
-  private static final PIDSettings talonPid = new PIDSettings(0.014, 0, 0);
-  private static final double secondsFromNeutralToFull = 1;
+  private Solenoid extendArmsSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, Solenoids.ClimbExtend);
+  private Solenoid spikeSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, Solenoids.ClimbSpikes);
+
+  private static final PIDSettings talonPid = new PIDSettings(0.5, 0, 0);
+  private static final double secondsFromNeutralToFull = 0;
+  private static final double deadband = 0.04;
 
   public ClimbSubsystem() {
     leftTalon.configurePID(talonPid);
     leftTalon.configureRamp(secondsFromNeutralToFull);
+    leftTalon.getWPI().configNeutralDeadband(deadband);
 
     rightTalon.configurePID(talonPid);
     rightTalon.configureRamp(secondsFromNeutralToFull);
+    rightTalon.getWPI().configNeutralDeadband(deadband);
 
     setArmsExtended(false);
-
-    rightTalon.getWPI().setNeutralMode(NeutralMode.Brake);
-    leftTalon.getWPI().setNeutralMode(NeutralMode.Brake);
+    setSpikes(false);
   }
 
   public double getArmExtensionTarget() {
     return leftTalon.getFixedEncoderTarget();
   }
   public void setArmExtensionTarget(double sensorUnits) {
-    double MIN = 0;
+    SmartDashboard.putNumber("Climb Target", sensorUnits);
+    double MIN = 3000;
     double MAX = 360000;
     if (sensorUnits < MIN) {
       System.out.println("CLIMB TOO LOW: " + sensorUnits);
@@ -73,9 +79,25 @@ public class ClimbSubsystem extends SubsystemBase {
     setArmsExtended(!areArmsExtended());
   }
 
+  public void setSpikes(boolean spikes) {
+    System.out.println("Spikes: " + spikes);
+    spikeSolenoid.set(spikes);
+  }
+  public boolean getSpikes() {
+    return spikeSolenoid.get();
+  }
+
+  public double getLeftExtension() {
+    return leftTalon.getPositionSensorUnits();
+  }
+
+  public double getRightExtension() {
+    return rightTalon.getPositionSensorUnits();
+  }
+
   @Override
   public void periodic() {
-    // SmartDashboard.putNumber("Left Climb", leftTalon.getPositionSensorUnits());
-    // SmartDashboard.putNumber("Right Climb", rightTalon.getPositionSensorUnits());
+    SmartDashboard.putNumber("Left Climb", getLeftExtension());
+    SmartDashboard.putNumber("Right Climb", getRightExtension());
   }
 }
