@@ -44,8 +44,8 @@ public class DefaultDrive extends CommandBase {
       yMultiplier = .75;
       rotationMultiplier = .75;
     } else {
-      xMultiplier = .5;
-      yMultiplier = .5;
+      xMultiplier = .4;
+      yMultiplier = .4;
       rotationMultiplier = .33;
     }
 
