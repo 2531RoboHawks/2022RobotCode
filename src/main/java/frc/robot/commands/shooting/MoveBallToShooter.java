@@ -9,7 +9,7 @@ public class MoveBallToShooter extends SequentialCommandGroup {
   public MoveBallToShooter(StorageSubsystem storageSubsystem) {
     addCommands(
       new WaitUntilCommand(() -> !storageSubsystem.isBallBeforeShooter())
-        .deadlineWith(new RunStorageBeforeShooter(ShootingConstants.ejectBallPower, storageSubsystem))
+        .deadlineWith(new RunStorage(false, ShootingConstants.ejectBallPower, storageSubsystem))
         .withTimeout(ShootingConstants.waitForBallToShootTimeout)
     );
   }

@@ -34,7 +34,7 @@ public class VisionAimAndShoot extends ParallelCommandGroup {
         }),
         // new WaitUntilCommand(() -> !shootSubsystem.isBallInStorage()),
         new InstantCommand(() -> {
-          intakeSubsystem.setStorageAfterIntakeRunning(true);
+          // intakeSubsystem.setStorageAfterIntakeRunning(true);
           // shootSubsystem.setStorageBeforeShootPower(moveBallForwardPower);
         }),
         // new WaitUntilCommand(() -> shootSubsystem.isBallInStorage()),
@@ -53,7 +53,7 @@ public class VisionAimAndShoot extends ParallelCommandGroup {
   @Override
   public void end(boolean interrupted) {
     super.end(interrupted);
-    shootSubsystem.stopEverything();
-    intakeSubsystem.setEverything(false);
+    // shootSubsystem.stopEverything();
+    // intakeSubsystem.setEverything(false);
   }
 }

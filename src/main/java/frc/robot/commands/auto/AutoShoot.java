@@ -59,7 +59,7 @@ public class AutoShoot extends CommandBase {
     if (timer.hasElapsed(startShootingAfter)) {
       finalTimer.start();
       // shootSubsystem.setStorageBeforeShootRunning(true);
-      intakeSubsystem.setStorageAfterIntakeRunning(true);
+      // intakeSubsystem.setStorageAfterIntakeRunning(true);
     }
     // } else {
     //   timer.reset();
@@ -73,7 +73,7 @@ public class AutoShoot extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     shootSubsystem.stopEverything();
-    intakeSubsystem.setStorageAfterIntakeRunning(false);
+    // intakeSubsystem.setStorageAfterIntakeRunning(false);
     visionSubsystem.noLongerNeeded();
   }
 
