@@ -42,13 +42,15 @@ public class BetterSparkMaxBrushless {
   }
 
   public void setRPMFeedforwardPID(double rpm) {
-    double revolutionsPerSecond = rpm / 60.0;
-    canSparkMax.setVoltage(feedforward.calculate(revolutionsPerSecond) + feedforwardPID.calculate(getRPM(), revolutionsPerSecond));
+    double targetRevolutionsPerSecond = rpm / 60.0;
+    double currentRevolutionsPerSecond = getRPM() / 60.0;
+    canSparkMax.setVoltage(feedforward.calculate(targetRevolutionsPerSecond) + feedforwardPID.calculate(currentRevolutionsPerSecond, targetRevolutionsPerSecond));
   }
 
-  public void configureFeedforward(SimpleMotorFeedforward feedforward, PIDSettings pidSettings) {
+  public BetterSparkMaxBrushless configureFeedforward(SimpleMotorFeedforward feedforward, PIDSettings pidSettings) {
     this.feedforward = feedforward;
     this.feedforwardPID = pidSettings.toController();
+    return this;
   }
 
   public CANSparkMax getCanSparkMax() {
