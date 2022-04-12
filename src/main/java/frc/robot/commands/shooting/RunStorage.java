@@ -10,7 +10,7 @@ public class RunStorage extends ParallelCommandGroup {
     addCommands(
       new RunCommand(() -> {
         System.out.println(beforeShooter);
-        storageSubsystem.setAfterIntakePower(afterIntake);
+        storageSubsystem.setAfterIntakeVoltsVoltage(afterIntake);
         storageSubsystem.setBeforeShooterRPM(beforeShooter);
       })
     );

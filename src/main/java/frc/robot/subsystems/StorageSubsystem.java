@@ -15,7 +15,7 @@ public class StorageSubsystem extends SubsystemBase {
     .configureFeedforward(new SimpleMotorFeedforward(0.21484, 0.12234, 0.002726), new PIDSettings(0.056956, 0, 0))
     .configureInverted(true);
 
-  private BetterTalonFX storageAfterIntake = new BetterTalonFX(CAN.IntakeStorage)
+  private BetterTalonFX afterIntake = new BetterTalonFX(CAN.IntakeStorage)
     .configureBrakes(true);
 
   private DigitalInput switchBeforeShooter = new DigitalInput(DigitalInputs.BallStorage);
@@ -24,7 +24,12 @@ public class StorageSubsystem extends SubsystemBase {
     return !switchBeforeShooter.get();
   }
 
-  public void setBeforeShooterPower(double volts) {
+  public void setBeforeShooterPower(double power) {
+    System.out.println("Before shooter power: " + power);
+    beforeShooter.setPower(power);
+  }
+
+  public void setBeforeShooterVoltage(double volts) {
     System.out.println("Before shooter volts: " + volts);
     beforeShooter.setVoltage(volts);
   }
@@ -39,14 +44,19 @@ public class StorageSubsystem extends SubsystemBase {
     beforeShooter.stop();
   }
 
-  public void setAfterIntakePower(double volts) {
+  public void setAfterIntakePower(double power) {
+    System.out.println("Ater intake power: " + power);
+    afterIntake.setPower(power);
+  }
+
+  public void setAfterIntakeVoltsVoltage(double volts) {
     System.out.println("Ater intake volts: " + volts);
-    storageAfterIntake.setVoltage(volts);
+    afterIntake.setVoltage(volts);
   }
 
   public void stopAfterIntake() {
     System.out.println("After intake: stopped");
-    storageAfterIntake.stop();
+    afterIntake.stop();
   }
 
   @Override

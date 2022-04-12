@@ -16,10 +16,10 @@ public class LoadBallIntoStorage extends CommandBase {
   public void execute() {
     if (storageSubsystem.isBallBeforeShooter()) {
       storageSubsystem.stopBeforeShooter();
-      storageSubsystem.setAfterIntakePower(ShootingConstants.afterIntakeSlowVolts);
+      storageSubsystem.setAfterIntakeVoltsVoltage(ShootingConstants.afterIntakeSlowVolts);
     } else {
       storageSubsystem.setBeforeShooterRPM(ShootingConstants.beforeShooterPrepareRPM);
-      storageSubsystem.setAfterIntakePower(ShootingConstants.afterIntakeVolts);
+      storageSubsystem.setAfterIntakeVoltsVoltage(ShootingConstants.afterIntakeVolts);
     }
   }
 
