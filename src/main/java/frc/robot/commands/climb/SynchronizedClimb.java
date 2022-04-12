@@ -23,10 +23,27 @@ public class SynchronizedClimb extends CommandBase {
 
   @Override
   public void execute() {
+    boolean armsExtended = climbSubsystem.areArmsExtended();
+
     double power = -InputUtils.deadzone(RobotContainer.helms.getRawAxis(1));
-    double delta = power * (power < 0 ? 1500 : 6000);
-    double newTarget = climbSubsystem.getArmExtensionTarget() + delta;
+    double delta;
+    if (armsExtended && power < 0) {
+      delta = power * 1500;
+    } else {
+      delta = power * 4500;
+    }
+    double oldTarget = climbSubsystem.getArmExtensionTarget();
+    double newTarget = oldTarget + delta;
     climbSubsystem.setArmExtensionTarget(newTarget);
+
+    // boolean areSpikesOut = climbSubsystem.getSpikes();
+    // if (areSpikesOut && armsExtended) {
+    //   double automaticReleaseThreshold = 200000;
+    //   if (oldTarget > automaticReleaseThreshold && newTarget <= automaticReleaseThreshold) {
+    //     System.out.println("Automatic unspike");
+    //     climbSubsystem.setSpikes(false);
+    //   }
+    // }
   }
 
   @Override
