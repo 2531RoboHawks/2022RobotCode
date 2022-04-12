@@ -16,8 +16,8 @@ public class DriveToWaypoint extends CommandBase {
   private PIDController sidewaysController = new PIDController(3, 0, 0);
   private PIDController rotationController = new PIDController(0.05, 0, 0);
 
-  private static final double maxVelocity = 2.5;
-  private static final double maxRotation = 2.5;
+  private double maxVelocity = 2;
+  private double maxRotation = 2;
 
   private static final double xTolerance = 0.02;
   private static final double yTolerance = 999999;
@@ -85,5 +85,10 @@ public class DriveToWaypoint extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     driveSubsystem.stop();
+  }
+
+  public DriveToWaypoint withMaxVelocity(double maxVelocity) {
+    this.maxVelocity = maxVelocity;
+    return this;
   }
 }

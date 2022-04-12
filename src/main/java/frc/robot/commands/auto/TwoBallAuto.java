@@ -22,22 +22,22 @@ public class TwoBallAuto extends SequentialCommandGroup {
   private final IntakeSubsystem intakeSubsystem = RobotContainer.intakeSubsystem;
   private final VisionSubsystem visionSubsystem = RobotContainer.visionSubsystem;
 
-  private final double pickUpBallDistance = Units.inchesToMeters(60);
-  private final double rotateDegrees = 15;
+  private final double pickUpBallDistance = Units.inchesToMeters(80);
   private final double moveTimeout = 2;
-  private final double rpm = 4500;
+  private final double rpm = 4200;
 
   public TwoBallAuto() {
     addCommands(new ParallelDeadlineGroup(
       new SequentialCommandGroup(
-        new WaitCommand(3),
+        new WaitCommand(1.5),
         new DriveToWaypoint(driveSubsystem, new Waypoint(pickUpBallDistance, 0, 0))
           .withTimeout(moveTimeout),
         new WaitCommand(0.5),
         new DriveToWaypoint(driveSubsystem, new Waypoint(-pickUpBallDistance, 0, 0))
+          .withMaxVelocity(3)
+          .withTimeout(moveTimeout),
+        new VisionAim(5, visionSubsystem, driveSubsystem)
           .withTimeout(moveTimeout)
-        // new DriveToWaypoint(driveSubsystem, new Waypoint(0, 0, rotateDegrees))
-        //   .withTimeout(moveTimeout)
       ),
       new PutIntakeDownAndSpin(intakeSubsystem),
       new LoadBallIntoStorage(storageSubsystem)

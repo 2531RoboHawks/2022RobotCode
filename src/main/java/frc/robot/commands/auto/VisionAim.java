@@ -15,19 +15,22 @@ public class VisionAim extends CommandBase {
   private VisionSubsystem visionSubsystem;
   private boolean limelightBecameReady = false;
 
-  private PIDController pidController = new PIDController(0.05, 0, 0);
+  private PIDController pidController = new PIDController(0.08, 0, 0);
 
-  public VisionAim(VisionSubsystem visionSubsystem, DriveSubsystem driveSubsystem) {
+  private double maxPower = 1;
+
+  public VisionAim(double targetAngle, VisionSubsystem visionSubsystem, DriveSubsystem driveSubsystem) {
     this.visionSubsystem = visionSubsystem;
     this.driveSubsystem = driveSubsystem;
     addRequirements(this.visionSubsystem);
     addRequirements(this.driveSubsystem);
     pidController.setTolerance(1);
-    pidController.setSetpoint(0);
+    pidController.setSetpoint(targetAngle);
   }
 
   @Override
   public void initialize() {
+    pidController.reset();
     visionSubsystem.ensureEnabled();
     limelightBecameReady = false;
   }
@@ -38,12 +41,11 @@ public class VisionAim extends CommandBase {
       return;
     }
     limelightBecameReady = true;
-    double maxPower = 1;
-    double amount = MathUtil.clamp(pidController.calculate(visionSubsystem.getX()), -maxPower, maxPower);
     if (visionSubsystem.hasValidTarget()) {
-      this.driveSubsystem.drivePercent(0, 0, -amount);
+      double rotation = MathUtil.clamp(pidController.calculate(visionSubsystem.getX()), -maxPower, maxPower);
+      driveSubsystem.driveWheelSpeeds(driveSubsystem.calculateRobotOriented(0, 0, -rotation));
     } else {
-      this.driveSubsystem.stop();
+      driveSubsystem.stop();
     }
   }
 
