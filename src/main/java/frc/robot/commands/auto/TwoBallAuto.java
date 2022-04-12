@@ -1,17 +1,14 @@
 package frc.robot.commands.auto;
 
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.RobotContainer;
 import frc.robot.Waypoint;
-import frc.robot.Constants.ShootingConstants;
 import frc.robot.commands.PutIntakeDownAndSpin;
-import frc.robot.commands.shooting.MoveBallToShooter;
 import frc.robot.commands.shooting.LoadBallIntoStorage;
-import frc.robot.commands.shooting.LoadBallIntoStorageUntilLoaded;
-import frc.robot.commands.shooting.RevShooterToSpeedThenNeutral;
+import frc.robot.commands.shooting.ShootBallAgainstHub;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShootSubsystem;
@@ -19,34 +16,32 @@ import frc.robot.subsystems.StorageSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 
 public class TwoBallAuto extends SequentialCommandGroup {
-  private static final Waypoint start = new Waypoint(7.06, 4.79, 133.57);
-  private static final Waypoint shoot = new Waypoint(7.06 + Units.inchesToMeters(ShootingConstants.highGoalOptimalDistance), 4.79, 133.57);
-  private static final Waypoint pickupBall = new Waypoint(7.06 + Units.inchesToMeters(ShootingConstants.highGoalOptimalDistance), 4.79, 133.57);
-
   private final DriveSubsystem driveSubsystem = RobotContainer.driveSubsystem;
   private final ShootSubsystem shootSubsystem = RobotContainer.shootSubsystem;
   private final StorageSubsystem storageSubsystem = RobotContainer.storageSubsystem;
   private final IntakeSubsystem intakeSubsystem = RobotContainer.intakeSubsystem;
   private final VisionSubsystem visionSubsystem = RobotContainer.visionSubsystem;
 
+  private final double pickUpBallDistance = Units.inchesToMeters(60);
+  private final double rotateDegrees = 15;
+  private final double moveTimeout = 2;
+  private final double rpm = 4500;
+
   public TwoBallAuto() {
-    addCommands(new ResetOdometry(driveSubsystem, start));
-    addCommands(new DriveToWaypoint(driveSubsystem, shoot));
-    addCommands(new RevShooterToSpeedThenNeutral(ShootingConstants.highGoalOptimalRPM, shootSubsystem));
-    addCommands(new MoveBallToShooter(storageSubsystem));
-    addCommands(
+    addCommands(new ParallelDeadlineGroup(
       new SequentialCommandGroup(
-        new ParallelCommandGroup(
-          new SequentialCommandGroup(
-            new DriveToWaypoint(driveSubsystem, pickupBall),
-            new WaitCommand(1),
-            new DriveToWaypoint(driveSubsystem, shoot)
-          ),
-          new LoadBallIntoStorageUntilLoaded(storageSubsystem)
-        ),
-        new RevShooterToSpeedThenNeutral(ShootingConstants.highGoalOptimalRPM, shootSubsystem),
-        new MoveBallToShooter(storageSubsystem)
-      ).deadlineWith(new PutIntakeDownAndSpin(intakeSubsystem))
-    );
+        new WaitCommand(3),
+        new DriveToWaypoint(driveSubsystem, new Waypoint(pickUpBallDistance, 0, 0))
+          .withTimeout(moveTimeout),
+        new WaitCommand(0.5),
+        new DriveToWaypoint(driveSubsystem, new Waypoint(-pickUpBallDistance, 0, 0))
+          .withTimeout(moveTimeout)
+        // new DriveToWaypoint(driveSubsystem, new Waypoint(0, 0, rotateDegrees))
+        //   .withTimeout(moveTimeout)
+      ),
+      new PutIntakeDownAndSpin(intakeSubsystem),
+      new LoadBallIntoStorage(storageSubsystem)
+    ));
+    addCommands(new ShootBallAgainstHub(rpm, null));
   }
 }

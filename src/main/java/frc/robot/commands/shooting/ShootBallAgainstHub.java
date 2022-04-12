@@ -21,10 +21,14 @@ public class ShootBallAgainstHub extends SequentialCommandGroup {
   private DriveSubsystem driveSubsystem = RobotContainer.driveSubsystem;
   private StorageSubsystem storageSubsystem = RobotContainer.storageSubsystem;
 
-  public ShootBallAgainstHub(double rpm, double distance) {
+  public ShootBallAgainstHub(double rpm, Waypoint driveTo) {
     addCommands(
       new SequentialCommandGroup(
-        distance == 0 ? new InstantCommand() : new DriveToWaypoint(driveSubsystem, new Waypoint(distance, 0, 0)).withTimeout(2),
+        driveTo == null ? (
+          new InstantCommand()
+        ) : (
+          new DriveToWaypoint(driveSubsystem, driveTo).withTimeout(2)
+        ),
         new WaitForShooterToBeStable(shootSubsystem)
       ).deadlineWith(new RevShooterToSpeed(rpm, shootSubsystem))
     );

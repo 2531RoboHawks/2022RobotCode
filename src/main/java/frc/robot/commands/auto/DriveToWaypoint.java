@@ -11,12 +11,17 @@ import frc.robot.subsystems.DriveSubsystem;
 public class DriveToWaypoint extends CommandBase {
   private DriveSubsystem driveSubsystem;
   private Pose2d desiredPose;
-  private PIDController forwardController = new PIDController(1.5, 0, 0);
-  private PIDController sidewaysController = new PIDController(1.5, 0, 0);
+
+  private PIDController forwardController = new PIDController(3, 0, 0);
+  private PIDController sidewaysController = new PIDController(3, 0, 0);
   private PIDController rotationController = new PIDController(0.05, 0, 0);
 
-  private static final double maxVelocity = 3;
-  private static final double maxRotation = 3;
+  private static final double maxVelocity = 2.5;
+  private static final double maxRotation = 2.5;
+
+  private static final double xTolerance = 0.02;
+  private static final double yTolerance = 999999;
+  private static final double rotationTolerance = 1;
 
   public DriveToWaypoint(Pose2d pose, DriveSubsystem driveSubsystem) {
     this.driveSubsystem = driveSubsystem;
@@ -24,13 +29,13 @@ public class DriveToWaypoint extends CommandBase {
     addRequirements(driveSubsystem);
 
     forwardController.setSetpoint(desiredPose.getX());
-    forwardController.setTolerance(0.1);
+    forwardController.setTolerance(xTolerance);
 
     sidewaysController.setSetpoint(desiredPose.getY());
-    sidewaysController.setTolerance(0.1);
+    sidewaysController.setTolerance(yTolerance);
 
     rotationController.setSetpoint(desiredPose.getRotation().getDegrees());
-    rotationController.setTolerance(1);
+    rotationController.setTolerance(rotationTolerance);
   }
 
   public DriveToWaypoint(DriveSubsystem driveSubsystem, Pose2d pose) {
@@ -47,6 +52,7 @@ public class DriveToWaypoint extends CommandBase {
 
   @Override
   public void initialize() {
+    driveSubsystem.resetOdometry(new Pose2d());
     forwardController.reset();
     sidewaysController.reset();
     rotationController.reset();
@@ -59,12 +65,14 @@ public class DriveToWaypoint extends CommandBase {
     double forwards = MathUtil.clamp(forwardController.calculate(currentPose.getX()), -maxVelocity, maxVelocity);
     double sideways = MathUtil.clamp(sidewaysController.calculate(currentPose.getY()), -maxVelocity, maxVelocity);
     double rotation = MathUtil.clamp(rotationController.calculate(currentPose.getRotation().getDegrees()), -maxRotation, maxRotation);
-    sideways = 0;
 
     System.out.println("F: " + forwards + " P: " + currentPose.getX() + " D: " + desiredPose.getX());
     System.out.println("S: " + sideways + " P: " + currentPose.getY() + " D: " + desiredPose.getY());
     System.out.println("R: " + rotation + " P: " + currentPose.getRotation().getDegrees() + " D: " + desiredPose.getRotation().getDegrees());
     System.out.println("---");
+
+    // sideways causes problems because the rest of the code is wrong
+    sideways = 0;
 
     driveSubsystem.driveWheelSpeeds(driveSubsystem.calculateRobotOriented(forwards, -sideways, -rotation));
   }

@@ -9,7 +9,7 @@ import frc.robot.subsystems.ShootSubsystem;
 public class WaitForShooterToBeStable extends CommandBase {
   private ShootSubsystem shootSubsystem;
   private ArrayList<Double> rpms = new ArrayList<>();
-  private int period = 40;
+  private int period = 20;
   private double maxError = 10;
   private double maxTime = 2;
   private Timer timer = new Timer();

@@ -111,10 +111,16 @@ public class RobotContainer {
       )
     );
     new JoystickAxis(gamepad, Controls.HighGoal).whenActivated(
-      new ShootBallAgainstHub(ShootingConstants.highGoalOptimalRPM, ShootingConstants.highGoalOptimalDistance)
+      new ShootBallAgainstHub(
+        ShootingConstants.highGoalOptimalRPM,
+        new Waypoint(ShootingConstants.highGoalOptimalDistance, 0, ShootingConstants.highGoalOptimalRotation)
+      )
     );
     new JoystickAxis(gamepad, Controls.LowGoal).whenActivated(
-      new ShootBallAgainstHub(ShootingConstants.lowGoalOptimalRPM, ShootingConstants.lowGoalOptimalDistance)
+      new ShootBallAgainstHub(
+        ShootingConstants.lowGoalOptimalRPM,
+        null
+      )
     );
     new JoystickButton(gamepad, Controls.PrepareToShootBall).whenHeld(new LoadBallIntoStorage(storageSubsystem));
   }

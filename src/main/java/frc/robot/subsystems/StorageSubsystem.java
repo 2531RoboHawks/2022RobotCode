@@ -13,7 +13,7 @@ public class StorageSubsystem extends SubsystemBase {
     .configureInverted(true);
 
   private BetterTalonFX storageAfterIntake = new BetterTalonFX(CAN.IntakeStorage)
-    .configureBrakes(false);
+    .configureBrakes(true);
 
   private DigitalInput switchBeforeShooter = new DigitalInput(DigitalInputs.BallStorage);
 

@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.XboxController.Axis;
 import edu.wpi.first.wpilibj.XboxController.Button;
 
@@ -44,8 +45,6 @@ public final class Constants {
     public static final int BallStorage = 0;
   }
 
-  public static final PIDSettings rotationPID = new PIDSettings(0.02, 0.001, 0);
-
   public static final class Controls {
     public static final int Slow = Button.kB.value;
     public static final int Turbo = Button.kY.value;
@@ -75,15 +74,17 @@ public final class Constants {
     public static final double beforeShooterPrepareVolts = 1.6;
 
     public static final double afterIntakeVolts = 3.1;
+    public static final double afterIntakeSlowVolts = 2.5;
 
     public static final double waitForBallToShootTimeout = 1; // TODO: tune
     public static final double waitForBallToBePreparedTimeout = 1; // TODO: tune
     public static final double waitForShooterToReachSpeedTimeout = 2; // TODO: tune
 
     public static final double highGoalOptimalRPM = 4000;
-    public static final double highGoalOptimalDistance = 34; // inches
+    public static final double highGoalOptimalDistance = Units.inchesToMeters(34);
+    public static final double highGoalOptimalRotation = 10;
 
-    public static final double lowGoalOptimalRPM = 2800;
-    public static final double lowGoalOptimalDistance = 0; // inches
+    public static final double lowGoalOptimalRPM = 3000;
+    public static final double lowGoalOptimalDistance = Units.inchesToMeters(0);
   }
 }
