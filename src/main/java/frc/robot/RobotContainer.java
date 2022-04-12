@@ -17,7 +17,6 @@ import frc.robot.Constants.ShootingConstants;
 import frc.robot.commands.PutIntakeDownAndSpin;
 import frc.robot.commands.ToggleIntakeDown;
 import frc.robot.commands.auto.TwoBallAuto;
-import frc.robot.commands.auto.Taxi;
 import frc.robot.commands.climb.ManualClimb;
 import frc.robot.commands.climb.SynchronizedClimb;
 import frc.robot.commands.climb.ToggleClimbExtended;
@@ -67,26 +66,6 @@ public class RobotContainer {
     SmartDashboard.putData("Zero Climber", new ZeroClimb(climbSubsystem));
 
     autoChooser.addOption("None", null);
-    // autoChooser.addOption(
-    //   "8 Ball Auto",
-    //   DriveTrajectory.fromWaypoints(
-    //     driveSubsystem,
-    //     Waypoint.LEFT,
-    //     Waypoint.UP,
-    //     Waypoint.DOWN
-    //   ).resetOdometry()
-    // );
-    autoChooser.addOption(
-      "Taxi",
-      new Taxi(driveSubsystem)
-    );
-    // autoChooser.addOption(
-    //   "One Ball",
-    //   new SequentialCommandGroup(
-    //     new ShootOneBall(driveSubsystem, shootSubsystem, intakeSubsystem, visionSubsystem),
-    //     new Taxi(driveSubsystem)
-    //   )
-    // );
     autoChooser.setDefaultOption("Two Ball", new TwoBallAuto());
     SmartDashboard.putData(autoChooser);
   }
