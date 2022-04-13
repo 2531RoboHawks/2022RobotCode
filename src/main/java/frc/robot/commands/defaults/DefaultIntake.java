@@ -13,11 +13,7 @@ public class DefaultIntake extends CommandBase {
 
   @Override
   public void initialize() {
-    if (intakeSubsystem.isDown()) {
-      System.out.println("SOME COMMAND DID NOT PROPERLY RESET THE INTAKE -- THE DEFAULT COMMAND IS FIXING IT FOR YOU.");
-    }
-    intakeSubsystem.setDown(false);
-    intakeSubsystem.setSpinning(false);
+    intakeSubsystem.bringUpAndStopSpinning();
   }
 
   @Override
