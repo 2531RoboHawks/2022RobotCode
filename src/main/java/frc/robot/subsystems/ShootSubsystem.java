@@ -12,7 +12,7 @@ public class ShootSubsystem extends SubsystemBase {
   private BetterTalonFX revwheel = new BetterTalonFX(CAN.ShooterRevwheel)
     .configureBrakes(false)
     .configureUnitsPerRevolution(1)
-    .configureFeedforward(new SimpleMotorFeedforward(0.52166, 0.10843, 0.0062646), new PIDSettings(0.10962, 0, 0));
+    .configureFeedforward(new SimpleMotorFeedforward(0.5562, 0.10707, 0.0059867), new PIDSettings(0.1068, 0, 0));
 
   public ShootSubsystem() {
     idleRevwheel();
