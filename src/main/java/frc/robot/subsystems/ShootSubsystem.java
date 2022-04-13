@@ -15,7 +15,7 @@ public class ShootSubsystem extends SubsystemBase {
     .configureFeedforward(new SimpleMotorFeedforward(0.52166, 0.10843, 0.0062646), new PIDSettings(0.10962, 0, 0));
 
   public ShootSubsystem() {
-    stopEverything();
+    idleRevwheel();
   }
 
   public void setRevwheelRPM(double rpm) {
@@ -31,12 +31,6 @@ public class ShootSubsystem extends SubsystemBase {
 
   public void idleRevwheel() {
     revwheel.stop();
-  }
-
-  // use idleRevwheel instead
-  @Deprecated
-  public void stopEverything() {
-    idleRevwheel();
   }
 
   @Override
