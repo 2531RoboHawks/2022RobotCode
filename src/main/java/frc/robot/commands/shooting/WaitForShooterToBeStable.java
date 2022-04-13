@@ -51,6 +51,11 @@ public class WaitForShooterToBeStable extends CommandBase {
     }
     double average = sum / rpms.size();
 
+    if (average < 500) {
+      System.out.println("Too slow: " + average);
+      return false;
+    }
+
     double minimumAccepted = average - maxError;
     double maximumAccepted = average + maxError;
     for (double i : rpms) {

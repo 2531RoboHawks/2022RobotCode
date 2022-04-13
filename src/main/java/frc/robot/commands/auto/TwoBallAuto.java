@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.RobotContainer;
 import frc.robot.Waypoint;
+import frc.robot.Constants.ShootingConstants;
 import frc.robot.commands.PutIntakeDownAndSpin;
 import frc.robot.commands.shooting.LoadBallIntoStorage;
 import frc.robot.commands.shooting.ShootTwoBalls;
@@ -37,7 +38,7 @@ public class TwoBallAuto extends SequentialCommandGroup {
           .withMaxVelocity(3)
           .withTimeout(moveTimeout),
         new VisionAim(5, visionSubsystem, driveSubsystem)
-          .withTimeout(moveTimeout)
+          .withTimeout(ShootingConstants.visionAimTimeout)
       ),
       new PutIntakeDownAndSpin(intakeSubsystem),
       new LoadBallIntoStorage(storageSubsystem)

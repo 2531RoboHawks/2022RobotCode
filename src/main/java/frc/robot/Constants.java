@@ -57,6 +57,7 @@ public final class Constants {
 
     public static final int HighGoal = Axis.kRightTrigger.value;
     public static final int LowGoal = Axis.kLeftTrigger.value;
+    public static final int VisionHighGoal = Button.kStart.value;
   }
 
   public static final class HelmsControls {
@@ -86,5 +87,7 @@ public final class Constants {
 
     public static final double lowGoalOptimalRPM = 3000;
     public static final double lowGoalOptimalDistance = Units.inchesToMeters(0);
+
+    public static final double visionAimTimeout = 2;
   }
 }
