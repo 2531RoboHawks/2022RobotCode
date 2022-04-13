@@ -25,37 +25,30 @@ public class StorageSubsystem extends SubsystemBase {
   }
 
   public void setBeforeShooterPower(double power) {
-    System.out.println("Before shooter power: " + power);
     beforeShooter.setPower(power);
   }
 
   public void setBeforeShooterVoltage(double volts) {
-    System.out.println("Before shooter volts: " + volts);
     beforeShooter.setVoltage(volts);
   }
 
   public void setBeforeShooterRPM(double rpm) {
-    System.out.println("Before intake RPM: " + rpm);
     beforeShooter.setRPMFeedforwardPID(rpm);
   }
 
   public void stopBeforeShooter() {
-    System.out.println("Before intake: stopped");
     beforeShooter.stop();
   }
 
   public void setAfterIntakePower(double power) {
-    System.out.println("Ater intake power: " + power);
     afterIntake.setPower(power);
   }
 
   public void setAfterIntakeVoltsVoltage(double volts) {
-    System.out.println("Ater intake volts: " + volts);
     afterIntake.setVoltage(volts);
   }
 
   public void stopAfterIntake() {
-    System.out.println("After intake: stopped");
     afterIntake.stop();
   }
 

@@ -18,7 +18,6 @@ public class IntakeSubsystem extends SubsystemBase {
 
   public void setSpinning(boolean spinning) {
     double power = spinning ? 0.4 : 0;
-    System.out.println("Intake power: " + power);
     intakeWheel.setPower(power);
   }
   public void stopSpinning() {
@@ -26,7 +25,6 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   public void setDown(boolean down) {
-    System.out.println("Intake down: " + down);
     solenoid.set(down);
     SmartDashboard.putBoolean("Intake Down", down);
   }

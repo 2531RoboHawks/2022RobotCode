@@ -66,11 +66,6 @@ public class DriveToWaypoint extends CommandBase {
     double sideways = MathUtil.clamp(sidewaysController.calculate(currentPose.getY()), -maxVelocity, maxVelocity);
     double rotation = MathUtil.clamp(rotationController.calculate(currentPose.getRotation().getDegrees()), -maxRotation, maxRotation);
 
-    System.out.println("F: " + forwards + " P: " + currentPose.getX() + " D: " + desiredPose.getX());
-    System.out.println("S: " + sideways + " P: " + currentPose.getY() + " D: " + desiredPose.getY());
-    System.out.println("R: " + rotation + " P: " + currentPose.getRotation().getDegrees() + " D: " + desiredPose.getRotation().getDegrees());
-    System.out.println("---");
-
     // sideways causes problems because the rest of the code is wrong
     sideways = 0;
 
