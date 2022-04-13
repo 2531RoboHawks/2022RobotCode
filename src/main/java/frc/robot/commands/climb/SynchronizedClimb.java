@@ -50,9 +50,4 @@ public class SynchronizedClimb extends CommandBase {
   public void end(boolean interrupted) {
     climbSubsystem.stop();
   }
-
-  @Override
-  public boolean isFinished() {
-    return false;
-  }
 }

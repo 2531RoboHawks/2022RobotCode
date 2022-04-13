@@ -64,9 +64,4 @@ public class DefaultDrive extends CommandBase {
   public void end(boolean interrupted) {
     driveSubsystem.stop();
   }
-
-  @Override
-  public boolean isFinished() {
-    return false;
-  }
 }

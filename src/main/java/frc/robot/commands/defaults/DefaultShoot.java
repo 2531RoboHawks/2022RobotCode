@@ -15,9 +15,4 @@ public class DefaultShoot extends CommandBase {
   public void initialize() {
     shootSubsystem.idleRevwheel();
   }
-
-  @Override
-  public boolean isFinished() {
-    return false;
-  }
 }
