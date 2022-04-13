@@ -14,7 +14,11 @@ public class DriveThenShootTwoBalls extends SequentialCommandGroup {
   private DriveSubsystem driveSubsystem = RobotContainer.driveSubsystem;
 
   public DriveThenShootTwoBalls(double rpm, Waypoint driveTo) {
-    addCommands(new DriveToWaypoint(driveSubsystem, driveTo).withTimeout(2));
-    addCommands(new ShootTwoBalls(rpm));
+    addCommands(
+      new ShootTwoBalls(
+        rpm,
+        new DriveToWaypoint(driveSubsystem, driveTo).withTimeout(2)
+      )
+    );
   }
 }
