@@ -1,8 +1,8 @@
 package frc.robot.commands.shooting;
 
 import java.util.ArrayList;
+import java.util.function.Supplier;
 
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ShootSubsystem;
 
@@ -11,37 +11,33 @@ public class WaitForShooterToBeStable extends CommandBase {
   private ArrayList<Double> rpms = new ArrayList<>();
   private int period = 20;
   private double maxError = 10;
-  private double maxTime = 2;
-  private Timer timer = new Timer();
+  private Supplier<Boolean> readySupplier;
 
-  public WaitForShooterToBeStable(ShootSubsystem shootSubsystem) {
+  public WaitForShooterToBeStable(Supplier<Boolean> readySupplier, ShootSubsystem shootSubsystem) {
     // intentionally not using requirements here -- this shouldn't interrupt something actually using the shooter
     this.shootSubsystem = shootSubsystem;
+    this.readySupplier = readySupplier;
   }
 
   @Override
   public void initialize() {
-    timer.reset();
-    timer.start();
     rpms.clear();
   }
 
   @Override
   public void execute() {
-    rpms.add(shootSubsystem.getRevwheelRPM());
-    if (rpms.size() > period) {
-      rpms.remove(0);
+    if (readySupplier.get()) {
+      rpms.add(shootSubsystem.getRevwheelRPM());
+      if (rpms.size() > period) {
+        rpms.remove(0);
+      }
     }
   }
 
   @Override
   public boolean isFinished() {
-    if (timer.hasElapsed(maxTime)) {
-      System.out.println("Too much time passed.");
-      return true;
-    }
     if (rpms.size() < period) {
-      System.out.println("Not enough data.");
+      System.out.println("WaitStable: Not enough data");
       return false;
     }
 
@@ -52,7 +48,7 @@ public class WaitForShooterToBeStable extends CommandBase {
     double average = sum / rpms.size();
 
     if (average < 500) {
-      System.out.println("Too slow: " + average);
+      System.out.println("WaitStable: Too slow: " + average);
       return false;
     }
 
@@ -60,16 +56,16 @@ public class WaitForShooterToBeStable extends CommandBase {
     double maximumAccepted = average + maxError;
     for (double i : rpms) {
       if (i < minimumAccepted) {
-        System.out.println("Min exceeded by " + (i - minimumAccepted));
+        System.out.println("WaitStable: Min exceeded by " + (i - minimumAccepted));
         return false;
       }
       if (i > maximumAccepted) {
-        System.out.println("Max exceeded by " + (maximumAccepted - i));
+        System.out.println("WaitStable: Max exceeded by " + (maximumAccepted - i));
         return false;
       }
     }
 
-    System.out.println("Seems stable! Current: " + shootSubsystem.getRevwheelRPM());
+    System.out.println("WaitStable: Seems stable: " + shootSubsystem.getRevwheelRPM());
     return true;
   }
 }

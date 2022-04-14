@@ -16,9 +16,9 @@ public class VisionShootTwoBalls extends SequentialCommandGroup {
     addCommands(
       new ShootTwoBalls(() -> {
         if (!visionSubsystem.isReady()) {
-          return 0.0;
+          return new SuppliedRPM(4000, false);
         }
-        return RPMCalculator.inchesToRPM(visionSubsystem.getDistance());
+        return new SuppliedRPM(RPMCalculator.inchesToRPM(visionSubsystem.getDistance()), true);
       }).deadlineWith(new EnableVision(visionSubsystem))
     );
   }

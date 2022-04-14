@@ -11,9 +11,9 @@ import frc.robot.subsystems.ShootSubsystem;
 
 public class RevShooterToSpeed extends CommandBase {
   private ShootSubsystem shootSubsystem;
-  private Supplier<Double> rpmSupplier;
+  private Supplier<SuppliedRPM> rpmSupplier;
 
-  public RevShooterToSpeed(Supplier<Double> rpmSupplier, ShootSubsystem shootSubsystem) {
+  public RevShooterToSpeed(Supplier<SuppliedRPM> rpmSupplier, ShootSubsystem shootSubsystem) {
     addRequirements(shootSubsystem);
     this.shootSubsystem = shootSubsystem;
     this.rpmSupplier = rpmSupplier;
@@ -21,7 +21,7 @@ public class RevShooterToSpeed extends CommandBase {
 
   @Override
   public void execute() {
-    shootSubsystem.setRevwheelRPM(rpmSupplier.get());
+    shootSubsystem.setRevwheelRPM(rpmSupplier.get().getRPM());
   }
 
   @Override

@@ -77,9 +77,9 @@ public final class Constants {
     public static final double afterIntakeVolts = 3.1;
     public static final double afterIntakeSlowVolts = 2.5;
 
-    public static final double waitForBallToShootTimeout = 1; // TODO: tune
-    public static final double waitForBallToBePreparedTimeout = 1; // TODO: tune
-    public static final double waitForShooterToReachSpeedTimeout = 2; // TODO: tune
+    public static final double waitForBallToShootTimeout = 1;
+    public static final double waitForBallToBePreparedTimeout = 1;
+    public static final double waitForShooterToBeReadyTimeout = 2;
 
     public static final double highGoalOptimalRPM = 4000;
     public static final double highGoalOptimalDistance = Units.inchesToMeters(34);

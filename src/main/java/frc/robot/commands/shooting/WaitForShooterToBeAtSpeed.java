@@ -3,9 +3,7 @@ package frc.robot.commands.shooting;
 import java.util.ArrayList;
 import java.util.function.Supplier;
 
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants.ShootingConstants;
 import frc.robot.subsystems.ShootSubsystem;
 
 public class WaitForShooterToBeAtSpeed extends CommandBase {
@@ -13,10 +11,9 @@ public class WaitForShooterToBeAtSpeed extends CommandBase {
   private double maxError = 10;
   private double period = 5;
   private ArrayList<Double> rpms = new ArrayList<>();
-  private Supplier<Double> rpmSupplier;
-  private Timer timer = new Timer();
+  private Supplier<SuppliedRPM> rpmSupplier;
 
-  public WaitForShooterToBeAtSpeed(Supplier<Double> rpmSupplier, ShootSubsystem shootSubsystem) {
+  public WaitForShooterToBeAtSpeed(Supplier<SuppliedRPM> rpmSupplier, ShootSubsystem shootSubsystem) {
     // intentionally not using requirements here -- this shouldn't interrupt something actually using the shooter
     this.shootSubsystem = shootSubsystem;
     this.rpmSupplier = rpmSupplier;
@@ -24,8 +21,6 @@ public class WaitForShooterToBeAtSpeed extends CommandBase {
 
   @Override
   public void initialize() {
-    timer.reset();
-    timer.start();
     rpms.clear();
   }
 
@@ -39,24 +34,26 @@ public class WaitForShooterToBeAtSpeed extends CommandBase {
 
   @Override
   public boolean isFinished() {
-    if (timer.hasElapsed(ShootingConstants.waitForShooterToReachSpeedTimeout)) {
-      System.out.println("Timed out");
-      return true;
-    }
     if (rpms.size() < period) {
-      System.out.println("Too little data");
+      System.out.println("WaitSpeed: not enough data");
       return false;
     }
-    double targetRpm = rpmSupplier.get();
+
+    SuppliedRPM suppliedRPM = rpmSupplier.get();
+    if (!suppliedRPM.isReady()) {
+      System.out.println("WaitSpeed: not ready");
+      return false;
+    }
+
+    double targetRPM = suppliedRPM.getRPM();
     for (double i : rpms) {
-      double error = Math.abs(i - targetRpm);
-      System.out.println(i);
+      double error = Math.abs(i - targetRPM);
       if (error > maxError) {
-        System.out.println("Error range exceeded: " + error);
+        System.out.println("WaitSpeed: Error range exceeded: " + error);
         return false;
       }
     }
-    System.out.println("Done");
+    System.out.println("WaitSpeed: Done");
     return true;
   }
 }
