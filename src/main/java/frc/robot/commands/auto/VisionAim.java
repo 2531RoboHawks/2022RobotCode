@@ -7,32 +7,32 @@ package frc.robot.commands.auto;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants.ShootingConstants;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 
 public class VisionAim extends CommandBase {
   private DriveSubsystem driveSubsystem;
   private VisionSubsystem visionSubsystem;
-  private boolean limelightBecameReady = false;
+  private boolean foundValidTarget = false;
 
   private PIDController pidController = new PIDController(0.08, 0, 0);
 
   private double maxPower = 1;
 
-  public VisionAim(double targetAngle, VisionSubsystem visionSubsystem, DriveSubsystem driveSubsystem) {
+  public VisionAim(VisionSubsystem visionSubsystem, DriveSubsystem driveSubsystem) {
     this.visionSubsystem = visionSubsystem;
     this.driveSubsystem = driveSubsystem;
     addRequirements(this.visionSubsystem);
     addRequirements(this.driveSubsystem);
     pidController.setTolerance(1);
-    pidController.setSetpoint(targetAngle);
   }
 
   @Override
   public void initialize() {
     pidController.reset();
     visionSubsystem.ensureEnabled();
-    limelightBecameReady = false;
+    foundValidTarget = false;
   }
 
   @Override
@@ -40,8 +40,9 @@ public class VisionAim extends CommandBase {
     if (!visionSubsystem.isReady()) {
       return;
     }
-    limelightBecameReady = true;
     if (visionSubsystem.hasValidTarget()) {
+      foundValidTarget = true;
+      pidController.setSetpoint(Math.toDegrees(Math.atan2(ShootingConstants.optimalVisionOffsetInches, visionSubsystem.getDistance())));
       double rotation = MathUtil.clamp(pidController.calculate(visionSubsystem.getX()), -maxPower, maxPower);
       driveSubsystem.driveWheelSpeeds(driveSubsystem.calculateRobotOriented(0, 0, -rotation));
     } else {
@@ -57,6 +58,6 @@ public class VisionAim extends CommandBase {
 
   @Override
   public boolean isFinished() {
-    return limelightBecameReady && pidController.atSetpoint();
+    return foundValidTarget && pidController.atSetpoint();
   }
 }

@@ -75,7 +75,7 @@ public final class Constants {
     public static final double beforeShooterPrepareVolts = 1.6;
 
     public static final double afterIntakeVolts = 3.1;
-    public static final double afterIntakeSlowVolts = 2.5;
+    public static final double afterIntakeSlowVolts = 2;
 
     public static final double waitForBallToShootTimeout = 1;
     public static final double waitForBallToBePreparedTimeout = 1;
@@ -83,10 +83,12 @@ public final class Constants {
 
     public static final double highGoalOptimalRPM = 4000;
     public static final double highGoalOptimalDistance = Units.inchesToMeters(34);
-    public static final double highGoalOptimalRotation = 15;
+    public static final double highGoalOptimalRotation = 12;
 
     public static final double lowGoalOptimalRPM = 3000;
     public static final double lowGoalOptimalDistance = Units.inchesToMeters(0);
+
+    public static final double optimalVisionOffsetInches = 3;
 
     public static final double visionAimTimeout = 2;
   }

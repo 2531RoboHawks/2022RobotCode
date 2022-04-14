@@ -27,7 +27,7 @@ import frc.robot.commands.defaults.DefaultIntake;
 import frc.robot.commands.defaults.DefaultShoot;
 import frc.robot.commands.shooting.LoadBallIntoStorage;
 import frc.robot.commands.shooting.ShootTwoBalls;
-import frc.robot.commands.shooting.VisionShootTwoBalls;
+import frc.robot.commands.shooting.VisionAimAndShootTwoBalls;
 import frc.robot.commands.shooting.DriveThenShootTwoBalls;
 import frc.robot.subsystems.ClimbSubsystem;
 import frc.robot.subsystems.CompressorSubsystem;
@@ -102,9 +102,9 @@ public class RobotContainer {
         ShootingConstants.lowGoalOptimalRPM
       )
     );
-    // new JoystickButton(gamepad, Controls.VisionHighGoal).whileActiveOnce(
-    //   new VisionShootTwoBalls(driveSubsystem, visionSubsystem)
-    // );
+    new JoystickButton(gamepad, Controls.VisionHighGoal).whileActiveOnce(
+      new VisionAimAndShootTwoBalls(driveSubsystem, visionSubsystem)
+    );
     new JoystickButton(gamepad, Controls.PrepareToShootBall).whenHeld(new LoadBallIntoStorage(storageSubsystem));
   }
 

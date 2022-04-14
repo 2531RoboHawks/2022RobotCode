@@ -7,16 +7,17 @@ import frc.robot.commands.vision.EnableVision;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 
-public class VisionShootTwoBalls extends SequentialCommandGroup {
-  public VisionShootTwoBalls(DriveSubsystem driveSubsystem, VisionSubsystem visionSubsystem) {
+public class VisionAimAndShootTwoBalls extends SequentialCommandGroup {
+  public VisionAimAndShootTwoBalls(DriveSubsystem driveSubsystem, VisionSubsystem visionSubsystem) {
     addCommands(
-      new VisionAim(0, visionSubsystem, driveSubsystem)
+      new VisionAim(visionSubsystem, driveSubsystem)
         .withTimeout(ShootingConstants.visionAimTimeout)
     );
     addCommands(
       new ShootTwoBalls(() -> {
-        if (!visionSubsystem.isReady()) {
-          return new SuppliedRPM(4000, false);
+        if (!visionSubsystem.isReady() || !visionSubsystem.hasValidTarget()) {
+          // guess so the shooter spins up faster later
+          return new SuppliedRPM(RPMCalculator.inchesToRPM(40), false);
         }
         return new SuppliedRPM(RPMCalculator.inchesToRPM(visionSubsystem.getDistance()), true);
       }).deadlineWith(new EnableVision(visionSubsystem))

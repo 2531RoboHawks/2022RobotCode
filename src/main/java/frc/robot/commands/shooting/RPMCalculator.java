@@ -8,7 +8,11 @@ public class RPMCalculator {
   }
 
   public static double inchesToRPM(double inches) {
-    // return SmartDashboard.getNumber("Test RPM", 0);
-    return inches * 10 + 3560.0;
+    double testRPM = SmartDashboard.getNumber("Test RPM", 0);
+    if (testRPM != 0) {
+      System.out.println("USING TEST RPM!");
+      return testRPM;
+    }
+    return inches * 8.59 + 3864.0;
   }
 }

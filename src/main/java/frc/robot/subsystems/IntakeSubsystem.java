@@ -20,6 +20,9 @@ public class IntakeSubsystem extends SubsystemBase {
     double power = spinning ? 0.4 : 0;
     intakeWheel.setPower(power);
   }
+  public void spinFast(boolean spinning) {
+    intakeWheel.setPower(0.8);
+  }
   public void stopSpinning() {
     intakeWheel.stop();
   }
