@@ -40,16 +40,6 @@ public class ClimbSubsystem extends SubsystemBase {
   }
   public void setArmExtensionTarget(double sensorUnits) {
     SmartDashboard.putNumber("Climb Target", sensorUnits);
-    double MIN = 3000;
-    double MAX = 360000;
-    if (sensorUnits < MIN) {
-      System.out.println("CLIMB TOO LOW: " + sensorUnits);
-      sensorUnits = MIN;
-    }
-    if (sensorUnits > MAX) {
-      System.out.println("CLIMB TOO HIGH: " + sensorUnits);
-      sensorUnits = MAX;
-    }
     leftTalon.setFixedEncoderTarget(sensorUnits);
     rightTalon.setFixedEncoderTarget(sensorUnits);
   }
