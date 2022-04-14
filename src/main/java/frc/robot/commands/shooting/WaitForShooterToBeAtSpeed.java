@@ -1,6 +1,7 @@
 package frc.robot.commands.shooting;
 
 import java.util.ArrayList;
+import java.util.function.Supplier;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -12,13 +13,13 @@ public class WaitForShooterToBeAtSpeed extends CommandBase {
   private double maxError = 10;
   private double period = 5;
   private ArrayList<Double> rpms = new ArrayList<>();
-  private double targetRpm;
+  private Supplier<Double> rpmSupplier;
   private Timer timer = new Timer();
 
-  public WaitForShooterToBeAtSpeed(double rpm, ShootSubsystem shootSubsystem) {
+  public WaitForShooterToBeAtSpeed(Supplier<Double> rpmSupplier, ShootSubsystem shootSubsystem) {
     // intentionally not using requirements here -- this shouldn't interrupt something actually using the shooter
     this.shootSubsystem = shootSubsystem;
-    this.targetRpm = rpm;
+    this.rpmSupplier = rpmSupplier;
   }
 
   @Override
@@ -46,6 +47,7 @@ public class WaitForShooterToBeAtSpeed extends CommandBase {
       System.out.println("Too little data");
       return false;
     }
+    double targetRpm = rpmSupplier.get();
     for (double i : rpms) {
       double error = Math.abs(i - targetRpm);
       System.out.println(i);
