@@ -14,10 +14,16 @@ public class ManualClimb extends CommandBase {
     addRequirements(climbSubsystem);
   }
 
+  private double scale(double n) {
+    n *= 1.0;
+    n = InputUtils.deadzone(n);
+    return n * n * Math.signum(n);
+  }
+
   @Override
   public void execute() {
-    double left = -InputUtils.deadzone(RobotContainer.helms.getRawAxis(1)) * 0.25;
-    double right = -InputUtils.deadzone(RobotContainer.helms.getRawAxis(5)) * 0.25;
+    double left = -scale(RobotContainer.helms.getRawAxis(1));
+    double right = -scale(RobotContainer.helms.getRawAxis(5));
     climbSubsystem.leftTalon.setPower(left);
     climbSubsystem.rightTalon.setPower(right);
   }
