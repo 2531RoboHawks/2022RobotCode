@@ -7,10 +7,6 @@ import frc.robot.subsystems.StorageSubsystem;
 public class MoveBallToShooterAndPrepareNextBall extends SequentialCommandGroup {
   public MoveBallToShooterAndPrepareNextBall(StorageSubsystem storageSubsystem) {
     addCommands(new MoveBallToShooter(storageSubsystem));
-    addCommands(
-      new RunStorage(true, ShootingConstants.moveBallToShooterPower, storageSubsystem)
-        .until(() -> storageSubsystem.isBallBeforeShooter())
-        .withTimeout(ShootingConstants.waitForBallToBePreparedTimeout)
-    );
+    addCommands(new LoadBallIntoStorageUntilLoaded(storageSubsystem));
   }
 }

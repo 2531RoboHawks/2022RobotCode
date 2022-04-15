@@ -13,20 +13,6 @@ public class DefaultShoot extends CommandBase {
 
   @Override
   public void initialize() {
-    shootSubsystem.stopEverything();
-  }
-
-  @Override
-  public void execute() {
-  }
-
-  @Override
-  public void end(boolean interrupted) {
-    shootSubsystem.stopEverything();
-  }
-
-  @Override
-  public boolean isFinished() {
-    return false;
+    shootSubsystem.idleRevwheel();
   }
 }

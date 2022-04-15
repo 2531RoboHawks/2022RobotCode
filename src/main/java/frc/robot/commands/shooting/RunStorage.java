@@ -1,20 +1,26 @@
 package frc.robot.commands.shooting;
 
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import frc.robot.subsystems.StorageSubsystem;
 
-public class RunStorage extends StartEndCommand {
-  public RunStorage(boolean afterIntake, double beforeShooter, StorageSubsystem storageSubsystem) {
-    super(
-      () -> {
-        storageSubsystem.setAfterIntakeRunning(afterIntake);
-        storageSubsystem.setBeforeShooterPower(beforeShooter);
-      },
-      () -> {
-        storageSubsystem.setAfterIntakeRunning(false);
-        storageSubsystem.setBeforeShooterPower(0);
-      },
-      storageSubsystem
+public class RunStorage extends ParallelCommandGroup {
+  public RunStorage(double afterIntake, double beforeShooter, StorageSubsystem storageSubsystem) {
+    addCommands(
+      new RunCommand(() -> {
+        storageSubsystem.setAfterIntakeVoltsVoltage(afterIntake);
+        storageSubsystem.setBeforeShooterVoltage(beforeShooter);
+      })
+    );
+    addCommands(
+      new StartEndCommand(
+        () -> {},
+        () -> {
+          storageSubsystem.stopAfterIntake();
+          storageSubsystem.stopBeforeShooter();
+        }
+      )
     );
   }
 }

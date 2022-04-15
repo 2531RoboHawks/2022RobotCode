@@ -17,7 +17,6 @@ import frc.robot.Constants.ShootingConstants;
 import frc.robot.commands.PutIntakeDownAndSpin;
 import frc.robot.commands.ToggleIntakeDown;
 import frc.robot.commands.auto.TwoBallAuto;
-import frc.robot.commands.auto.Taxi;
 import frc.robot.commands.climb.ManualClimb;
 import frc.robot.commands.climb.SynchronizedClimb;
 import frc.robot.commands.climb.ToggleClimbExtended;
@@ -26,8 +25,10 @@ import frc.robot.commands.climb.ZeroClimb;
 import frc.robot.commands.defaults.DefaultDrive;
 import frc.robot.commands.defaults.DefaultIntake;
 import frc.robot.commands.defaults.DefaultShoot;
-import frc.robot.commands.shooting.PrepareToShootBall;
-import frc.robot.commands.shooting.ShootBallAgainstHub;
+import frc.robot.commands.shooting.LoadBallIntoStorage;
+import frc.robot.commands.shooting.ShootTwoBalls;
+import frc.robot.commands.shooting.VisionAimAndShootTwoBalls;
+import frc.robot.commands.shooting.DriveThenShootTwoBalls;
 import frc.robot.subsystems.ClimbSubsystem;
 import frc.robot.subsystems.CompressorSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
@@ -67,26 +68,6 @@ public class RobotContainer {
     SmartDashboard.putData("Zero Climber", new ZeroClimb(climbSubsystem));
 
     autoChooser.addOption("None", null);
-    // autoChooser.addOption(
-    //   "8 Ball Auto",
-    //   DriveTrajectory.fromWaypoints(
-    //     driveSubsystem,
-    //     Waypoint.LEFT,
-    //     Waypoint.UP,
-    //     Waypoint.DOWN
-    //   ).resetOdometry()
-    // );
-    autoChooser.addOption(
-      "Taxi",
-      new Taxi(driveSubsystem)
-    );
-    // autoChooser.addOption(
-    //   "One Ball",
-    //   new SequentialCommandGroup(
-    //     new ShootOneBall(driveSubsystem, shootSubsystem, intakeSubsystem, visionSubsystem),
-    //     new Taxi(driveSubsystem)
-    //   )
-    // );
     autoChooser.setDefaultOption("Two Ball", new TwoBallAuto());
     SmartDashboard.putData(autoChooser);
   }
@@ -99,7 +80,7 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     new JoystickButton(helms, HelmsControls.SynchronizedClimb).toggleWhenActive(new SynchronizedClimb(climbSubsystem, intakeSubsystem));
-    new JoystickButton(helms, HelmsControls.ManualClimb).toggleWhenActive(new ManualClimb(climbSubsystem, intakeSubsystem));
+    new JoystickButton(helms, HelmsControls.ManualClimb).toggleWhenActive(new ManualClimb(climbSubsystem));
     new JoystickButton(helms, HelmsControls.ToggleIntakeDown).whenPressed(new ToggleIntakeDown(intakeSubsystem));
     new JoystickButton(helms, HelmsControls.ToggleClimbExtended).whenPressed(new ToggleClimbExtended(climbSubsystem));
     new JoystickButton(helms, HelmsControls.ToggleSpikes).whenPressed(new ToggleSpikes(climbSubsystem));
@@ -107,16 +88,24 @@ public class RobotContainer {
     new JoystickButton(gamepad, Controls.ToggleIntakeDown).toggleWhenActive(
       new ParallelCommandGroup(
         new PutIntakeDownAndSpin(intakeSubsystem),
-        new PrepareToShootBall(storageSubsystem)
+        new LoadBallIntoStorage(storageSubsystem)
       )
     );
     new JoystickAxis(gamepad, Controls.HighGoal).whenActivated(
-      new ShootBallAgainstHub(ShootingConstants.highGoalOptimalRPM, ShootingConstants.highGoalOptimalDistance)
+      new DriveThenShootTwoBalls(
+        ShootingConstants.highGoalOptimalRPM,
+        new Waypoint(ShootingConstants.highGoalOptimalDistance, 0, ShootingConstants.highGoalOptimalRotation)
+      )
     );
     new JoystickAxis(gamepad, Controls.LowGoal).whenActivated(
-      new ShootBallAgainstHub(ShootingConstants.lowGoalOptimalRPM, ShootingConstants.lowGoalOptimalDistance)
+      new ShootTwoBalls(
+        ShootingConstants.lowGoalOptimalRPM
+      )
     );
-    new JoystickButton(gamepad, Controls.PrepareToShootBall).whenHeld(new PrepareToShootBall(storageSubsystem));
+    new JoystickButton(gamepad, Controls.VisionHighGoal).whileActiveOnce(
+      new VisionAimAndShootTwoBalls(driveSubsystem, visionSubsystem)
+    );
+    new JoystickButton(gamepad, Controls.PrepareToShootBall).whenHeld(new LoadBallIntoStorage(storageSubsystem));
   }
 
   /**

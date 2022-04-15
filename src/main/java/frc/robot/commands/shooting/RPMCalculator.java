@@ -1,7 +1,18 @@
 package frc.robot.commands.shooting;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 public class RPMCalculator {
-  public static double distancesToRPM(double inches) {
-    return inches * 17.6 + 2886.0;
+  static {
+    SmartDashboard.putNumber("Test RPM", 0);
+  }
+
+  public static double inchesToRPM(double inches) {
+    double testRPM = SmartDashboard.getNumber("Test RPM", 0);
+    if (testRPM != 0) {
+      System.out.println("USING TEST RPM!");
+      return testRPM;
+    }
+    return inches * 8.59 + 3864.0;
   }
 }

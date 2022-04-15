@@ -6,6 +6,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+// This is a special subsystem. Do NOT use requirements on it!
 public class VisionSubsystem extends SubsystemBase {
   // Time value used internally to represent that the light will never be ready without further calls,
   // probably because the lights are disabled.
@@ -87,6 +88,6 @@ public class VisionSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    // SmartDashboard.putNumber("Limelight Distance", getDistance());
+    // SmartDashboard.putNumber("Limelight Distance", hasValidTarget() ? getDistance() : -1);
   }
 }

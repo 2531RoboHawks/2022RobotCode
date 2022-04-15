@@ -13,20 +13,21 @@ public class IntakeSubsystem extends SubsystemBase {
   private Solenoid solenoid = new Solenoid(PneumaticsModuleType.CTREPCM, Solenoids.Intake);
 
   public IntakeSubsystem() {
-    setDown(false);
+    bringUpAndStopSpinning();
   }
 
   public void setSpinning(boolean spinning) {
     double power = spinning ? 0.4 : 0;
-    System.out.println("Intake power: " + power);
     intakeWheel.setPower(power);
+  }
+  public void spinFast(boolean spinning) {
+    intakeWheel.setPower(0.8);
   }
   public void stopSpinning() {
     intakeWheel.stop();
   }
 
   public void setDown(boolean down) {
-    System.out.println("Intake down: " + down);
     solenoid.set(down);
     SmartDashboard.putBoolean("Intake Down", down);
   }

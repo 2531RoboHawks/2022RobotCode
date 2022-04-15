@@ -4,22 +4,24 @@
 
 package frc.robot.commands.shooting;
 
+import java.util.function.Supplier;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ShootSubsystem;
 
 public class RevShooterToSpeed extends CommandBase {
   private ShootSubsystem shootSubsystem;
-  private double rpm;
+  private Supplier<SuppliedRPM> rpmSupplier;
 
-  public RevShooterToSpeed(double rpm, ShootSubsystem shootSubsystem) {
+  public RevShooterToSpeed(Supplier<SuppliedRPM> rpmSupplier, ShootSubsystem shootSubsystem) {
     addRequirements(shootSubsystem);
     this.shootSubsystem = shootSubsystem;
-    this.rpm = rpm;
+    this.rpmSupplier = rpmSupplier;
   }
 
   @Override
   public void execute() {
-    shootSubsystem.setRevwheelRPM(rpm);
+    shootSubsystem.setRevwheelRPM(rpmSupplier.get().getRPM());
   }
 
   @Override
