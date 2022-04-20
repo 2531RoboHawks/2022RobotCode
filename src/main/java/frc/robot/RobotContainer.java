@@ -103,7 +103,7 @@ public class RobotContainer {
       )
     );
     new JoystickButton(gamepad, Controls.VisionHighGoal).whileActiveOnce(
-      new VisionAimAndShootTwoBalls(driveSubsystem, visionSubsystem)
+      new VisionAimAndShootTwoBalls(driveSubsystem, visionSubsystem, true)
     );
     new JoystickButton(gamepad, Controls.PrepareToShootBall).whenHeld(new LoadBallIntoStorage(storageSubsystem));
   }

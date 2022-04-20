@@ -1,5 +1,6 @@
 package frc.robot.commands.shooting;
 
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.ShootingConstants;
 import frc.robot.commands.auto.VisionAim;
@@ -8,7 +9,7 @@ import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 
 public class VisionAimAndShootTwoBalls extends SequentialCommandGroup {
-  public VisionAimAndShootTwoBalls(DriveSubsystem driveSubsystem, VisionSubsystem visionSubsystem) {
+  public VisionAimAndShootTwoBalls(DriveSubsystem driveSubsystem, VisionSubsystem visionSubsystem, boolean two) {
     addCommands(
       new VisionAim(visionSubsystem, driveSubsystem)
         .withTimeout(ShootingConstants.visionAimTimeout)
@@ -20,7 +21,7 @@ public class VisionAimAndShootTwoBalls extends SequentialCommandGroup {
           return new SuppliedRPM(RPMCalculator.inchesToRPM(40), false);
         }
         return new SuppliedRPM(RPMCalculator.inchesToRPM(visionSubsystem.getDistance()), true);
-      }).deadlineWith(new EnableVision(visionSubsystem))
+      }, new InstantCommand(), two).deadlineWith(new EnableVision(visionSubsystem))
     );
   }
 }

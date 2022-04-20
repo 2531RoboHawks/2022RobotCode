@@ -30,12 +30,15 @@ public class TwoBallAuto extends SequentialCommandGroup {
   private final double rpm = 4200;
 
   public TwoBallAuto() {
+    addCommands(new ResetOdometry(driveSubsystem));
+    addCommands(new VisionAimAndShootTwoBalls(driveSubsystem, visionSubsystem, false));
     addCommands(new ParallelDeadlineGroup(
       new SequentialCommandGroup(
         new WaitCommand(1.5),
         new DriveToWaypoint(driveSubsystem, new Waypoint(pickUpBallDistance, 0, 0))
           .withTimeout(moveTimeout),
         new WaitCommand(0.5),
+        new ResetOdometry(driveSubsystem),
         new DriveToWaypoint(driveSubsystem, new Waypoint(-pickUpBallDistance, 0, 0))
           .withMaxVelocity(3)
           .withTimeout(moveTimeout)
@@ -44,7 +47,7 @@ public class TwoBallAuto extends SequentialCommandGroup {
       new LoadBallIntoStorage(storageSubsystem)
     ));
     addCommands(new ParallelDeadlineGroup(
-      new VisionAimAndShootTwoBalls(driveSubsystem, visionSubsystem),
+      new VisionAimAndShootTwoBalls(driveSubsystem, visionSubsystem, true),
       new PutIntakeDownAndSpin(intakeSubsystem)
     ));
   }
