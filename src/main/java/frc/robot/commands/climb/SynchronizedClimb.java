@@ -38,7 +38,7 @@ public class SynchronizedClimb extends CommandBase {
 
     double minExtension = 3000;
     double maxExtensionUnextended = 275000;
-    double maxExtensionExtended = 358750;
+    double maxExtensionExtended = 359500;
     double maxExtension = armsExtended ? maxExtensionExtended : maxExtensionUnextended;
     if (newTarget < minExtension) {
       System.out.println("Climb too low: " + newTarget);
