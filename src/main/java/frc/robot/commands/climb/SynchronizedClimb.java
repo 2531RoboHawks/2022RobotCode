@@ -37,7 +37,7 @@ public class SynchronizedClimb extends CommandBase {
     double newTarget = oldTarget + delta;
 
     double minExtension = 3000;
-    double maxExtensionUnextended = 275000;
+    double maxExtensionUnextended = 280000;
     double maxExtensionExtended = 359500;
     double maxExtension = armsExtended ? maxExtensionExtended : maxExtensionUnextended;
     if (newTarget < minExtension) {

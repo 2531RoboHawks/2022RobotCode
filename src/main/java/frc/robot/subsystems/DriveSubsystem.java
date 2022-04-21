@@ -16,6 +16,7 @@ import edu.wpi.first.math.kinematics.MecanumDriveMotorVoltages;
 import edu.wpi.first.math.kinematics.MecanumDriveOdometry;
 import edu.wpi.first.math.kinematics.MecanumDriveWheelSpeeds;
 import edu.wpi.first.math.trajectory.Trajectory;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.drive.Vector2d;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
@@ -46,7 +47,7 @@ public class DriveSubsystem extends SubsystemBase {
 
   private MecanumDriveOdometry odometry;
 
-  private static final double wheelDiameter = 0.2032; // meters
+  private static final double wheelDiameter = Units.inchesToMeters(6); // meters
   private static final double wheelCircumference = Math.PI * wheelDiameter;
   private static final double gearRatio = 8.45 / 1.0;
   private static final double rotationsToMeters = wheelCircumference / gearRatio;
