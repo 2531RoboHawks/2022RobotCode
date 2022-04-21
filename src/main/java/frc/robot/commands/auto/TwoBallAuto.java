@@ -33,7 +33,7 @@ public class TwoBallAuto extends SequentialCommandGroup {
     addCommands(new ResetOdometry(driveSubsystem));
     addCommands(new VisionAim(visionSubsystem, driveSubsystem).withTimeout(ShootingConstants.visionAimTimeout));
     addCommands(new ShootTwoBalls(() -> {
-      return new SuppliedRPM(4400, true);
+      return new SuppliedRPM(4500, true);
     }, new InstantCommand(), false));
     addCommands(new ParallelDeadlineGroup(
       new SequentialCommandGroup(
@@ -54,7 +54,7 @@ public class TwoBallAuto extends SequentialCommandGroup {
       new SequentialCommandGroup(
         new VisionAim(visionSubsystem, driveSubsystem).withTimeout(ShootingConstants.visionAimTimeout),
         new ShootTwoBalls(() -> {
-          return new SuppliedRPM(4400, true);
+          return new SuppliedRPM(4600, true);
         }, new InstantCommand(), false)
       ),
       new PutIntakeDownAndSpin(intakeSubsystem)

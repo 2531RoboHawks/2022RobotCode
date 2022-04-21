@@ -54,7 +54,7 @@ public class DriveSubsystem extends SubsystemBase {
 
   // Numbers found with sysid
   private final SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(0.60445, 1.5368, 0.37043);
-  private final PIDSettings feedforwardPID = new PIDSettings(2.2706, 0, 0);
+  private final PIDSettings feedforwardPID = new PIDSettings(0, 0, 0);
 
   public DriveSubsystem() {
     frontLeft.configureBrakes(true);

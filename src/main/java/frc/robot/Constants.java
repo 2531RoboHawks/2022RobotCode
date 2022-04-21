@@ -90,6 +90,6 @@ public final class Constants {
 
     public static final double optimalVisionOffsetInches = 3;
 
-    public static final double visionAimTimeout = 2;
+    public static final double visionAimTimeout = 1.2;
   }
 }
