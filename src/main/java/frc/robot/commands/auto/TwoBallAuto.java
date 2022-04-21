@@ -11,6 +11,7 @@ import frc.robot.Constants.ShootingConstants;
 import frc.robot.commands.PutIntakeDownAndSpin;
 import frc.robot.commands.shooting.LoadBallIntoStorage;
 import frc.robot.commands.shooting.ShootTwoBalls;
+import frc.robot.commands.shooting.SuppliedRPM;
 import frc.robot.commands.shooting.VisionAimAndShootTwoBalls;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -27,14 +28,17 @@ public class TwoBallAuto extends SequentialCommandGroup {
 
   private final double pickUpBallDistance = Units.inchesToMeters(80);
   private final double moveTimeout = 2;
-  private final double rpm = 4200;
 
   public TwoBallAuto() {
     addCommands(new ResetOdometry(driveSubsystem));
-    addCommands(new VisionAimAndShootTwoBalls(driveSubsystem, visionSubsystem, false));
+    addCommands(new VisionAim(visionSubsystem, driveSubsystem).withTimeout(ShootingConstants.visionAimTimeout));
+    addCommands(new ShootTwoBalls(() -> {
+      return new SuppliedRPM(4400, true);
+    }, new InstantCommand(), false));
     addCommands(new ParallelDeadlineGroup(
       new SequentialCommandGroup(
-        new WaitCommand(1.5),
+        new DriveToWaypoint(driveSubsystem, new Waypoint(0, 0, 0))
+          .withTimeout(moveTimeout),
         new DriveToWaypoint(driveSubsystem, new Waypoint(pickUpBallDistance, 0, 0))
           .withTimeout(moveTimeout),
         new WaitCommand(0.5),
@@ -47,7 +51,12 @@ public class TwoBallAuto extends SequentialCommandGroup {
       new LoadBallIntoStorage(storageSubsystem)
     ));
     addCommands(new ParallelDeadlineGroup(
-      new VisionAimAndShootTwoBalls(driveSubsystem, visionSubsystem, true),
+      new SequentialCommandGroup(
+        new VisionAim(visionSubsystem, driveSubsystem).withTimeout(ShootingConstants.visionAimTimeout),
+        new ShootTwoBalls(() -> {
+          return new SuppliedRPM(4400, true);
+        }, new InstantCommand(), false)
+      ),
       new PutIntakeDownAndSpin(intakeSubsystem)
     ));
   }
