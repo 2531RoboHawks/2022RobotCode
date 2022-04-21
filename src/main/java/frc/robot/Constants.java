@@ -47,7 +47,7 @@ public final class Constants {
 
   public static final class Controls {
     public static final int Slow = Button.kB.value;
-    public static final int Turbo = Button.kY.value;
+    public static final int Turbo = Button.kRightBumper.value;
 
     public static final int Shoot = Button.kLeftBumper.value;
 
