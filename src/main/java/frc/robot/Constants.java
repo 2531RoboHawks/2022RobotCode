@@ -49,8 +49,6 @@ public final class Constants {
     public static final int Slow = Button.kB.value;
     public static final int Turbo = Button.kRightBumper.value;
 
-    public static final int Shoot = Button.kLeftBumper.value;
-
     public static final int ToggleIntakeDown = Button.kA.value;
 
     public static final int PrepareToShootBall = Button.kX.value;
