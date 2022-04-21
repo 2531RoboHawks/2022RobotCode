@@ -53,6 +53,8 @@ public final class Constants {
 
     public static final int PrepareToShootBall = Button.kX.value;
 
+    public static final int SpitBall = Button.kY.value;
+
     public static final int HighGoal = Axis.kRightTrigger.value;
     public static final int LowGoal = Axis.kLeftTrigger.value;
     public static final int VisionHighGoal = Button.kStart.value;
@@ -71,9 +73,11 @@ public final class Constants {
   public static final class ShootingConstants {
     public static final double beforeShooterEjectVolts = 4;
     public static final double beforeShooterPrepareVolts = 1.8;
+    public static final double beforeShooterSpitVolts = -2;
 
     public static final double afterIntakeVolts = 3.1;
     public static final double afterIntakeSlowVolts = 2;
+    public static final double afterIntakeSpitVolts = -3;
 
     public static final double waitForBallToShootTimeout = 1;
     public static final double waitForBallToBePreparedTimeout = 1;
