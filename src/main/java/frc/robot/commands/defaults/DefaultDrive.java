@@ -40,12 +40,12 @@ public class DefaultDrive extends CommandBase {
       yMultiplier = .25;
       rotationMultiplier = .25;
     } else if (turbo) {
-      xMultiplier = .75;
-      yMultiplier = .75;
+      xMultiplier = 1;
+      yMultiplier = 1;
       rotationMultiplier = .75;
     } else {
-      xMultiplier = .4;
-      yMultiplier = .4;
+      xMultiplier = .5;
+      yMultiplier = .5;
       rotationMultiplier = .33;
     }
 

@@ -14,8 +14,8 @@ public class WaitForShooterToBeReady extends SequentialCommandGroup {
       // new WaitForShooterToBeAtSpeed(rpmSupplier, shootSubsystem),
       new WaitForShooterToBeStable(() -> rpmSupplier.get().isReady(), shootSubsystem)
     ).withTimeout(ShootingConstants.waitForShooterToBeReadyTimeout));
-    addCommands(new InstantCommand(() -> {
-      System.out.println("Shooter is ready: current: " + shootSubsystem.getRevwheelRPM() + " target: " + rpmSupplier.get().getRPM());
-    }));
+    // addCommands(new InstantCommand(() -> {
+    //   System.out.println("Shooter is ready: current: " + shootSubsystem.getRevwheelRPM() + " target: " + rpmSupplier.get().getRPM());
+    // }));
   }
 }

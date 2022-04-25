@@ -52,7 +52,6 @@ public class DriveToWaypoint extends CommandBase {
 
   @Override
   public void initialize() {
-    driveSubsystem.resetOdometry(new Pose2d());
     forwardController.reset();
     sidewaysController.reset();
     rotationController.reset();

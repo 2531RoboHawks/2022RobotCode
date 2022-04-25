@@ -15,6 +15,7 @@ import frc.robot.Constants.Controls;
 import frc.robot.Constants.HelmsControls;
 import frc.robot.Constants.ShootingConstants;
 import frc.robot.commands.PutIntakeDownAndSpin;
+import frc.robot.commands.SpitBall;
 import frc.robot.commands.ToggleIntakeDown;
 import frc.robot.commands.auto.TwoBallAuto;
 import frc.robot.commands.climb.ManualClimb;
@@ -103,9 +104,10 @@ public class RobotContainer {
       )
     );
     new JoystickButton(gamepad, Controls.VisionHighGoal).whileActiveOnce(
-      new VisionAimAndShootTwoBalls(driveSubsystem, visionSubsystem)
+      new VisionAimAndShootTwoBalls(driveSubsystem, visionSubsystem, true)
     );
     new JoystickButton(gamepad, Controls.PrepareToShootBall).whenHeld(new LoadBallIntoStorage(storageSubsystem));
+    new JoystickButton(gamepad, Controls.SpitBall).whenHeld(new SpitBall(storageSubsystem));
   }
 
   /**

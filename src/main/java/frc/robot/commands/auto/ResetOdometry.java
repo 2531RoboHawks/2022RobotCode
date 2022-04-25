@@ -8,7 +8,6 @@ import frc.robot.subsystems.DriveSubsystem;
 public class ResetOdometry extends InstantCommand {
   public ResetOdometry(DriveSubsystem driveSubsystem, Pose2d initialPose) {
     super(() -> {
-      driveSubsystem.resetGyro();
       driveSubsystem.resetOdometry(initialPose);
     }, driveSubsystem);
   }

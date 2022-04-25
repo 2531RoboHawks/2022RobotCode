@@ -15,9 +15,8 @@ public class ManualClimb extends CommandBase {
   }
 
   private double scale(double n) {
-    n *= 1.0;
     n = InputUtils.deadzone(n);
-    return n * n * Math.signum(n);
+    return n * n * Math.signum(n) * 0.4;
   }
 
   @Override

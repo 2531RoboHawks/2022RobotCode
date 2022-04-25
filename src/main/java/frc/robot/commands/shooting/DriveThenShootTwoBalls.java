@@ -8,12 +8,16 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.RobotContainer;
 import frc.robot.Waypoint;
 import frc.robot.commands.auto.DriveToWaypoint;
+import frc.robot.commands.auto.ResetOdometry;
 import frc.robot.subsystems.DriveSubsystem;
 
 public class DriveThenShootTwoBalls extends SequentialCommandGroup {
   private DriveSubsystem driveSubsystem = RobotContainer.driveSubsystem;
 
   public DriveThenShootTwoBalls(double rpm, Waypoint driveTo) {
+    addCommands(
+      new ResetOdometry(driveSubsystem)
+    );
     addCommands(
       new ShootTwoBalls(
         rpm,

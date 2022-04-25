@@ -47,13 +47,13 @@ public final class Constants {
 
   public static final class Controls {
     public static final int Slow = Button.kB.value;
-    public static final int Turbo = Button.kY.value;
-
-    public static final int Shoot = Button.kLeftBumper.value;
+    public static final int Turbo = Button.kRightBumper.value;
 
     public static final int ToggleIntakeDown = Button.kA.value;
 
     public static final int PrepareToShootBall = Button.kX.value;
+
+    public static final int SpitBall = Button.kY.value;
 
     public static final int HighGoal = Axis.kRightTrigger.value;
     public static final int LowGoal = Axis.kLeftTrigger.value;
@@ -72,24 +72,26 @@ public final class Constants {
 
   public static final class ShootingConstants {
     public static final double beforeShooterEjectVolts = 4;
-    public static final double beforeShooterPrepareVolts = 1.6;
+    public static final double beforeShooterPrepareVolts = 1.8;
+    public static final double beforeShooterSpitVolts = -2;
 
     public static final double afterIntakeVolts = 3.1;
     public static final double afterIntakeSlowVolts = 2;
+    public static final double afterIntakeSpitVolts = -3;
 
     public static final double waitForBallToShootTimeout = 1;
     public static final double waitForBallToBePreparedTimeout = 1;
     public static final double waitForShooterToBeReadyTimeout = 2;
 
-    public static final double highGoalOptimalRPM = 4000;
+    public static final double highGoalOptimalRPM = 4400;
     public static final double highGoalOptimalDistance = Units.inchesToMeters(34);
-    public static final double highGoalOptimalRotation = 12;
+    public static final double highGoalOptimalRotation = 6;
 
-    public static final double lowGoalOptimalRPM = 3000;
+    public static final double lowGoalOptimalRPM = 2000;
     public static final double lowGoalOptimalDistance = Units.inchesToMeters(0);
 
     public static final double optimalVisionOffsetInches = 3;
 
-    public static final double visionAimTimeout = 2;
+    public static final double visionAimTimeout = 1.2;
   }
 }
