@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.Controls;
 import frc.robot.Constants.HelmsControls;
 import frc.robot.Constants.ShootingConstants;
@@ -19,6 +20,7 @@ import frc.robot.commands.SpitBall;
 import frc.robot.commands.ToggleIntakeDown;
 import frc.robot.commands.auto.OneBallAndDriveAllTheWayBack;
 import frc.robot.commands.auto.TwoBallAuto;
+import frc.robot.commands.auto.WackyThreeBall;
 import frc.robot.commands.climb.ManualClimb;
 import frc.robot.commands.climb.SynchronizedClimb;
 import frc.robot.commands.climb.ToggleClimbExtended;
@@ -71,7 +73,9 @@ public class RobotContainer {
 
     autoChooser.addOption("None", null);
     autoChooser.addOption("One Ball And Back Out", new OneBallAndDriveAllTheWayBack());
-    autoChooser.setDefaultOption("Two Ball", new TwoBallAuto());
+    autoChooser.addOption("Wacky Three Ball", new WackyThreeBall());
+    autoChooser.setDefaultOption("Two Ball Long", new TwoBallAuto(AutoConstants.distanceToSecondBallLong));
+    autoChooser.addOption("Two Ball Short", new TwoBallAuto(AutoConstants.distnaceToSecondBallShort));
     SmartDashboard.putData(autoChooser);
   }
 

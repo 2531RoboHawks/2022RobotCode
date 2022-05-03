@@ -94,4 +94,12 @@ public final class Constants {
 
     public static final double visionAimTimeout = 1.2;
   }
+
+  public static final class AutoConstants {
+    public static final double distanceToSecondBallLong = Units.inchesToMeters(80);
+    public static final double distnaceToSecondBallShort = Units.inchesToMeters(60);
+
+    public static final double distanceToThirdBall = Units.inchesToMeters(80);
+    public static final double angleToThirdBallDegrees = 90;
+  }
 }

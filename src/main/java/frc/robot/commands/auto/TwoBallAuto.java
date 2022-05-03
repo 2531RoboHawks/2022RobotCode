@@ -21,15 +21,13 @@ import frc.robot.subsystems.VisionSubsystem;
 
 public class TwoBallAuto extends SequentialCommandGroup {
   private final DriveSubsystem driveSubsystem = RobotContainer.driveSubsystem;
-  private final ShootSubsystem shootSubsystem = RobotContainer.shootSubsystem;
   private final StorageSubsystem storageSubsystem = RobotContainer.storageSubsystem;
   private final IntakeSubsystem intakeSubsystem = RobotContainer.intakeSubsystem;
   private final VisionSubsystem visionSubsystem = RobotContainer.visionSubsystem;
 
-  private final double pickUpBallDistance = Units.inchesToMeters(80);
   private final double moveTimeout = 2;
 
-  public TwoBallAuto() {
+  public TwoBallAuto(double metersToDrive) {
     addCommands(new ResetOdometry(driveSubsystem));
     addCommands(new VisionAim(visionSubsystem, driveSubsystem).withTimeout(ShootingConstants.visionAimTimeout));
     addCommands(new ShootTwoBalls(() -> {
@@ -39,11 +37,11 @@ public class TwoBallAuto extends SequentialCommandGroup {
       new SequentialCommandGroup(
         new DriveToWaypoint(driveSubsystem, new Waypoint(0, 0, 0))
           .withTimeout(moveTimeout),
-        new DriveToWaypoint(driveSubsystem, new Waypoint(pickUpBallDistance, 0, 0))
+        new DriveToWaypoint(driveSubsystem, new Waypoint(metersToDrive, 0, 0))
           .withTimeout(moveTimeout),
         new WaitCommand(0.5),
         new ResetOdometry(driveSubsystem),
-        new DriveToWaypoint(driveSubsystem, new Waypoint(-pickUpBallDistance, 0, 0))
+        new DriveToWaypoint(driveSubsystem, new Waypoint(-metersToDrive, 0, 0))
           .withMaxVelocity(3)
           .withTimeout(moveTimeout)
       ),
