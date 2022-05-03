@@ -13,6 +13,6 @@ public class RPMCalculator {
       System.out.println("USING TEST RPM!");
       return testRPM;
     }
-    return inches * 8.59 + 4000.0;
+    return inches * 8.59 + 4050.0;
   }
 }
