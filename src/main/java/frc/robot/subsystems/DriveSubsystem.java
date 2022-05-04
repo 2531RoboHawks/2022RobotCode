@@ -109,7 +109,7 @@ public class DriveSubsystem extends SubsystemBase {
       input.x + input.y + rotation,
       input.x - input.y - rotation,
       input.x - input.y + rotation,
-      input.x + input.y - rotation  
+      input.x + input.y - rotation
     );
   }
 

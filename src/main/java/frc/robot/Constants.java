@@ -58,6 +58,9 @@ public final class Constants {
     public static final int HighGoal = Axis.kRightTrigger.value;
     public static final int LowGoal = Axis.kLeftTrigger.value;
     public static final int VisionHighGoal = Button.kStart.value;
+
+    public static final int ToggleFieldOriented = Button.kLeftBumper.value;
+    public static final int ResetFieldOriented = Button.kBack.value;
   }
 
   public static final class HelmsControls {
