@@ -7,6 +7,6 @@ import frc.robot.subsystems.StorageSubsystem;
 
 public class SpitBall extends SequentialCommandGroup {
   public SpitBall(StorageSubsystem storageSubsystem) {
-    addCommands(new RunStorage(ShootingConstants.afterIntakeSpitVolts, ShootingConstants.beforeShooterSpitVolts, storageSubsystem));
+    addCommands(new RunStorage(ShootingConstants.afterIntakeSpitVolts, ShootingConstants.beforeShooterSpitRPM, storageSubsystem));
   }
 }

@@ -55,5 +55,6 @@ public class StorageSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     SmartDashboard.putNumber("Storage befoer shooter RPM", beforeShooter.getRPM());
+    // SmartDashboard.putBoolean("Has Ball", isBallBeforeShooter());
   }
 }

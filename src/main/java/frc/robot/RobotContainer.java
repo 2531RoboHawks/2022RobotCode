@@ -30,6 +30,7 @@ import frc.robot.commands.defaults.DefaultDrive;
 import frc.robot.commands.defaults.DefaultIntake;
 import frc.robot.commands.defaults.DefaultShoot;
 import frc.robot.commands.shooting.LoadBallIntoStorage;
+import frc.robot.commands.shooting.RPMCalculator;
 import frc.robot.commands.shooting.ShootTwoBalls;
 import frc.robot.commands.shooting.VisionAimAndShootTwoBalls;
 import frc.robot.commands.shooting.DriveThenShootTwoBalls;
@@ -77,6 +78,8 @@ public class RobotContainer {
     autoChooser.setDefaultOption("Two Ball Long", new TwoBallAuto(AutoConstants.distanceToSecondBallLong));
     autoChooser.addOption("Two Ball Short", new TwoBallAuto(AutoConstants.distnaceToSecondBallShort));
     SmartDashboard.putData(autoChooser);
+
+    RPMCalculator.setup();
   }
 
   /**
