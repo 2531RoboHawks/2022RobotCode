@@ -56,7 +56,7 @@ public class DefaultDrive extends CommandBase {
 
     if (RobotContainer.gamepad.getRawButtonPressed(Controls.ToggleFieldOriented)) {
       fieldOriented = !fieldOriented;
-      System.out.println("Field oriented:" + fieldOriented);
+      System.out.println("Field oriented: " + fieldOriented);
     }
 
     if (RobotContainer.gamepad.getRawButtonPressed(Controls.ResetFieldOriented)) {
