@@ -60,7 +60,7 @@ public class DefaultDrive extends CommandBase {
     }
 
     if (RobotContainer.gamepad.getRawButtonPressed(Controls.ResetFieldOriented)) {
-      driveSubsystem.resetGyro();
+      driveSubsystem.zeroGyro();
       System.out.println("Reset field oriented");
     }
 

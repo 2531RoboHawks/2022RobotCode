@@ -1,6 +1,5 @@
 package frc.robot.commands.auto;
 
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -12,10 +11,8 @@ import frc.robot.commands.PutIntakeDownAndSpin;
 import frc.robot.commands.shooting.LoadBallIntoStorage;
 import frc.robot.commands.shooting.ShootTwoBalls;
 import frc.robot.commands.shooting.SuppliedRPM;
-import frc.robot.commands.shooting.VisionAimAndShootTwoBalls;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.subsystems.ShootSubsystem;
 import frc.robot.subsystems.StorageSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 
@@ -28,7 +25,6 @@ public class TwoBallAuto extends SequentialCommandGroup {
   private final double moveTimeout = 2;
 
   public TwoBallAuto(double metersToDrive) {
-    addCommands(new ResetOdometry(driveSubsystem));
     addCommands(new VisionAim(visionSubsystem, driveSubsystem).withTimeout(ShootingConstants.visionAimTimeout));
     addCommands(new ShootTwoBalls(() -> {
       return new SuppliedRPM(4500, true);
