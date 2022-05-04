@@ -76,7 +76,8 @@ public class DriveSubsystem extends SubsystemBase {
     backRight.configureInverted(true);
 
     odometry = new MecanumDriveOdometry(kinematics, getRotation2d());
-    reset();
+
+    resetGyro();
 
     // SmartDashboard.putData("Field", fieldImage);
   }
@@ -171,11 +172,6 @@ public class DriveSubsystem extends SubsystemBase {
 
   public void resetGyro() {
     gyro.reset();
-  }
-
-  public void reset() {
-    resetGyro();
-    stop();
   }
 
   public MecanumDriveInfo getWheelPositions() {

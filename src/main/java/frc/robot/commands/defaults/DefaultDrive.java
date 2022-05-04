@@ -21,8 +21,7 @@ public class DefaultDrive extends CommandBase {
 
   @Override
   public void initialize() {
-    driveSubsystem.reset();
-    fieldOriented = true;
+
   }
 
   private double scale(double n) {
