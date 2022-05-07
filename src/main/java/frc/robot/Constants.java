@@ -90,8 +90,8 @@ public final class Constants {
     public static final double highGoalOptimalDistance = Units.inchesToMeters(34);
     public static final double highGoalOptimalRotation = 6;
 
-    public static final double lowGoalOptimalRPM = 2000;
-    public static final double lowGoalOptimalDistance = Units.inchesToMeters(0);
+    public static final double lowGoalOptimalRPM = 3000;
+    public static final double lowGoalOptimalDistance = Units.inchesToMeters(24);
 
     public static final double optimalVisionOffsetInches = 3;
 

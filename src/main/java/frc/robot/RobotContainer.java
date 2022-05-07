@@ -126,8 +126,9 @@ public class RobotContainer {
       )
     );
     new JoystickAxis(gamepad, Controls.LowGoal).whenActivated(
-      new ShootTwoBalls(
-        ShootingConstants.lowGoalOptimalRPM
+      new DriveThenShootTwoBalls(
+        ShootingConstants.lowGoalOptimalRPM,
+        new Waypoint(ShootingConstants.lowGoalOptimalDistance, 0, 0)
       )
     );
     new JoystickButton(gamepad, Controls.VisionHighGoal).whileActiveOnce(

@@ -9,6 +9,7 @@ public class ResetOdometry extends InstantCommand {
   public ResetOdometry(DriveSubsystem driveSubsystem, Pose2d initialPose) {
     super(() -> {
       driveSubsystem.resetOdometry(initialPose);
+      driveSubsystem.zeroGyro();
     }, driveSubsystem);
   }
 

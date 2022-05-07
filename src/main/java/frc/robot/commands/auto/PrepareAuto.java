@@ -9,6 +9,6 @@ public class PrepareAuto extends ParallelCommandGroup {
 
   public PrepareAuto(double degreesOffset) {
     addCommands(new ResetOdometry(driveSubsystem));
-    addCommands(new ZeroGyro(degreesOffset, driveSubsystem));
+    // addCommands(new ZeroGyro(degreesOffset, driveSubsystem));
   }
 }

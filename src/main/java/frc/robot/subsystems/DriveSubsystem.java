@@ -164,19 +164,21 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public double getAngle() {
-    return gyro.getAngle() - gyroZero;
+    return gyro.getAngle();
   }
 
   public Rotation2d getRotation2d() {
-    return Rotation2d.fromDegrees(-getAngle());
+    return gyro.getRotation2d();
+    // return Rotation2d.fromDegrees(-getAngle());
   }
 
   public void resetGyro(double degrees) {
-    gyroZero = gyro.getAngle() - degrees;
+    // gyroZero = gyro.getAngle() - degrees;
   }
 
   public void zeroGyro() {
-    resetGyro(0);
+    gyro.reset();
+    // resetGyro(0);
   }
 
   public MecanumDriveInfo getWheelPositions() {

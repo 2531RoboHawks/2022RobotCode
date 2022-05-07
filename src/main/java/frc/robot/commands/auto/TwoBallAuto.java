@@ -53,5 +53,10 @@ public class TwoBallAuto extends SequentialCommandGroup {
       ),
       new PutIntakeDownAndSpin(intakeSubsystem)
     ));
+    // addCommands(new WaitCommand(0.3));
+    // addCommands(
+    //   new DriveToWaypoint(driveSubsystem, new Waypoint(metersToDrive, 0, 0))
+    //     .withMaxVelocity(3)
+    // );
   }
 }

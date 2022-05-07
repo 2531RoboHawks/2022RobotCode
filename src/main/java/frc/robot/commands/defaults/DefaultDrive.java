@@ -12,7 +12,7 @@ import frc.robot.subsystems.DriveSubsystem;
 
 public class DefaultDrive extends CommandBase {
   private DriveSubsystem driveSubsystem;
-  private boolean fieldOriented = true;
+  private boolean fieldOriented = false;
 
   public DefaultDrive(DriveSubsystem driveSubsystem) {
     this.driveSubsystem = driveSubsystem;
@@ -54,15 +54,15 @@ public class DefaultDrive extends CommandBase {
     double forwards = scale(-RobotContainer.gamepad.getLeftY()) * yMultiplier;
     double rotation = scale(RobotContainer.gamepad.getRawAxis(4)) * rotationMultiplier;
 
-    if (RobotContainer.gamepad.getRawButtonPressed(Controls.ToggleFieldOriented)) {
-      fieldOriented = !fieldOriented;
-      System.out.println("Field oriented: " + fieldOriented);
-    }
+    // if (RobotContainer.gamepad.getRawButtonPressed(Controls.ToggleFieldOriented)) {
+    //   fieldOriented = !fieldOriented;
+    //   System.out.println("Field oriented: " + fieldOriented);
+    // }
 
-    if (RobotContainer.gamepad.getRawButtonPressed(Controls.ResetFieldOriented)) {
-      driveSubsystem.zeroGyro();
-      System.out.println("Reset field oriented");
-    }
+    // if (RobotContainer.gamepad.getRawButtonPressed(Controls.ResetFieldOriented)) {
+    //   driveSubsystem.zeroGyro();
+    //   System.out.println("Reset field oriented");
+    // }
 
     if (fieldOriented) {
       driveSubsystem.drivePercent(driveSubsystem.calculateFieldOriented(forwards, sideways, rotation));
