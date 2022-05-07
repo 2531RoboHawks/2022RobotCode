@@ -21,7 +21,9 @@ public class DriveThenShootTwoBalls extends SequentialCommandGroup {
     addCommands(
       new ShootTwoBalls(
         rpm,
-        new DriveToWaypoint(driveSubsystem, driveTo).withTimeout(2)
+        new DriveToWaypoint(driveSubsystem, driveTo)
+          .withMaxVelocity(3)
+          .withTimeout(2)
       )
     );
   }

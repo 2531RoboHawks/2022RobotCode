@@ -58,6 +58,9 @@ public final class Constants {
     public static final int HighGoal = Axis.kRightTrigger.value;
     public static final int LowGoal = Axis.kLeftTrigger.value;
     public static final int VisionHighGoal = Button.kStart.value;
+
+    public static final int ToggleFieldOriented = Button.kLeftBumper.value;
+    public static final int ResetFieldOriented = Button.kBack.value;
   }
 
   public static final class HelmsControls {
@@ -71,13 +74,14 @@ public final class Constants {
   }
 
   public static final class ShootingConstants {
-    public static final double beforeShooterEjectVolts = 4;
-    public static final double beforeShooterPrepareVolts = 1.8;
-    public static final double beforeShooterSpitVolts = -2;
+    public static final double beforeShooterEjectRPM = 2500;
+    public static final double beforeShooterPrepareRPM = 1000;
+    public static final double beforeShooterSpitRPM = -2000;
 
-    public static final double afterIntakeVolts = 3.1;
+    public static final double afterIntakeVolts = 3.3;
+    public static final double afterIntakeStuckVolts = 8;
     public static final double afterIntakeSlowVolts = 2;
-    public static final double afterIntakeSpitVolts = -3;
+    public static final double afterIntakeSpitVolts = -4;
 
     public static final double waitForBallToShootTimeout = 1;
     public static final double waitForBallToBePreparedTimeout = 1;
@@ -87,11 +91,19 @@ public final class Constants {
     public static final double highGoalOptimalDistance = Units.inchesToMeters(34);
     public static final double highGoalOptimalRotation = 6;
 
-    public static final double lowGoalOptimalRPM = 2000;
-    public static final double lowGoalOptimalDistance = Units.inchesToMeters(0);
+    public static final double lowGoalOptimalRPM = 3000;
+    public static final double lowGoalOptimalDistance = Units.inchesToMeters(24);
 
     public static final double optimalVisionOffsetInches = 3;
 
     public static final double visionAimTimeout = 1.2;
+  }
+
+  public static final class AutoConstants {
+    public static final double distanceToSecondBallLong = Units.inchesToMeters(80);
+    public static final double distnaceToSecondBallShort = Units.inchesToMeters(36);
+
+    public static final double distanceToThirdBall = Units.inchesToMeters(80);
+    public static final double angleToThirdBallDegrees = 90;
   }
 }

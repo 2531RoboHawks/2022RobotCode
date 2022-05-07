@@ -20,7 +20,6 @@ public class OneBallAndDriveAllTheWayBack extends SequentialCommandGroup {
   private final double moveTimeout = 2;
 
   public OneBallAndDriveAllTheWayBack() {
-    addCommands(new ResetOdometry(driveSubsystem));
     addCommands(new VisionAim(visionSubsystem, driveSubsystem).withTimeout(ShootingConstants.visionAimTimeout));
     addCommands(new ShootTwoBalls(() -> {
       return new SuppliedRPM(4500, true);

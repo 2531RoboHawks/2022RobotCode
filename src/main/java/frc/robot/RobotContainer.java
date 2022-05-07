@@ -10,7 +10,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.Controls;
 import frc.robot.Constants.HelmsControls;
 import frc.robot.Constants.ShootingConstants;
@@ -18,7 +20,9 @@ import frc.robot.commands.PutIntakeDownAndSpin;
 import frc.robot.commands.SpitBall;
 import frc.robot.commands.ToggleIntakeDown;
 import frc.robot.commands.auto.OneBallAndDriveAllTheWayBack;
+import frc.robot.commands.auto.PrepareAuto;
 import frc.robot.commands.auto.TwoBallAuto;
+import frc.robot.commands.auto.WackyThreeBall;
 import frc.robot.commands.climb.ManualClimb;
 import frc.robot.commands.climb.SynchronizedClimb;
 import frc.robot.commands.climb.ToggleClimbExtended;
@@ -28,6 +32,7 @@ import frc.robot.commands.defaults.DefaultDrive;
 import frc.robot.commands.defaults.DefaultIntake;
 import frc.robot.commands.defaults.DefaultShoot;
 import frc.robot.commands.shooting.LoadBallIntoStorage;
+import frc.robot.commands.shooting.RPMCalculator;
 import frc.robot.commands.shooting.ShootTwoBalls;
 import frc.robot.commands.shooting.VisionAimAndShootTwoBalls;
 import frc.robot.commands.shooting.DriveThenShootTwoBalls;
@@ -70,9 +75,29 @@ public class RobotContainer {
     SmartDashboard.putData("Zero Climber", new ZeroClimb(climbSubsystem));
 
     autoChooser.addOption("None", null);
-    autoChooser.addOption("One Ball And Back Out", new OneBallAndDriveAllTheWayBack());
-    autoChooser.setDefaultOption("Two Ball", new TwoBallAuto());
+    autoChooser.addOption("One Ball And Back Out", new SequentialCommandGroup(
+      new PrepareAuto(180),
+      new OneBallAndDriveAllTheWayBack()
+    ));
+    autoChooser.addOption("Wacky Three Ball", new SequentialCommandGroup(
+      new PrepareAuto(180),
+      new WackyThreeBall()
+    ));
+    autoChooser.setDefaultOption("Two Ball Long", new SequentialCommandGroup(
+      new PrepareAuto(180),
+      new TwoBallAuto(AutoConstants.distanceToSecondBallLong)
+    ));
+    autoChooser.addOption("Two Ball Angled", new SequentialCommandGroup(
+      new PrepareAuto(180 + 30),
+      new TwoBallAuto(AutoConstants.distanceToSecondBallLong)
+    ));
+    autoChooser.addOption("Two Ball Short", new SequentialCommandGroup(
+      new PrepareAuto(90),
+      new TwoBallAuto(AutoConstants.distnaceToSecondBallShort)
+    ));
     SmartDashboard.putData(autoChooser);
+
+    RPMCalculator.setup();
   }
 
   /**
@@ -101,8 +126,9 @@ public class RobotContainer {
       )
     );
     new JoystickAxis(gamepad, Controls.LowGoal).whenActivated(
-      new ShootTwoBalls(
-        ShootingConstants.lowGoalOptimalRPM
+      new DriveThenShootTwoBalls(
+        ShootingConstants.lowGoalOptimalRPM,
+        new Waypoint(ShootingConstants.lowGoalOptimalDistance, 0, 0)
       )
     );
     new JoystickButton(gamepad, Controls.VisionHighGoal).whileActiveOnce(

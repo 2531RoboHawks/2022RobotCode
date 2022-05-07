@@ -3,7 +3,7 @@ package frc.robot.commands.shooting;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class RPMCalculator {
-  static {
+  public static void setup() {
     SmartDashboard.putNumber("Test RPM", 0);
   }
 
@@ -13,6 +13,6 @@ public class RPMCalculator {
       System.out.println("USING TEST RPM!");
       return testRPM;
     }
-    return inches * 8.59 + 4050.0;
+    return inches * 7.47 + 3800.0;
   }
 }

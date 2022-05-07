@@ -29,6 +29,7 @@ import frc.robot.Constants.CAN;
 
 public class DriveSubsystem extends SubsystemBase {
   private Gyro gyro = new WPI_PigeonIMU(CAN.Pigeon);
+  private double gyroZero = 0;
 
   private BetterTalonFX frontLeft = new BetterTalonFX(CAN.DriveFrontLeft);
   private BetterTalonFX frontRight = new BetterTalonFX(CAN.DriveFrontRight);
@@ -76,7 +77,8 @@ public class DriveSubsystem extends SubsystemBase {
     backRight.configureInverted(true);
 
     odometry = new MecanumDriveOdometry(kinematics, getRotation2d());
-    reset();
+
+    zeroGyro();
 
     // SmartDashboard.putData("Field", fieldImage);
   }
@@ -109,7 +111,7 @@ public class DriveSubsystem extends SubsystemBase {
       input.x + input.y + rotation,
       input.x - input.y - rotation,
       input.x - input.y + rotation,
-      input.x + input.y - rotation  
+      input.x + input.y - rotation
     );
   }
 
@@ -167,15 +169,16 @@ public class DriveSubsystem extends SubsystemBase {
 
   public Rotation2d getRotation2d() {
     return gyro.getRotation2d();
+    // return Rotation2d.fromDegrees(-getAngle());
   }
 
-  public void resetGyro() {
+  public void resetGyro(double degrees) {
+    // gyroZero = gyro.getAngle() - degrees;
+  }
+
+  public void zeroGyro() {
     gyro.reset();
-  }
-
-  public void reset() {
-    resetGyro();
-    stop();
+    // resetGyro(0);
   }
 
   public MecanumDriveInfo getWheelPositions() {
