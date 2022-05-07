@@ -87,6 +87,10 @@ public class RobotContainer {
       new PrepareAuto(180),
       new TwoBallAuto(AutoConstants.distanceToSecondBallLong)
     ));
+    autoChooser.addOption("Two Ball Angled", new SequentialCommandGroup(
+      new PrepareAuto(180 + 30),
+      new TwoBallAuto(AutoConstants.distanceToSecondBallLong)
+    ));
     autoChooser.addOption("Two Ball Short", new SequentialCommandGroup(
       new PrepareAuto(90),
       new TwoBallAuto(AutoConstants.distnaceToSecondBallShort)
