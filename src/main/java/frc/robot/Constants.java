@@ -74,13 +74,14 @@ public final class Constants {
   }
 
   public static final class ShootingConstants {
-    public static final double beforeShooterEjectRPM = 2000;
-    public static final double beforeShooterPrepareVolts = 1.8;
+    public static final double beforeShooterEjectRPM = 2500;
+    public static final double beforeShooterPrepareRPM = 1000;
     public static final double beforeShooterSpitRPM = -2000;
 
-    public static final double afterIntakeVolts = 3.1;
+    public static final double afterIntakeVolts = 3.3;
+    public static final double afterIntakeStuckVolts = 8;
     public static final double afterIntakeSlowVolts = 2;
-    public static final double afterIntakeSpitVolts = -3;
+    public static final double afterIntakeSpitVolts = -4;
 
     public static final double waitForBallToShootTimeout = 1;
     public static final double waitForBallToBePreparedTimeout = 1;

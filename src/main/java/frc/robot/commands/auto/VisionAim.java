@@ -16,7 +16,7 @@ public class VisionAim extends CommandBase {
   private VisionSubsystem visionSubsystem;
   private boolean foundValidTarget = false;
 
-  private PIDController pidController = new PIDController(0.08, 0, 0);
+  private PIDController pidController = new PIDController(0.1, 0, 0);
 
   private double maxPower = 1;
 
