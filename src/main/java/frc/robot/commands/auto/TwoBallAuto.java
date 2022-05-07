@@ -27,7 +27,7 @@ public class TwoBallAuto extends SequentialCommandGroup {
   public TwoBallAuto(double metersToDrive) {
     addCommands(new VisionAim(visionSubsystem, driveSubsystem).withTimeout(ShootingConstants.visionAimTimeout));
     addCommands(new ShootTwoBalls(() -> {
-      return new SuppliedRPM(4450, true);
+      return new SuppliedRPM(4400, true);
     }, new InstantCommand(), false));
     addCommands(new ParallelDeadlineGroup(
       new SequentialCommandGroup(
